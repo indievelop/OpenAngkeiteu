@@ -45,7 +45,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(232);
+	module.exports = __webpack_require__(233);
 
 
 /***/ }),
@@ -21895,15 +21895,15 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _Home = __webpack_require__(229);
+	var _Home = __webpack_require__(230);
 
 	var _Home2 = _interopRequireDefault(_Home);
 
-	var _Login = __webpack_require__(230);
+	var _Login = __webpack_require__(231);
 
 	var _Login2 = _interopRequireDefault(_Login);
 
-	var _Register = __webpack_require__(231);
+	var _Register = __webpack_require__(232);
 
 	var _Register2 = _interopRequireDefault(_Register);
 
@@ -21963,15 +21963,32 @@
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        _reactRouterDom.BrowserRouter,
+	        'div',
 	        null,
 	        _react2.default.createElement(
-	          'div',
+	          _reactRouterDom.BrowserRouter,
 	          null,
-	          _react2.default.createElement(_components.Header, null),
-	          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _containers.Home }),
-	          _react2.default.createElement(_reactRouterDom.Route, { path: '/login', component: _containers.Login }),
-	          _react2.default.createElement(_reactRouterDom.Route, { path: '/register', component: _containers.Register })
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              'header',
+	              null,
+	              _react2.default.createElement(_components.Header, null)
+	            ),
+	            _react2.default.createElement(
+	              'main',
+	              null,
+	              _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _containers.Home }),
+	              _react2.default.createElement(_reactRouterDom.Route, { path: '/login', component: _containers.Login }),
+	              _react2.default.createElement(_reactRouterDom.Route, { path: '/register', component: _containers.Register })
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'footer',
+	          null,
+	          _react2.default.createElement(_components.Footer, null)
 	        )
 	      );
 	    }
@@ -25590,15 +25607,20 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.Header = undefined;
+	exports.Footer = exports.Header = undefined;
 
 	var _Header = __webpack_require__(228);
 
 	var _Header2 = _interopRequireDefault(_Header);
 
+	var _Footer = __webpack_require__(229);
+
+	var _Footer2 = _interopRequireDefault(_Footer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.Header = _Header2.default;
+	exports.Footer = _Footer2.default;
 
 /***/ }),
 /* 228 */
@@ -25730,6 +25752,170 @@
 /* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Footer = function (_React$Component) {
+	  _inherits(Footer, _React$Component);
+
+	  function Footer() {
+	    _classCallCheck(this, Footer);
+
+	    return _possibleConstructorReturn(this, (Footer.__proto__ || Object.getPrototypeOf(Footer)).apply(this, arguments));
+	  }
+
+	  _createClass(Footer, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        null,
+	        _react2.default.createElement(
+	          "div",
+	          { "class": "container" },
+	          _react2.default.createElement(
+	            "div",
+	            { "class": "row" },
+	            _react2.default.createElement(
+	              "div",
+	              { "class": "col l6 s12" },
+	              _react2.default.createElement(
+	                "h5",
+	                { "class": "white-text" },
+	                "Some Title"
+	              ),
+	              _react2.default.createElement(
+	                "p",
+	                { "class": "grey-text text-lighten-4" },
+	                "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+	              )
+	            ),
+	            _react2.default.createElement(
+	              "div",
+	              { "class": "col l2 offset-l2 s6" },
+	              _react2.default.createElement(
+	                "h6",
+	                null,
+	                "About"
+	              ),
+	              _react2.default.createElement(
+	                "ul",
+	                null,
+	                _react2.default.createElement(
+	                  "li",
+	                  null,
+	                  _react2.default.createElement(
+	                    "a",
+	                    { href: "", "class": "grey-text text-lighten-3" },
+	                    "Help"
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  "li",
+	                  null,
+	                  _react2.default.createElement(
+	                    "a",
+	                    { href: "", "class": "grey-text text-lighten-3" },
+	                    "Contact"
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  "li",
+	                  null,
+	                  _react2.default.createElement(
+	                    "a",
+	                    { href: "", "class": "grey-text text-lighten-3" },
+	                    "Suggestions"
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              "div",
+	              { "class": "col l2 s6" },
+	              _react2.default.createElement(
+	                "h6",
+	                null,
+	                "Developer"
+	              ),
+	              _react2.default.createElement(
+	                "ul",
+	                null,
+	                _react2.default.createElement(
+	                  "li",
+	                  null,
+	                  _react2.default.createElement(
+	                    "a",
+	                    { href: "", "class": "grey-text text-lighten-3" },
+	                    "Source"
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  "li",
+	                  null,
+	                  _react2.default.createElement(
+	                    "a",
+	                    { href: "", "class": "grey-text text-lighten-3" },
+	                    "Contribute"
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  "li",
+	                  null,
+	                  _react2.default.createElement(
+	                    "a",
+	                    { href: "", "class": "grey-text text-lighten-3" },
+	                    "API Docs"
+	                  )
+	                )
+	              )
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { "class": "footer-copyright" },
+	          _react2.default.createElement(
+	            "div",
+	            { "class": "container" },
+	            "Made by ",
+	            _react2.default.createElement(
+	              "a",
+	              { href: "" },
+	              "Me "
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Footer;
+	}(_react2.default.Component);
+
+	exports.default = Footer;
+
+/***/ }),
+/* 230 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -25776,7 +25962,7 @@
 	exports.default = Home;
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25825,7 +26011,7 @@
 	exports.default = Login;
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25874,13 +26060,13 @@
 	exports.default = Register;
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(233);
+	var content = __webpack_require__(234);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// Prepare cssTransformation
 	var transform;
@@ -25888,7 +26074,7 @@
 	var options = {}
 	options.transform = transform
 	// add the styles to the DOM
-	var update = __webpack_require__(235)(content, options);
+	var update = __webpack_require__(236)(content, options);
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -25905,21 +26091,21 @@
 	}
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(234)(undefined);
+	exports = module.exports = __webpack_require__(235)(undefined);
 	// imports
 
 
 	// module
-	exports.push([module.id, "", ""]);
+	exports.push([module.id, "body {\n   display: flex;\n   min-height: 100vh;\n   flex-direction: column;\n }\n\n main {\n    flex: 1 0 auto;\n  }\n\nfooter {\n  background-color: pink;\n}\n", ""]);
 
 	// exports
 
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports) {
 
 	/*
@@ -26001,7 +26187,7 @@
 
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -26047,7 +26233,7 @@
 	var	singletonCounter = 0;
 	var	stylesInsertedAtTop = [];
 
-	var	fixUrls = __webpack_require__(236);
+	var	fixUrls = __webpack_require__(237);
 
 	module.exports = function(list, options) {
 		if (false) {
@@ -26360,7 +26546,7 @@
 
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports) {
 
 	
