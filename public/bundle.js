@@ -21963,32 +21963,28 @@
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'div',
+	        _reactRouterDom.BrowserRouter,
 	        null,
 	        _react2.default.createElement(
-	          _reactRouterDom.BrowserRouter,
-	          null,
+	          'div',
+	          { id: 'app' },
 	          _react2.default.createElement(
-	            'div',
+	            'header',
 	            null,
-	            _react2.default.createElement(
-	              'header',
-	              null,
-	              _react2.default.createElement(_components.Header, null)
-	            ),
-	            _react2.default.createElement(
-	              'main',
-	              null,
-	              _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _containers.Home }),
-	              _react2.default.createElement(_reactRouterDom.Route, { path: '/login', component: _containers.Login }),
-	              _react2.default.createElement(_reactRouterDom.Route, { path: '/register', component: _containers.Register })
-	            )
+	            _react2.default.createElement(_components.Header, null)
+	          ),
+	          _react2.default.createElement(
+	            'main',
+	            null,
+	            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _containers.Home }),
+	            _react2.default.createElement(_reactRouterDom.Route, { path: '/login', component: _containers.Login }),
+	            _react2.default.createElement(_reactRouterDom.Route, { path: '/register', component: _containers.Register })
+	          ),
+	          _react2.default.createElement(
+	            'footer',
+	            { className: 'page-footer' },
+	            _react2.default.createElement(_components.Footer, null)
 	          )
-	        ),
-	        _react2.default.createElement(
-	          'footer',
-	          null,
-	          _react2.default.createElement(_components.Footer, null)
 	        )
 	      );
 	    }
@@ -25694,11 +25690,11 @@
 	                null,
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'nav-wrapper green darken-1' },
+	                    { className: 'nav-wrapper s12 darken-1' },
 	                    _react2.default.createElement(
 	                        _reactRouterDom.Link,
 	                        { to: '/', className: 'brand-logo center' },
-	                        'MyAngkeiteu'
+	                        'Open Angkeiteu'
 	                    ),
 	                    _react2.default.createElement(
 	                        'ul',
@@ -25789,31 +25785,31 @@
 	        null,
 	        _react2.default.createElement(
 	          "div",
-	          { "class": "container" },
+	          { className: "container" },
 	          _react2.default.createElement(
 	            "div",
-	            { "class": "row" },
+	            { className: "row" },
 	            _react2.default.createElement(
 	              "div",
-	              { "class": "col l6 s12" },
+	              { className: "col l6 s12" },
 	              _react2.default.createElement(
 	                "h5",
-	                { "class": "white-text" },
-	                "Some Title"
+	                { className: "white-text" },
+	                "Footer Content"
 	              ),
 	              _react2.default.createElement(
 	                "p",
-	                { "class": "grey-text text-lighten-4" },
-	                "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+	                { className: "grey-text text-lighten-4" },
+	                "You can use rows and columns here to organize your footer content."
 	              )
 	            ),
 	            _react2.default.createElement(
 	              "div",
-	              { "class": "col l2 offset-l2 s6" },
+	              { className: "col l4 offset-l2 s12" },
 	              _react2.default.createElement(
-	                "h6",
-	                null,
-	                "About"
+	                "h5",
+	                { className: "white-text" },
+	                "Links"
 	              ),
 	              _react2.default.createElement(
 	                "ul",
@@ -25823,8 +25819,8 @@
 	                  null,
 	                  _react2.default.createElement(
 	                    "a",
-	                    { href: "", "class": "grey-text text-lighten-3" },
-	                    "Help"
+	                    { className: "grey-text text-lighten-3", href: "#!" },
+	                    "Link 1"
 	                  )
 	                ),
 	                _react2.default.createElement(
@@ -25832,8 +25828,8 @@
 	                  null,
 	                  _react2.default.createElement(
 	                    "a",
-	                    { href: "", "class": "grey-text text-lighten-3" },
-	                    "Contact"
+	                    { className: "grey-text text-lighten-3", href: "#!" },
+	                    "Link 2"
 	                  )
 	                ),
 	                _react2.default.createElement(
@@ -25841,30 +25837,8 @@
 	                  null,
 	                  _react2.default.createElement(
 	                    "a",
-	                    { href: "", "class": "grey-text text-lighten-3" },
-	                    "Suggestions"
-	                  )
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { "class": "col l2 s6" },
-	              _react2.default.createElement(
-	                "h6",
-	                null,
-	                "Developer"
-	              ),
-	              _react2.default.createElement(
-	                "ul",
-	                null,
-	                _react2.default.createElement(
-	                  "li",
-	                  null,
-	                  _react2.default.createElement(
-	                    "a",
-	                    { href: "", "class": "grey-text text-lighten-3" },
-	                    "Source"
+	                    { className: "grey-text text-lighten-3", href: "#!" },
+	                    "Link 3"
 	                  )
 	                ),
 	                _react2.default.createElement(
@@ -25872,17 +25846,8 @@
 	                  null,
 	                  _react2.default.createElement(
 	                    "a",
-	                    { href: "", "class": "grey-text text-lighten-3" },
-	                    "Contribute"
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  "li",
-	                  null,
-	                  _react2.default.createElement(
-	                    "a",
-	                    { href: "", "class": "grey-text text-lighten-3" },
-	                    "API Docs"
+	                    { className: "grey-text text-lighten-3", href: "#!" },
+	                    "Link 4"
 	                  )
 	                )
 	              )
@@ -25891,16 +25856,11 @@
 	        ),
 	        _react2.default.createElement(
 	          "div",
-	          { "class": "footer-copyright" },
+	          { className: "footer-copyright" },
 	          _react2.default.createElement(
 	            "div",
-	            { "class": "container" },
-	            "Made by ",
-	            _react2.default.createElement(
-	              "a",
-	              { href: "" },
-	              "Me "
-	            )
+	            { className: "container" },
+	            "\xA9 2017 Copyright Text"
 	          )
 	        )
 	      );
@@ -26099,7 +26059,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n   display: flex;\n   min-height: 100vh;\n   flex-direction: column;\n }\n\n main {\n    flex: 1 0 auto;\n  }\n\nfooter {\n  background-color: pink;\n}\n", ""]);
+	exports.push([module.id, "#app {\n   display: flex;\n   min-height: 100vh;\n   flex-direction: column;\n }\n\n main {\n    flex: 1 0 auto;\n  }\n\nfooter {\n  background-color: pink;\n}\n", ""]);
 
 	// exports
 
