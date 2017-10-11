@@ -23,7 +23,7 @@ class Header extends React.Component {
     return(
       <nav>
         <div className="nav-wrapper s12 darken-1">
-            <Link to='/' className='brand-logo center' >Open Angkeiteu</Link>
+            <Link to='/' className='brand-logo center' >My Angkeiteu</Link>
 
             <ul>
                 <li><a><i className="material-icons">search</i></a></li>

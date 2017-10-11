@@ -47,12 +47,11 @@ var app = (0, _express2.default)(); //mongodb ODM
 var port = 3000;
 var devPort = 4000;
 var db = _mongoose2.default.connection;
-var dbURL = 'mongodb://localhost/codelab';
+var dbURL = 'mongodb://localhost/myAngkeiteu';
 
 app.use((0, _morgan2.default)('dev'));
 app.use(_bodyParser2.default.json());
 app.use('/', _express2.default.static(_path2.default.join(__dirname, './../public')));
-
 /* setup routers & static directory */
 app.use('/api', _routes2.default);
 app.get('*', function (req, res) {
@@ -70,6 +69,11 @@ app.use((0, _expressSession2.default)({
     resave: false,
     saveUninitialized: true
 }));
+/* handle error */
+app.use(function (err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
 
 app.listen(port, function () {
     console.log('Express is listening on port', port);
