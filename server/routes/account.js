@@ -51,7 +51,7 @@ router.post('/signup', (req, res) => {
 
 /*
     ACCOUNT SIGNIN: POST /api/account/signin
-    BODY SAMPLE: { "username": "test", "password": "test" }
+    BODY SAMPLE: { "email": "test@test.com", "password": "test" }
     ERROR CODES:
         1: LOGIN FAILED
 */
@@ -81,10 +81,10 @@ router.post('/signin', (req, res) => {
     }
     // ALTER SESSION
     let session = req.session;
-    session.loginInfo = {
-        _id: account._id,
-        email: account.email
-    };
+        session.logInfo = {
+          _id: account._id,
+          email: account.email
+        };
     // RETURN SUCCESS
     return res.json({
         success: true
@@ -96,13 +96,13 @@ router.post('/signin', (req, res) => {
     GET CURRENT USER INFO GET /api/account/getInfo
 */
 router.get('/getinfo', (req, res) => {
-  if(typeof req.session.loginInfo === "undefined") {
+  if(typeof req.session.logInfo === "undefined") {
       return res.status(401).json({
           error: 1
       });
   }
 
-  res.json({ info: req.session.loginInfo });
+  res.json({ info: req.session.logInfo });
 });
 
 /*

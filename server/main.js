@@ -17,21 +17,24 @@ const dbURL = 'mongodb://localhost/myAngkeiteu';
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use('/', express.static(path.join(__dirname, './../public')));
-/* setup routers & static directory */
-app.use('/api', api);
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './../public/index.html'));
-});
+
 /* mongodb connection */
 db.on('error', console.error);
 db.once('open', () => { console.log('Connected to mongodb server'); });
 mongoose.connect(dbURL);
 /* use session */
 app.use(session({
-    secret: 'CodeLab1$1$234',
+    secret: 'myAngkeiteu$1$234',
     resave: false,
     saveUninitialized: true
 }));
+
+/* setup routers & static directory */
+app.use('/api', api);
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './../public/index.html'));
+});
+
 /* handle error */
 app.use(function(err, req, res, next) {
   console.error(err.stack);

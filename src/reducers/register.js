@@ -3,30 +3,29 @@ import update from 'react-addons-update';
 
 const initialState = {
     status: 'INIT',
-    isLoggedIn: false,
-    currentUser: ''
+    error: -1
 };
 
-export default function login(state, action) {
+export default function register(state, action) {
   if(typeof state === 'undefined')
     state = initialState;
 
     switch(action.type) {
-          case types.AUTH_LOGIN:
+          case types.AUTH_REGISTER:
               return update(state, {
-                      status: { $set: 'WAITING' }
+                      status: { $set: 'WAITING' },
+                      error: { $set: -1 }
               });
-          case types.AUTH_LOGIN_SUCCESS:
+          case types.AUTH_REGISTER_SUCCESS:
               return update(state, {
                       status: { $set: 'SUCCESS' },
-                      isLoggedIn: { $set: true },
-                      currentUser: { $set: action.email }
               });
-          case types.AUTH_LOGIN_FAILURE:
+          case types.AUTH_REGISTER_FAILURE:
               return update(state, {
-                      status: { $set: 'FAILURE' }
+                      status: { $set: 'FAILURE' },
+                      error: { $set: action.error }
               });
           default:
               return state;
-      }
+    }
 }

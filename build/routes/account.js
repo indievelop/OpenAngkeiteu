@@ -15,7 +15,14 @@ var _account2 = _interopRequireDefault(_account);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = _express2.default.Router();
-
+/*
+    ACCOUNT SIGNUP: POST /api/account/signup
+    BODY SAMPLE: { "email": "test", "password": "test" }
+    ERROR CODES:
+        1: BAD EMAIL
+        2: BAD PASSWORD
+        3: EMAIL EXISTS
+*/
 router.post('/signup', function (req, res) {
     //CHECK EMAIL FORMAT
     var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -55,6 +62,12 @@ router.post('/signup', function (req, res) {
     });
 });
 
+/*
+    ACCOUNT SIGNIN: POST /api/account/signin
+    BODY SAMPLE: { "email": "test@test.com", "password": "test" }
+    ERROR CODES:
+        1: LOGIN FAILED
+*/
 router.post('/signin', function (req, res) {
     if (typeof req.body.password !== "string") {
         return res.status(401).json({
@@ -62,7 +75,6 @@ router.post('/signin', function (req, res) {
             code: 1
         });
     }
-
     // FIND THE USER BY EMAIL
     _account2.default.findOne({ email: req.body.email }, function (err, account) {
         if (err) throw err;
@@ -73,7 +85,6 @@ router.post('/signin', function (req, res) {
                 code: 1
             });
         }
-
         // CHECK WHETHER THE PASSWORD IS VALID
         if (!account.validateHash(req.body.password)) {
             return res.status(401).json({
@@ -83,7 +94,7 @@ router.post('/signin', function (req, res) {
         }
         // ALTER SESSION
         var session = req.session;
-        session.loginInfo = {
+        session.logInfo = {
             _id: account._id,
             email: account.email
         };
@@ -94,18 +105,27 @@ router.post('/signin', function (req, res) {
     });
 });
 
+/*
+    GET CURRENT USER INFO GET /api/account/getInfo
+*/
 router.get('/getinfo', function (req, res) {
-    if (typeof req.session.loginInfo === "undefined") {
+    if (typeof req.session.logInfo === "undefined") {
         return res.status(401).json({
             error: 1
         });
     }
 
-    res.json({ info: req.session.loginInfo });
+    res.json({ info: req.session.logInfo });
 });
 
+/*
+    LOGOUT: POST /api/account/logout
+*/
 router.post('/logout', function (req, res) {
-    return res.json({ success: true });
+    req.session.destroy(function (err) {
+        if (err) throw err;
+    });
+    return res.json({ sucess: true });
 });
 
 exports.default = router;
