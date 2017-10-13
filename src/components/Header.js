@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class Header extends React.Component {
   render () {
@@ -50,4 +51,10 @@ Header.defaultProps = {
   onLogout: () => { console.error("logout function not defined");}
 };
 
-export default Header;
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.getStatus.isLoggedIn
+    };
+};
+
+export default connect(mapStateToProps)(Header);

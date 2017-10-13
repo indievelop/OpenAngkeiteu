@@ -22,23 +22,22 @@ app.use('/', express.static(path.join(__dirname, './../public')));
 db.on('error', console.error);
 db.once('open', () => { console.log('Connected to mongodb server'); });
 mongoose.connect(dbURL);
-/* use session */
+/* use session order imp*/
 app.use(session({
     secret: 'myAngkeiteu$1$234',
     resave: false,
     saveUninitialized: true
 }));
+/* handle error */
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 /* setup routers & static directory */
 app.use('/api', api);
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './../public/index.html'));
-});
-
-/* handle error */
-app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
 });
 
 app.listen(port, () => {

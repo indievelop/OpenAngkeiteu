@@ -81,10 +81,10 @@ router.post('/signin', (req, res) => {
     }
     // ALTER SESSION
     let session = req.session;
-        session.logInfo = {
-          _id: account._id,
-          email: account.email
-        };
+    session.loginInfo = {
+        _id: account._id,
+        email: account.email
+    };
     // RETURN SUCCESS
     return res.json({
         success: true
@@ -96,13 +96,13 @@ router.post('/signin', (req, res) => {
     GET CURRENT USER INFO GET /api/account/getInfo
 */
 router.get('/getinfo', (req, res) => {
-  if(typeof req.session.logInfo === "undefined") {
+  if(typeof req.session.loginInfo === "undefined") {
       return res.status(401).json({
           error: 1
       });
   }
 
-  res.json({ info: req.session.logInfo });
+  res.json({ info: req.session.loginInfo });
 });
 
 /*
