@@ -1,7 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { registerRequest } from 'actions/register';
+import { registerRequest } from 'actions/authentication';
 
 class Register extends React.Component {
 
@@ -93,8 +93,8 @@ class Register extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        status: state.register.status,
-        errorCode: state.register.error
+        status: state.authentication.register.status,
+        errorCode: state.authentication.register.error
     };
 };
 

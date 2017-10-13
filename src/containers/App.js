@@ -6,7 +6,7 @@ import { Header, Footer } from 'components';
 //containers
 import {Home, Login, Register} from 'containers';
 import { connect } from 'react-redux';
-import { getStatusRequest } from 'actions/getStatus';
+import { getStatusRequest } from 'actions/authentication';
 
 class App extends React.Component {
 
@@ -40,7 +40,7 @@ class App extends React.Component {
                 // logout the session
                 loginData = {
                     isLoggedIn: false,
-                    username: ''
+                    email: ''
                 };
 
                 document.cookie='key=' + btoa(JSON.stringify(loginData));
@@ -77,7 +77,7 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        status: state.getStatus
+        status: state.authentication.status
     };
 };
 

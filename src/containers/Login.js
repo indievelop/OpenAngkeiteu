@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginRequest } from 'actions/login';
+import { loginRequest } from 'actions/authentication';
 
 class Login extends React.Component {
 
@@ -99,7 +99,7 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        status: state.login.status
+        status: state.authentication.login.status
     };
 };
 

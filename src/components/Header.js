@@ -1,10 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { logoutRequest } from 'actions/authentication';
 
 class Header extends React.Component {
-  render () {
 
+  constructor(props) {
+    super(props)
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout() {
+    this.props.logoutRequest().then(
+        () => {
+            Materialize.toast('Good Bye!', 2000);
+
+            // EMPTIES THE SESSION
+            let loginData = {
+                isLoggedIn: false,
+                email: ''
+            };
+
+            document.cookie = 'key=' + btoa(JSON.stringify(loginData));
+        }
+    );
+  }
+
+  render () {
     const loginButton = (
             <li>
                 <Link to='/login'>
@@ -15,7 +37,7 @@ class Header extends React.Component {
 
     const logoutButton = (
         <li>
-            <a>
+            <a onClick={this.handleLogout}>
                 <i className="material-icons">lock_open</i>
             </a>
         </li>
@@ -53,8 +75,16 @@ Header.defaultProps = {
 
 const mapStateToProps = (state) => {
     return {
-        isLoggedIn: state.getStatus.isLoggedIn
+        isLoggedIn: state.authentication.status.isLoggedIn
     };
 };
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        logoutRequest: (id, pw) => {
+            return dispatch(logoutRequest(id,pw));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

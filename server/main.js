@@ -22,7 +22,7 @@ app.use('/', express.static(path.join(__dirname, './../public')));
 db.on('error', console.error);
 db.once('open', () => { console.log('Connected to mongodb server'); });
 mongoose.connect(dbURL);
-/* use session order imp*/
+/* use session */
 app.use(session({
     secret: 'myAngkeiteu$1$234',
     resave: false,
@@ -33,6 +33,8 @@ app.use(function(err, req, res, next) {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
+
+/* order is important!! */
 
 /* setup routers & static directory */
 app.use('/api', api);
