@@ -9,7 +9,8 @@ class Register extends React.Component {
     super(props);
     this.state = {
       email:"",
-      password:""
+      password:"",
+      confirmPassword:""
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
@@ -24,6 +25,14 @@ class Register extends React.Component {
   handleRegister() {
     let id = this.state.email;
     let pw = this.state.password;
+    let confirm_pw = this.state.confirmPassword;
+
+    if(pw !== confirm_pw) {
+      this.setState({confirmPassword:''});
+      Materialize.toast('Confirm your password.', 2000);
+      return false;
+    }
+
 
     return this.props.registerRequest(id, pw).then(
         () => {
@@ -80,6 +89,15 @@ class Register extends React.Component {
                     className="validate"
                     onChange={this.handleChange}
                     value={this.state.password}/>
+                </div>
+                <div className="input-field col s12">
+                    <label>Confirm Password</label>
+                    <input
+                    name="confirmPassword"
+                    type="password"
+                    className="validate"
+                    onChange={this.handleChange}
+                    value={this.state.confirmPassword}/>
                 </div>
                 <a className="waves-effect waves-light btn"
                    onClick={this.handleRegister}>CREATE</a>
