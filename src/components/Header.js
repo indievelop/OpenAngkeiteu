@@ -26,6 +26,15 @@ class Header extends React.Component {
     );
   }
 
+  componentDidMount() {
+    // Initialize menu button
+    $('.menu').sideNav({
+      menuWidth: 300, // Default is 240
+      edge: 'left', // Choose the horizontal origin
+      closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+    });
+  }
+
   render () {
     const loginButton = (
             <li>
@@ -49,7 +58,7 @@ class Header extends React.Component {
             <Link to='/' className='brand-logo center' >My Angkeiteu</Link>
 
             <ul>
-                <li><a><i className="material-icons">search</i></a></li>
+                <li><a><i data-activates='slide-out' className="material-icons menu">menu</i></a></li>
             </ul>
 
             <div className="right">
