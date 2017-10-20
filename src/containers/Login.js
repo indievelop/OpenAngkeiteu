@@ -60,7 +60,7 @@ class Login extends React.Component {
           </div>
           <div className='card-content'>
             <div className="row">
-                <div className="input-field col s12 email">
+                <div className="input-field col s12">
                     <label>Email</label>
                     <input
                     name="email"

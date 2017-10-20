@@ -4,9 +4,9 @@
    flex-direction: column;
  }
 
- main {
-    flex: 1 0 auto;
-  }
+main {
+  flex: 1 0 auto;
+}
 
 footer {
   background-color: pink;
@@ -46,7 +46,6 @@ a {
     margin: 0 auto;
 }
 
-
 @media screen and (max-width: 480px) {
   .auth .card {
     width: 100%;
@@ -57,18 +56,12 @@ a {
   }
 }
 
-
-
 .auth .header {
     font-size: 18px;
 }
 
 .auth .row {
     margin-bottom: 0px;
-}
-
-.auth .email {
-  margin-top: 0px;
 }
 
 .auth .btn {
@@ -78,4 +71,9 @@ a {
 .auth .footer {
     border-top: 1px solid #E9E9E9;
     padding-bottom: 21px;
+}
+
+/* Write Angkeiteu */
+.writeAngkeiteu .header {
+    font-size: 20px;
 }

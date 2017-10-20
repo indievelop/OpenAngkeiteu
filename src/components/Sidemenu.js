@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -9,7 +10,7 @@ class Sidemenu extends React.Component {
     const writeButton = (
         <li>
           <Link to='/writeAngkeiteu'>
-                <a>write Angkeiteu</a>
+                write Angkeiteu
           </Link>
         </li>
     );
@@ -26,7 +27,7 @@ class Sidemenu extends React.Component {
 }
 
 Sidemenu.PropTypes = {
-  isLoggedIn: React.PropTypes.bool
+  isLoggedIn: PropTypes.bool
 };
 
 Sidemenu.defaultProps = {
