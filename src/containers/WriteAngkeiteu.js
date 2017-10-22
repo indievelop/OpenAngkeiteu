@@ -17,6 +17,7 @@ class WriteAngkeiteu extends React.Component {
       this.handleChange = this.handleChange.bind(this);
       this.handleAddOption = this.handleAddOption.bind(this);
       this.handleRemoveOption = this.handleRemoveOption.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(e) {
@@ -61,6 +62,10 @@ class WriteAngkeiteu extends React.Component {
     this.setState(nextState);
   }
 
+  handleSubmit() {
+    this.props.history.push('/');
+  }
+
   render() {
 
     const mapToOptions = options => {
@@ -71,7 +76,6 @@ class WriteAngkeiteu extends React.Component {
             <div className='col s10'>
               <input name='optionGroup'
                      type='radio'
-                     id='test1'
                      disabled='disabled'/>
               <label htmlFor='test1'>{option.description}</label>
             </div>
@@ -147,7 +151,8 @@ class WriteAngkeiteu extends React.Component {
           <div className='card-content'>
             <div className='row'>
               <div className='center-align'>
-                <a className='btn-large waves-effect waves-light col s6 offset-s3'>
+                <a className='btn-large waves-effect waves-light col s6 offset-s3'
+                    onClick={this.handleSubmit}>
                   <i className="material-icons center">create</i>
                 </a>
               </div>
@@ -160,7 +165,7 @@ class WriteAngkeiteu extends React.Component {
   }
 }
 
-WriteAngkeiteu.PropTypes = {
+WriteAngkeiteu.propTypes = {
   currentUser: PropTypes.string
 };
 

@@ -54,26 +54,27 @@ class Header extends React.Component {
     );
 
     return(
-      <nav>
-        <div className="nav-wrapper s12 darken-1">
-            <Link to='/' className='brand-logo center' >My Angkeiteu</Link>
-
-            <ul>
+      <div className='navbar-fixed'>
+        <nav>
+          <div className="nav-wrapper s12 darken-1">
+              <Link to='/' className='brand-logo center' >My Angkeiteu</Link>
+              <ul>
                 <li><a><i data-activates='slide-out' className="material-icons menu">menu</i></a></li>
-            </ul>
+              </ul>
 
-            <div className="right">
+              <div className="right">
                 <ul>
                   {this.props.isLoggedIn ? logoutButton : loginButton}
                 </ul>
-            </div>
-        </div>
-      </nav>
+              </div>
+          </div>
+        </nav>
+      </div>
     );
   }
 }
 
-Header.PropTypes = {
+Header.propTypes = {
   isLoggedIn: PropTypes.bool,
   onLogout: PropTypes.func
 };
