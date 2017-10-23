@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Route, IndexRoute} from 'react-router-dom';
 //components
 import { Header, Footer, Sidemenu } from 'components';
 //containers
-import {Home, Login, Register, WriteAngkeiteu,ReadAngkeiteu} from 'containers';
+import {Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu} from 'containers';
 import { connect } from 'react-redux';
 import { getStatusRequest } from 'actions/authentication';
 

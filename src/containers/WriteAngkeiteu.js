@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import { connect } from 'react-redux';
 import update from 'react-addons-update';
+import { angkeiteuPostRequest } from 'actions/angkeiteu';
 
 class WriteAngkeiteu extends React.Component {
 
@@ -12,12 +13,17 @@ class WriteAngkeiteu extends React.Component {
         title: '',
         description: '',
         option_desc: '',
-        options:[]
+        options:[],
+        isCompleted: false
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleAddOption = this.handleAddOption.bind(this);
       this.handleRemoveOption = this.handleRemoveOption.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
+      this.handlePost = this.handlePost.bind(this);
+  }
+
+  componentDidMount() {
+    console.log(this.props.postStatus)
   }
 
   handleChange(e) {
@@ -62,8 +68,48 @@ class WriteAngkeiteu extends React.Component {
     this.setState(nextState);
   }
 
-  handleSubmit() {
-    this.props.history.push('/');
+  handlePost() {
+    let title = this.state.title;
+    let description = this.state.description;
+    let options = this.state.options;
+    let nextState = {};
+
+    this.props.angkeiteuPostRequest(title, description, options).then(()=>{
+      //console.log(this.props.postStatus);
+      if(this.props.postStatus.status === 'SUCCESS') {
+        nextState = update(this.state, {
+          isCompleted:{ $set: true}
+        });
+        this.setState(nextState);
+      } else {
+        let $toastContent;
+        switch(this.props.postStatus.error) {
+          case 1:
+            $toastContent = $('<span style="color: #FFB4BA">You are not logged in</span>');
+            Materialize.toast($toastContent, 2000);
+            setTimeout(()=> {location.reload(false);}, 2000);
+            break;
+
+          case 2:
+            $toastContent = $('<span style="color: #FFB4BA">Please write title</span>');
+            Materialize.toast($toastContent, 2000);
+            break;
+
+          case 3:
+            $toastContent = $('<span style="color: #FFB4BA">Please write description</span>');
+            Materialize.toast($toastContent, 2000);
+            break;
+
+          case 4:
+            $toastContent = $('<span style="color: #FFB4BA">Please add options</span>');
+            Materialize.toast($toastContent, 2000);
+            break;
+
+        }
+      }
+
+    });
+
   }
 
   render() {
@@ -90,87 +136,117 @@ class WriteAngkeiteu extends React.Component {
       });
     }
 
+    const writeView = (
+      <div className='row'>
+        <div className='col s12'>
+          <div className='card'>
+            <div className='header blue white-text center'>
+              <div className='card-content'>
+                NEW ANGKEITEU
+              </div>
+            </div>
+            <div className='card-content'>
+              <div className='row'>
+                <div className='input-field col s6'>
+                  <label>Title</label>
+                  <input name='title'
+                         type='text'
+                         className='validate'
+                         onChange={this.handleChange}
+                         value={this.state.title}>
+                  </input>
+                </div>
+                <div className='input-field col s12'>
+                  <label htmlFor="textarea1">Description</label>
+                  <textarea id="textarea1"
+                            name='description'
+                            className="materialize-textarea validate"
+                            onChange={this.handleChange}
+                            value={this.state.description}
+                            >
+                  </textarea>
+                </div>
+              </div>
+            </div>
+            <div className='card-content'>
+              options
+            </div>
+            <div className='card-content'>
+              {mapToOptions(this.state.options)}
+            </div>
+            <div className='card-content'>
+               <div className="row">
+                   <div className="input-field col s6">
+                      <label>New option</label>
+                       <input name="option_desc"
+                              type="text"
+                              className="validate"
+                              onChange={this.handleChange}
+                              value={this.state.option_desc}>
+                       </input>
+                   </div>
+                   <div className="input-field col s6">
+                       <a className="btn waves-effect waves-light"
+                          onClick={this.handleAddOption}>
+                               <i className="material-icons center">add</i>
+                       </a>
+                   </div>
+               </div>
+            </div>
+            <div className='card-content'>
+              <div className='row'>
+                <div className='center-align'>
+                  <a className='btn-large waves-effect waves-light col s6 offset-s3'
+                      onClick={this.handlePost}>
+                    <i className="material-icons center">create</i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+    const completeView = (
+        <div className='row'>
+          <div className='col s12'>
+            <div className='card'>
+              <div className='card-content'>
+                <div className='card-title'>
+                  <h3>{this.state.title}</h3>
+                  <div className='divider'></div>
+                </div>
+              </div>
+              <div className='card-content'>
+                <h5>angkeiteu is successfully created.</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+    );
+
     return (
       <div className='container writeAngkeiteu'>
-        <div className='card'>
-          <div className='header blue white-text center'>
-            <div className='card-content'>
-              NEW ANGKEITEU
-            </div>
-          </div>
-          <div className='card-content'>
-            <div className='row'>
-              <div className='input-field col s6'>
-                <label>Title</label>
-                <input name='title'
-                       type='text'
-                       className='validate'
-                       onChange={this.handleChange}
-                       value={this.state.title}>
-                </input>
-              </div>
-              <div className='input-field col s12'>
-                <label htmlFor="textarea1">Description</label>
-                <textarea id="textarea1"
-                          name='description'
-                          className="materialize-textarea validate"
-                          onChange={this.handleChange}
-                          value={this.state.description}
-                          >
-                </textarea>
-              </div>
-            </div>
-          </div>
-          <div className='card-content'>
-            options
-          </div>
-          <div className='card-content'>
-            {mapToOptions(this.state.options)}
-          </div>
-
-          <div className='card-content'>
-             <div className="row">
-                 <div className="input-field col s6">
-                    <label>New option</label>
-                     <input name="option_desc"
-                            type="text"
-                            className="validate"
-                            onChange={this.handleChange}
-                            value={this.state.option_desc}>
-                     </input>
-                 </div>
-                 <div className="input-field col s6">
-                     <a className="btn waves-effect waves-light"
-                        onClick={this.handleAddOption}>
-                             <i className="material-icons center">add</i>
-                     </a>
-                 </div>
-             </div>
-          </div>
-
-          <div className='card-content'>
-            <div className='row'>
-              <div className='center-align'>
-                <a className='btn-large waves-effect waves-light col s6 offset-s3'
-                    onClick={this.handleSubmit}>
-                  <i className="material-icons center">create</i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-        </div>
+        {this.state.isCompleted ? completeView : writeView}
       </div>
     );
   }
 }
 
-WriteAngkeiteu.propTypes = {
-  currentUser: PropTypes.string
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.authentication.status.isLoggedIn,
+    postStatus: state.angkeiteu.post
+  }
 };
 
-WriteAngkeiteu.defaultProps = {
-  currentUser:''
+const mapDispatchToProps = (dispatch) => {
+  return {
+    angkeiteuPostRequest: (title, description, options) => {
+      return dispatch(angkeiteuPostRequest(title, description, options));
+    }
+  };
 };
 
-export default WriteAngkeiteu;
+export default connect(mapStateToProps, mapDispatchToProps)(WriteAngkeiteu);
