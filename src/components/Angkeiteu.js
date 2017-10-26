@@ -1,7 +1,5 @@
 import React from 'react';
 import TimeAgo from 'react-timeago';
-import {connect} from 'react-redux';
-import { angkeiteuGetRequest } from 'actions/angkeiteu';
 
 class Angkeiteu extends React.Component {
   constructor(props) {
@@ -10,11 +8,7 @@ class Angkeiteu extends React.Component {
   }
 
   handleOpenAngkeiteu() {
-    this.props.angkeiteuGetRequest(this.props.data).then(()=>{
-      if(this.props.status === 'SUCCESS') {
-        this.props.onSelectAngkeiteu();
-      }
-    });
+    this.props.onOpenAngkeiteu(this.props.data._id);
   }
 
   render() {
@@ -50,18 +44,4 @@ class Angkeiteu extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        status: state.angkeiteu.get.status
-    };
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        angkeiteuGetRequest: (data) => {
-            return dispatch(angkeiteuGetRequest(data));
-        }
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Angkeiteu);
+export default Angkeiteu;

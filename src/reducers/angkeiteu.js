@@ -8,11 +8,18 @@ const initialState = {
     },
     list: {
         status: 'INIT',
+        error: -1,
         data: [],
         isLast: false
     },
     get: {
         status: 'INIT',
+        error: -1,
+        data: {}
+    },
+    participate: {
+        status: 'INIT',
+        error: -1,
         data: {}
     }
 };
@@ -46,7 +53,8 @@ export default function angkeiteu(state, action) {
         case types.ANGKEITEU_LIST:
             return update(state, {
                 list: {
-                    status: { $set: 'WAITING' }
+                    status: { $set: 'WAITING' },
+                    error: { $set: -1 }
                 }
             });
         case types.ANGKEITEU_LIST_SUCCESS:
@@ -55,53 +63,67 @@ export default function angkeiteu(state, action) {
                     list: {
                         status: { $set: 'SUCCESS' },
                         data: { $set: action.data },
-                        isLast: { $set: action.data.length < 6 }
+                        isLast: { $set: action.data.length < 8 }
                     }
-                })
-            } else {
-              if(action.listType === 'new') {
-                return update(state, {
-                  list: {
-                      status: { $set: 'SUCCESS' },
-                      data: { $unshift: action.data }
-                  }
                 });
-              } else {
+            } else {
                 return update(state, {
-                        list: {
-                            status: { $set: 'SUCCESS' },
-                            data: { $push: action.data },
-                            isLast: { $set: action.data.length < 6 }
-                        }
-                    });
-              }
+                    list: {
+                        status: { $set: 'SUCCESS' },
+                        data: { $push: action.data },
+                        isLast: { $set: action.data.length < 8 }
+                    }
+                });
             }
-            return state;
         case types.ANGKEITEU_LIST_FAILURE:
             return update(state, {
                 list: {
-                    status: { $set: 'FAILURE' }
+                    status: { $set: 'FAILURE' },
+                    error: { $set: action.error }
                 }
             });
         case types.ANGKEITEU_GET:
             return update(state, {
               get: {
-                status: {$set: 'WAITING'}
+                status: { $set: 'WAITING' },
+                error: { $set: -1 }
               }
             });
         case types.ANGKEITEU_GET_SUCCESS:
             return update(state, {
               get: {
-                status: {$set: 'SUCCESS'},
-                data: {$set: action.data}
+                status: { $set: 'SUCCESS' },
+                data: { $set: action.data }
               }
             });
         case types.ANGKEITEU_GET_FAILURE:
-            return update(State, {
+            return update(state, {
               get: {
-                status: {$set: 'FAILURE'}
+                status: { $set: 'FAILURE' },
+                error: { $set: action.error }
               }
             });
+        case types.ANGKEITEU_PARTICIPATE:
+            return update(state, {
+              participate: {
+                status: { $set: 'WAITING' },
+                error: { $set: -1 }
+              }
+            });
+        case types.ANGKEITEU_PARTICIPATE_SUCCESS:
+          return update(state, {
+            participate: {
+              status: { $set: 'SUCCESS' },
+              data: { $set: action.data }
+            }
+          });
+        case types.ANGKEITEU_PARTICIPATE_FAILURE:
+          return update(state, {
+            participate: {
+              status: { $set: 'FAILURE' },
+              error: { $set: action.error }
+            }
+          });
         default:
             return state;
     }

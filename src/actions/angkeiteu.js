@@ -7,7 +7,10 @@ import {
     ANGKEITEU_LIST_FAILURE,
     ANGKEITEU_GET,
     ANGKEITEU_GET_SUCCESS,
-    ANGKEITEU_GET_FAILURE
+    ANGKEITEU_GET_FAILURE,
+    ANGKEITEU_PARTICIPATE,
+    ANGKEITEU_PARTICIPATE_SUCCESS,
+    ANGKEITEU_PARTICIPATE_FAILURE
 } from './ActionTypes';
 import axios from 'axios';
 
@@ -16,7 +19,7 @@ export function angkeiteuPostRequest(title, description, options) {
     return (dispatch) => {
         // inform angkeiteu POST API is starting
         dispatch(angkeiteuPost());
-        
+
         return axios.post('/api/angkeiteu/', { title, description, options })
         .then((response) => {
             dispatch(angkeiteuPostSuccess());
@@ -46,25 +49,13 @@ export function angkeiteuPostFailure(error) {
 }
 
 /* ANGKEITEU LIST */
-
-/*
-    Parameter:
-        - isInitial: whether it is for initial loading
-        - listType:  OPTIONAL; loading 'old' angkeiteu or 'new' angkeiteu
-        - id:        OPTIONAL; angkeiteu id (one at the bottom or one at the top)
-        - username:  OPTIONAL; find angkeiteus of following user
-*/
-export function angkeiteuListRequest(isInitial, listType, id, username) {
+export function angkeiteuListRequest(isInitial, id, email) {
     return (dispatch) => {
-      // inform angkeiteu list API is starting
-      dispatch(angkeiteuList());
-
       let url = '/api/angkeiteu';
 
-      if(typeof username === 'undefined') {
-          // username not given, load public angkeiteu
-          url = isInitial ? url : `${url}/${listType}/${id}`;
-          // or url + '/' + listType + '/' +  id
+      dispatch(angkeiteuList());
+      if(typeof email === 'undefined') {
+          url = isInitial ? url : `${url}/${id}`;
       } else {
           // load angkeiteus of specific user
           /* to be implemented */
@@ -72,9 +63,9 @@ export function angkeiteuListRequest(isInitial, listType, id, username) {
 
       return axios.get(url)
       .then((response) => {
-          dispatch(angkeiteuListSuccess(response.data, isInitial, listType));
+          dispatch(angkeiteuListSuccess(response.data, isInitial));
       }).catch((error) => {
-          dispatch(angkeiteuListFailure());
+          dispatch(angkeiteuListFailure(error));
       });
     };
 }
@@ -85,30 +76,33 @@ export function angkeiteuList() {
     };
 }
 
-export function angkeiteuListSuccess(data, isInitial, listType) {
+export function angkeiteuListSuccess(data, isInitial) {
     return {
         type: ANGKEITEU_LIST_SUCCESS,
         data,
-        isInitial,
-        listType
+        isInitial
     };
 }
 
-export function angkeiteuListFailure() {
+export function angkeiteuListFailure(error) {
     return {
-        type: ANGKEITEU_LIST_FAILURE
+        type: ANGKEITEU_LIST_FAILURE,
+        error
     };
 }
 
 /** ANGKEITEU GET **/
-export function angkeiteuGetRequest(data) {
+export function angkeiteuGetRequest(id) {
   return (dispatch) => {
-    //dev....
-    dispatch(angkeiteuGet());
-    return new Promise((resolve, resject) => {
+    let url = '/api/angkeiteu';
 
-      dispatch(angkeiteuGetSuccess(data));
-      resolve();
+    dispatch(angkeiteuGet());
+    url = `${url}/${id}`;
+    return axios.get(url)
+    .then((response) => {
+      dispatch(angkeiteuGetSuccess(response.data));
+    }).catch((error) => {
+      dispatch(angkeiteuGetFailure(error));
     });
   }
 }
@@ -123,11 +117,48 @@ export function angkeiteuGetSuccess(data) {
   return {
     type: ANGKEITEU_GET_SUCCESS,
     data
+  };
+}
+
+export function angkeiteuGetFailure(error) {
+  return {
+    type: ANGKEITEU_GET_FAILURE,
+    error
+  };
+}
+
+/** ANGKEITEU PARTICIPATE **/
+export function angkeiteuParticipateRequest(id, optionId) {
+  return (dispatch) => {
+    let url = '/api/angkeiteu';
+
+    dispatch(angkeiteuParticipate());
+    url = `${url}/${id}/selectOption/${optionId}`;
+    return axios.put(url)
+    .then((response) => {
+      dispatch(angkeiteuParticipateSuccess(response.data));
+    }).catch((error) => {
+      dispatch(angkeiteuParticipateFailure(error.response.data));
+    });
   }
 }
 
-export function angkeiteuGetFailure() {
+export function angkeiteuParticipate() {
   return {
-    type: ANGKEITEU_GET_FAILURE
-  }
+    type: ANGKEITEU_PARTICIPATE
+  };
+}
+
+export function angkeiteuParticipateSuccess(data) {
+  return {
+    type: ANGKEITEU_PARTICIPATE_SUCCESS,
+    data
+  };
+}
+
+export function angkeiteuParticipateFailure(error) {
+  return {
+    type: ANGKEITEU_PARTICIPATE_FAILURE,
+    error
+  };
 }

@@ -7,6 +7,11 @@ class AngkeiteuList extends React.Component {
 
   constructor(props) {
     super(props);
+    this.handleOpenAngkeiteu = this.handleOpenAngkeiteu.bind(this);
+  }
+
+  handleOpenAngkeiteu(id) {
+      this.props.onOpenAngkeiteu(id)
   }
 
   render() {
@@ -15,7 +20,7 @@ class AngkeiteuList extends React.Component {
         return (
           <Angkeiteu data={angkeiteu}
                      key={angkeiteu._id}
-                     onSelectAngkeiteu={this.props.handleOpenAngkeiteu}
+                     onOpenAngkeiteu={this.handleOpenAngkeiteu}
           />
         );
       });

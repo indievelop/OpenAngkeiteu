@@ -67,7 +67,7 @@ class App extends React.Component {
                 <Route path = '/login' component = {Login}/>
                 <Route path = '/register' component = {Register}/>
                 <Route path = '/writeAngkeiteu' component = {WriteAngkeiteu}/>
-                <Route path = '/readAngkeiteu' component = {ReadAngkeiteu}/>
+                <Route path = '/readAngkeiteu/:id' component = {ReadAngkeiteu}/>
               </main>
               <footer className='page-footer'>
                 <Footer/>

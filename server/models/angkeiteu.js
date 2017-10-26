@@ -6,9 +6,14 @@ const Angkeiteu = new Schema({
   writer: String,
   title: String,
   description: String,
-  options: [{ description: String,
-              selectCount: {type: Number, default: 0}
-            }],
+  options: [{
+    description: String,
+    selectCount: {type: Number, default: 0}
+  }],
+  participants: [{
+    email: String,
+    participationDate: {type: Date , default: Date.now}
+  }],
   viewCount: {type: Number, default: 0},
   createdDate: {type: Date, default: Date.now}
 });
