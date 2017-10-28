@@ -157,6 +157,7 @@ router.put('/:id/selectOption/:optionId', (req, res) => {
   let loginInfo = req.session.loginInfo;
   let condition = {};
   let update = {};
+  let option = {};
 
   //CHECK LOGIN STATUS
   if(typeof loginInfo === 'undefined') {
@@ -197,9 +198,12 @@ router.put('/:id/selectOption/:optionId', (req, res) => {
     };
     update = {
       '$inc': {'options.$.selectCount' :1},
-      '$push': {'participants': {'email': loginInfo.email} }
+      '$push': {'participants': {'email': loginInfo.email, 'selectedOptionId': optionId} }
     };
-    Angkeiteu.findOneAndUpdate(condition, update, (err, angkeiteu) => {
+    option = {
+      'new': true
+    }
+    Angkeiteu.findOneAndUpdate(condition, update, option, (err, angkeiteu) => {
       if(err) throw err;
       return res.json(angkeiteu);
     });
