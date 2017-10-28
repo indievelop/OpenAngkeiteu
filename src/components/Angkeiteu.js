@@ -23,17 +23,19 @@ class Angkeiteu extends React.Component {
                 <div className='card-title'>{data.title}</div>
               </div>
             </div>
-            <div className='row'>
-              <div className='col s4'>
-                {data.viewCount} views
-              </div>
-              <div className='col s6'>
-                <TimeAgo date={data.createdDate}/>
-              </div>
-            </div>
           </div>
           <div className='card-content'>
-            {data.description}
+            <div className='row'>
+              <div className='col s12'>
+                {data.viewCount} views
+              </div>
+              <div className='col s12'>
+                <TimeAgo date={data.createdDate}/>
+              </div>
+              <div className='col s12'>
+                {data.description}
+              </div>
+            </div>
           </div>
           <div className='card-action'>
             <a onClick={this.handleOpenAngkeiteu}>open</a>
