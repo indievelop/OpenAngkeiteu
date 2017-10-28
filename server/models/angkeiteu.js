@@ -12,6 +12,7 @@ const Angkeiteu = new Schema({
   }],
   participants: [{
     email: String,
+    selectedOptionId: String,
     participationDate: {type: Date , default: Date.now}
   }],
   viewCount: {type: Number, default: 0},
