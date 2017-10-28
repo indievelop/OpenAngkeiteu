@@ -23,7 +23,7 @@ class WriteAngkeiteu extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.postStatus)
+    console.log(this.props.isLoggedIn);
   }
 
   handleChange(e) {

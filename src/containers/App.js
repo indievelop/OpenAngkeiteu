@@ -20,7 +20,6 @@ class App extends React.Component {
 
     // get loginData from cookie
     let loginData = getCookie('key');
-
     // if loginData is undefined, do nothing
     if(typeof loginData === "undefined") return;
 

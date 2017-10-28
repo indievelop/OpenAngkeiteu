@@ -5,23 +5,51 @@ import { connect } from 'react-redux';
 import { angkeiteuGetRequest, angkeiteuParticipateRequest } from 'actions/angkeiteu';
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
+import { AngkeiteuPieChart } from 'components';
 
 class ReadAngkeiteu extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      option: ''
+      data:{},
+      option: '',
+      participation: false,
     };
-    this.drawChart = this.drawChart.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.showParticipationInform = this.showParticipationInform.bind(this);
+    this.loadAngkeiteu = this.loadAngkeiteu.bind(this);
   }
 
   componentDidMount() {
+    this.loadAngkeiteu();
+  }
+
+  loadAngkeiteu() {
+    let nextState = {};
+
     this.props.angkeiteuGetRequest(this.props.match.params.id).then(()=>{
-        this.drawChart();
-    })
+      nextState['data'] = this.props.angkeiteuGetStaus.data;
+      this.setState(nextState, ()=> {
+        if(this.props.authenticateStatus.isLoggedIn)
+          this.showParticipationInform();
+      });
+    });
+  }
+
+  showParticipationInform() {
+    let participation = {};
+    let nextState = {};
+
+    participation = this.props.angkeiteuGetStaus.data.participants.find((element) => {
+      return element.email === this.props.authenticateStatus.currentUser;
+    });
+    if(typeof participation !== 'undefined') {
+      nextState['option'] = participation.selectedOptionId;
+      nextState['participation'] = true;
+      return this.setState(nextState);
+    }
   }
 
   handleChange(e) {
@@ -34,19 +62,28 @@ class ReadAngkeiteu extends React.Component {
     let id = this.props.match.params.id;
     let optionId = this.state.option;
     let msg = '';
+    let nextState = {};
+
     this.props.angkeiteuParticipateRequest(id, optionId).then(() => {
       if(this.props.participateStatus.status === 'SUCCESS') {
-        console.log('www');
+        nextState['data'] = this.props.participateStatus.data;
+        this.setState(nextState, () => {
+          nextState['option'] = optionId;
+          nextState['participation'] = true;
+          return this.setState(nextState);
+        });
       } else {
         msg = this.props.participateStatus.error.error;
         Materialize.toast($(`<span style="color: #FFB4BA">${msg}</span>`), 2000);
       }
     });
   }
-
+/*
   drawChart() {
-    let options = this.props.getStatus.data.options;
-    var ctx = $('#chart').get(0).getContext('2d');
+    console.log(this.state.data);
+    let options = this.state.data.options;
+    var canvas = $('#chart').get(0);
+    var ctx = canvas.getContext('2d');
     let optionDescriptions = [];
     let optionSelectCounts = [];
 
@@ -55,14 +92,13 @@ class ReadAngkeiteu extends React.Component {
       optionSelectCounts.push(option.selectCount);
     });
 
-    var chart = new Chart(ctx, {
+    chart = new Chart(ctx, {
       // The type of chart we want to create
       type: 'pie',
       // The data for our dataset
       data: {
           labels: optionDescriptions,
           datasets: [{
-              label: "current selection info",
               backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
               data: optionSelectCounts,
           }]
@@ -71,10 +107,11 @@ class ReadAngkeiteu extends React.Component {
         options: {}
       }
     );
+    return window.chart = chart;
   }
-
+*/
   render() {
-    const {data} = this.props.getStatus;
+    const {data} = this.state;
 
     const mapToOptions = options => {
       return options.map((option, i) => {
@@ -85,6 +122,8 @@ class ReadAngkeiteu extends React.Component {
               <input name='option'
                      type='radio'
                      onChange={this.handleChange}
+                     checked={this.state.option === option._id}
+                     disabled={this.state.participation}
                      value={option._id}
                      id={option._id}/>
                    <label htmlFor={option._id}>{option.description}</label>
@@ -94,11 +133,34 @@ class ReadAngkeiteu extends React.Component {
       });
     }
 
+    const pleaseHeader =  (
+      <div className='header orange white-text center'>
+        <div className='card-content'>
+          Please response Angkeiteu.
+        </div>
+      </div>
+    );
+
+    const thankyouHeader = (
+      <div className='header green white-text center'>
+        <div className='card-content'>
+          thank you for your participation.
+        </div>
+      </div>
+    );
+
+    const submitAction = (
+      <div className='card-action'>
+        <a onClick={this.handleSubmit}>submit</a>
+      </div>
+    );
+
     return (
       <div className='container readAngkeiteu'>
         <div className='row'>
           <div className='col s12'>
             <div className='card'>
+              {this.state.participation ? thankyouHeader : pleaseHeader}
               <div className='card-content'>
                 <div className='card-title'>
                   <h3>{data.title}</h3>
@@ -116,16 +178,14 @@ class ReadAngkeiteu extends React.Component {
               <div className='card-content'>
                 <div className='row'>
                   <div className='col s12 l4'>
-                    {typeof data.options === 'undefined' ? undefined: mapToOptions(data.options)}
+                    {typeof data.options === 'undefined' ? undefined : mapToOptions(data.options)}
                   </div>
-                  <div className='col s12 l8'>
-                    <canvas id='chart'></canvas>
+                  <div className='col s12 l8 chartContainer'>
+                     <AngkeiteuPieChart data={data}/>
                   </div>
                 </div>
               </div>
-              <div className='card-action'>
-                <a onClick={this.handleSubmit}>submit</a>
-              </div>
+              {this.state.participation ? undefined : submitAction}
             </div>
           </div>
         </div>
@@ -136,8 +196,9 @@ class ReadAngkeiteu extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        getStatus: state.angkeiteu.get,
-        participateStatus: state.angkeiteu.participate
+        angkeiteuGetStaus: state.angkeiteu.get,
+        participateStatus: state.angkeiteu.participate,
+        authenticateStatus: state.authentication.status
     };
 };
 
