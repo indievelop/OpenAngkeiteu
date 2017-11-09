@@ -195,12 +195,10 @@ class WriteAngkeiteu extends React.Component {
             </div>
             <div className='card-content'>
               <div className='row'>
-                <div className='center-align'>
-                  <a className='btn-large waves-effect waves-light col s6 offset-s3'
-                      onClick={this.handlePost}>
-                    <i className="material-icons center">create</i>
-                  </a>
-                </div>
+                <a className='btn-large waves-effect waves-light col s6 offset-s3'
+                    onClick={this.handlePost}>
+                  <i className="material-icons center">create</i>
+                </a>
               </div>
             </div>
           </div>
