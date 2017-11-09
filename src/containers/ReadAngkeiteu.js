@@ -12,7 +12,7 @@ class ReadAngkeiteu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data:{},
+      data: {},
       option: '',
       participation: false,
     };
@@ -26,15 +26,19 @@ class ReadAngkeiteu extends React.Component {
     this.loadAngkeiteu();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(Object.keys(this.state.data).length === 0)
+      return;
+    if(!this.state.participation && this.props.authenticateStatus.currentUser !== '')
+      this.showParticipationInform();
+  }
+
   loadAngkeiteu() {
     let nextState = {};
 
-    this.props.angkeiteuGetRequest(this.props.match.params.id).then(()=>{
+    this.props.angkeiteuGetRequest(this.props.match.params.id).then(() => {
       nextState['data'] = this.props.angkeiteuGetStaus.data;
-      this.setState(nextState, ()=> {
-        if(this.props.authenticateStatus.isLoggedIn)
-          this.showParticipationInform();
-      });
+      return this.setState(nextState);
     });
   }
 
@@ -42,9 +46,11 @@ class ReadAngkeiteu extends React.Component {
     let participation = {};
     let nextState = {};
 
-    participation = this.props.angkeiteuGetStaus.data.participants.find((element) => {
+    participation = this.state.data.participants.find((element) => {
       return element.email === this.props.authenticateStatus.currentUser;
     });
+    console.log(participation);
+
     if(typeof participation !== 'undefined') {
       nextState['option'] = participation.selectedOptionId;
       nextState['participation'] = true;
@@ -67,11 +73,7 @@ class ReadAngkeiteu extends React.Component {
     this.props.angkeiteuParticipateRequest(id, optionId).then(() => {
       if(this.props.participateStatus.status === 'SUCCESS') {
         nextState['data'] = this.props.participateStatus.data;
-        this.setState(nextState, () => {
-          nextState['option'] = optionId;
-          nextState['participation'] = true;
-          return this.setState(nextState);
-        });
+        return this.setState(nextState);
       } else {
         msg = this.props.participateStatus.error.error;
         Materialize.toast($(`<span style="color: #FFB4BA">${msg}</span>`), 2000);
