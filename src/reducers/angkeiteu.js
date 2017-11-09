@@ -12,6 +12,12 @@ const initialState = {
         data: [],
         isLast: false
     },
+    hotList: {
+        status: 'INIT',
+        error: -1,
+        data: [],
+        isLast: false
+    },
     get: {
         status: 'INIT',
         error: -1,
@@ -25,6 +31,15 @@ const initialState = {
 };
 
 export default function angkeiteu(state, action) {
+    let targetName = '';
+
+    if(typeof action.orderType !== 'undefined') {
+      if(action.orderType === 'recent')
+        targetName = 'list'
+      if(action.orderType === 'hotToday' || action.orderType === 'hotThisMonth')
+        targetName = 'hotList';
+    }
+
     if(typeof state === "undefined") {
         state = initialState;
     }
@@ -52,7 +67,7 @@ export default function angkeiteu(state, action) {
             });
         case types.ANGKEITEU_LIST:
             return update(state, {
-                list: {
+                [targetName]: {
                     status: { $set: 'WAITING' },
                     error: { $set: -1 }
                 }
@@ -60,24 +75,33 @@ export default function angkeiteu(state, action) {
         case types.ANGKEITEU_LIST_SUCCESS:
             if(action.isInitial) {
                 return update(state, {
-                    list: {
+                    [targetName]: {
                         status: { $set: 'SUCCESS' },
                         data: { $set: action.data },
                         isLast: { $set: action.data.length < 8 }
                     }
                 });
             } else {
+              if(action.listType === 'new') {
                 return update(state, {
-                    list: {
-                        status: { $set: 'SUCCESS' },
-                        data: { $push: action.data },
-                        isLast: { $set: action.data.length < 8 }
+                    [targetName]: {
+                      status: { $set: 'SUCCESS' },
+                      data: { $unshift: action.data },
                     }
                 });
+              } else {
+                return update(state, {
+                    [targetName]: {
+                        status: { $set: 'SUCCESS' },
+                        data: { $push: action.data },
+                        isLast: { $set: action.data.length < 4 }
+                    }
+                });
+              }
             }
         case types.ANGKEITEU_LIST_FAILURE:
             return update(state, {
-                list: {
+                [targetName]: {
                     status: { $set: 'FAILURE' },
                     error: { $set: action.error }
                 }
@@ -86,7 +110,8 @@ export default function angkeiteu(state, action) {
             return update(state, {
               get: {
                 status: { $set: 'WAITING' },
-                error: { $set: -1 }
+                error: { $set: -1 },
+                data: { $set: {} }
               }
             });
         case types.ANGKEITEU_GET_SUCCESS:
