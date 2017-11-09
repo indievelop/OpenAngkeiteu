@@ -52,11 +52,7 @@ var dbURL = 'mongodb://localhost/myAngkeiteu';
 app.use((0, _morgan2.default)('dev'));
 app.use(_bodyParser2.default.json());
 app.use('/', _express2.default.static(_path2.default.join(__dirname, './../public')));
-/* setup routers & static directory */
-app.use('/api', _routes2.default);
-app.get('*', function (req, res) {
-    res.sendFile(_path2.default.resolve(__dirname, './../public/index.html'));
-});
+
 /* mongodb connection */
 db.on('error', console.error);
 db.once('open', function () {
@@ -65,7 +61,7 @@ db.once('open', function () {
 _mongoose2.default.connect(dbURL);
 /* use session */
 app.use((0, _expressSession2.default)({
-    secret: 'CodeLab1$1$234',
+    secret: 'myAngkeiteu$1$234',
     resave: false,
     saveUninitialized: true
 }));
@@ -73,6 +69,14 @@ app.use((0, _expressSession2.default)({
 app.use(function (err, req, res, next) {
     console.error(err.stack);
     res.status(500).send('Something broke!');
+});
+
+/* order is important!! */
+
+/* setup routers & static directory */
+app.use('/api', _routes2.default);
+app.get('*', function (req, res) {
+    res.sendFile(_path2.default.resolve(__dirname, './../public/index.html'));
 });
 
 app.listen(port, function () {
