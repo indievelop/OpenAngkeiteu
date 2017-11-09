@@ -68,6 +68,9 @@ router.get('/', (req, res) => {
 // GET ANGKEITEU
 router.get('/:id', (req, res) => {
   let id = req.params.id;
+  let condition = {};
+  let update = {};
+  let option ={};
 
   //CHECK ID VALIDITY
   if(!mongoose.Types.ObjectId.isValid(id)) {
@@ -77,18 +80,68 @@ router.get('/:id', (req, res) => {
       });
   }
 
-  const condition = {
+  condition = {
     '_id': id
   };
-  const update = {
+  update = {
     '$inc': {'viewCount': 1}
   };
-  const option = {
+  option = {
     'new': true
   }
   Angkeiteu.findOneAndUpdate(condition, update, option, (err, angkeiteu) => {
     if(err) throw err;
     return res.json(angkeiteu);
+  });
+});
+
+// GET OLD ANGKEITEU LIST BY LAST ANGKEITEU ID IN CLIENT DATAS
+router.get('/old/:id', (req, res) => {
+  let id = req.params.id;
+  let condition = {};
+
+  //CHECK ID VALIDITY
+  if(!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+          error: "INVALID ID",
+          code: 1
+      });
+  }
+
+  condition = {
+    '_id': { '$lt': id }
+  };
+  Angkeiteu.find(condition)
+  .sort({'_id': -1})
+  .limit(4)
+  .exec((err, angkeiteus) => {
+    if(err) throw err;
+    return res.json(angkeiteus);
+  });
+});
+
+// GET NEW ANGKEITEU LIST BY  FIRST ANGKEITEU ID IN CLIENT DATAS
+router.get('/new/:id', (req, res) => {
+  let id = req.params.id;
+  let condition = {};
+
+  //CHECK ID VALIDITY
+  if(!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+          error: "INVALID ID",
+          code: 1
+      });
+  }
+
+  condition = {
+    '_id': { '$gt': id }
+  };
+  Angkeiteu.find(condition)
+  .sort({'_id': 1})
+  .limit(4)
+  .exec((err, angkeiteus) => {
+    if(err) throw err;
+    return res.json(angkeiteus.reverse());
   });
 });
 
@@ -98,28 +151,44 @@ router.get('/hot/:period/:id?', (req, res) => {
   let id = req.query.id;
   let today = moment().startOf('day');
   let tomorrow = moment(today).add(1,'days');
+  let thisMonth = moment().startOf('month');
+  let nextMoth = moment(thisMonth).add(1,'months');
+  let condition = {};
+  let targetDate = {};
+  let targetNextDate = {};
 
   // CHECK PERIOD VALIDITY
-  if(period !== 'today') {
+  if(!(period === 'today' || period === 'thisMonth')) {
       return res.status(400).json({
           error: "INVALID PERIOD",
           code: 1
       });
   }
-  //get api/angkeiteu/hot/today
+
+  if(period === 'today') {
+    //get api/angkeiteu/hot/today
+    targetDate = today.toDate();
+    targetNextDate = tomorrow.toDate();
+  } else if(period === 'thisMonth') {
+    //get api/angkeiteu/hot/thisMonth
+    targetDate = thisMonth.toDate();
+    targetNextDate = nextMoth.toDate();
+  }
+  condition = {
+    'createdDate': {
+      '$gte': targetDate,
+      '$lt': targetNextDate
+    }
+  }
   if(typeof id === 'undefined') {
-    Angkeiteu.find({
-      createdDate: {
-        $gte: today.toDate(),
-        $lt: tomorrow.toDate()
-      }
-    }).sort({viewCount: -1})
-      .limit(8)
-      .exec((err, angkeiteus) => {
-        if(err) throw err;
-        return res.json(angkeiteus);
-      });
-      return;
+    Angkeiteu.find(condition)
+    .sort({viewCount: -1})
+    .limit(8)
+    .exec((err, angkeiteus) => {
+      if(err) throw err;
+      return res.json(angkeiteus);
+    });
+    return;
   }
 
   // CHECK ANGKEITEU ID VALIDITY
