@@ -49,13 +49,20 @@ export function angkeiteuPostFailure(error) {
 }
 
 /* ANGKEITEU LIST */
-export function angkeiteuListRequest(isInitial, id, email) {
+export function angkeiteuListRequest(isInitial, orderType, listType, id, email) {
     return (dispatch) => {
       let url = '/api/angkeiteu';
 
-      dispatch(angkeiteuList());
+      dispatch(angkeiteuList(orderType));
+
+      if(orderType === 'hotToday') {
+        url += '/hot/today'
+      } else if(orderType === 'hotThisMonth') {
+        url += '/hot/thisMonth'
+      }
+
       if(typeof email === 'undefined') {
-          url = isInitial ? url : `${url}/${id}`;
+          url = isInitial ? url : `${url}/${listType}/${id}`;
       } else {
           // load angkeiteus of specific user
           /* to be implemented */
@@ -63,30 +70,34 @@ export function angkeiteuListRequest(isInitial, id, email) {
 
       return axios.get(url)
       .then((response) => {
-          dispatch(angkeiteuListSuccess(response.data, isInitial));
+          dispatch(angkeiteuListSuccess(response.data, isInitial, orderType, listType));
       }).catch((error) => {
-          dispatch(angkeiteuListFailure(error));
+          dispatch(angkeiteuListFailure(orderType, error));
       });
     };
 }
 
-export function angkeiteuList() {
+export function angkeiteuList(orderType) {
     return {
-        type: ANGKEITEU_LIST
+        type: ANGKEITEU_LIST,
+        orderType
     };
 }
 
-export function angkeiteuListSuccess(data, isInitial) {
+export function angkeiteuListSuccess(data, isInitial, orderType, listType) {
     return {
         type: ANGKEITEU_LIST_SUCCESS,
         data,
-        isInitial
+        isInitial,
+        orderType,
+        listType
     };
 }
 
-export function angkeiteuListFailure(error) {
+export function angkeiteuListFailure(orderType, error) {
     return {
         type: ANGKEITEU_LIST_FAILURE,
+        orderType,
         error
     };
 }
