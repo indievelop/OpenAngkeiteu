@@ -49,7 +49,6 @@ class ReadAngkeiteu extends React.Component {
     participation = this.state.data.participants.find((element) => {
       return element.email === this.props.authenticateStatus.currentUser;
     });
-    console.log(participation);
 
     if(typeof participation !== 'undefined') {
       nextState['option'] = participation.selectedOptionId;
@@ -151,7 +150,7 @@ class ReadAngkeiteu extends React.Component {
       </div>
     );
 
-    const submitAction = (
+    const submitBtn = (
       <div className='card-action'>
         <a onClick={this.handleSubmit}>submit</a>
       </div>
@@ -187,7 +186,7 @@ class ReadAngkeiteu extends React.Component {
                   </div>
                 </div>
               </div>
-              {this.state.participation ? undefined : submitAction}
+              {this.state.participation ? undefined : submitBtn}
             </div>
           </div>
         </div>
