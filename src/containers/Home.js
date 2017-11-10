@@ -45,18 +45,14 @@ class Home extends React.Component {
 
   handleExpandMoreAngkeiteuList(targetName) {
     let angkeiteuList = [];
-    let currentLastAngkeiteu = {};
 
     if(targetName === 'recent') {
       angkeiteuList = this.props.angkeiteuListStatus.data;
-      currentLastAngkeiteu = angkeiteuList[angkeiteuList.length-1];
-      this.props.angkeiteuListRequest(false, 'recent', 'old', currentLastAngkeiteu._id);
+      this.props.angkeiteuListRequest(false, 'recent', 'old', angkeiteuList[angkeiteuList.length-1]._id);
     } else if(targetName === 'hot') {
       angkeiteuList = this.props.angkeiteuHotListStatus.data;
-      currentLastAngkeiteu = angkeiteuList[angkeiteuList.length-1];
-      this.props.angkeiteuListRequest(false, 'hot', 'old', currentLastAngkeiteu._id);
+      this.props.angkeiteuListRequest(false, 'hot'+this.state.selectedPeriod, 'old', angkeiteuList[angkeiteuList.length-1]._id);
     }
-
   }
 
   render() {
