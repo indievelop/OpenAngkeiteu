@@ -15,7 +15,7 @@ router.post('/', (req, res)=>{
       });
   }
 
-  //CHECK ANGKEITEU VAILD
+  // CHECK ANGKEITEU VAILD
   if(typeof req.body.title !== 'string' ||
       req.body.title === '') {
         return res.status(400).json({
@@ -39,7 +39,7 @@ router.post('/', (req, res)=>{
     });
   }
 
-  //CREATE NEW ANGKEITEU
+  // CREATE NEW ANGKEITEU
   let angkeiteu = new Angkeiteu({
     writer: req.session.loginInfo.email,
     title: req.body.title,
@@ -47,7 +47,7 @@ router.post('/', (req, res)=>{
     options: req.body.options
   });
 
-  //SAVE IN DATABASE
+  // SAVE IN DATABASE
   angkeiteu.save( err => {
     if(err) throw err;
     return res.json({ success: true});
@@ -95,60 +95,50 @@ router.get('/:id', (req, res) => {
   });
 });
 
-// GET OLD ANGKEITEU LIST BY LAST ANGKEITEU ID IN CLIENT DATAS
-router.get('/old/:id', (req, res) => {
+// GET OLD OR NEW ANGKEITEU LIST BY LAST ANGKEITEU ID IN CLIENT DATAS
+router.get('/:listType/:id', (req, res) => {
+  let listType = req.params.listType;
   let id = req.params.id;
-  let condition = {};
+  let findCondition = {};
+  let sortCondition = {};
 
+  // CHECK LISTTYPE VALIDITY
+  if(!(listType === 'old' || listType === 'new')) {
+    return res.status(400).json({
+      error: "INVALID LISTTYPE",
+      code: 1
+    });
+  }
   //CHECK ID VALIDITY
   if(!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
           error: "INVALID ID",
-          code: 1
+          code: 2
       });
   }
+  if(listType === 'old') {
+    findCondition = { '_id': { '$lt': id } };
+    sortCondition = { '_id': -1};
+  } else if(listType === 'new') {
+    findCondition = { '_id': { '$gt': id } };
+    sortCondition = { '_id': 1};
+  }
 
-  condition = {
-    '_id': { '$lt': id }
-  };
-  Angkeiteu.find(condition)
-  .sort({'_id': -1})
+  Angkeiteu.find(findCondition)
+  .sort(sortCondition)
   .limit(4)
   .exec((err, angkeiteus) => {
     if(err) throw err;
-    return res.json(angkeiteus);
+    if(listType === 'old')
+      return res.json(angkeiteus);
+    else(listType === 'new')
+      return res.json(angkeiteus.reverse());
   });
 });
 
-// GET NEW ANGKEITEU LIST BY  FIRST ANGKEITEU ID IN CLIENT DATAS
-router.get('/new/:id', (req, res) => {
-  let id = req.params.id;
-  let condition = {};
-
-  //CHECK ID VALIDITY
-  if(!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({
-          error: "INVALID ID",
-          code: 1
-      });
-  }
-
-  condition = {
-    '_id': { '$gt': id }
-  };
-  Angkeiteu.find(condition)
-  .sort({'_id': 1})
-  .limit(4)
-  .exec((err, angkeiteus) => {
-    if(err) throw err;
-    return res.json(angkeiteus.reverse());
-  });
-});
-
-//GET HOT ANKGEITEU LIST
-router.get('/hot/:period/:id?', (req, res) => {
+// GET HOT ANKGEITEU LIST ON SPECIFIC PERIOD
+router.get('/hot/:period', (req, res) => {
   let period = req.params.period;
-  let id = req.query.id;
   let today = moment().startOf('day');
   let tomorrow = moment(today).add(1,'days');
   let thisMonth = moment().startOf('month');
@@ -180,17 +170,59 @@ router.get('/hot/:period/:id?', (req, res) => {
       '$lt': targetNextDate
     }
   }
-  if(typeof id === 'undefined') {
-    Angkeiteu.find(condition)
-    .sort({viewCount: -1})
-    .limit(8)
-    .exec((err, angkeiteus) => {
-      if(err) throw err;
-      return res.json(angkeiteus);
-    });
-    return;
+  Angkeiteu.find(condition)
+  .sort({viewCount: -1})
+  .limit(8)
+  .exec((err, angkeiteus) => {
+    if(err) throw err;
+    return res.json(angkeiteus);
+  });
+});
+
+// GET OLD OR NEW HOTANGKEITEU LIST BY LAST ANGKEITEU ID IN CLIENT DATAS
+router.get('/hot/:period/:listType/:id', (req, res) => {
+  let period = req.params.period;
+  let listType = req.params.listType;
+  let id = req.params.id;
+  let today = moment().startOf('day');
+  let tomorrow = moment(today).add(1,'days');
+  let thisMonth = moment().startOf('month');
+  let nextMoth = moment(thisMonth).add(1,'months');
+  let findCondition = {};
+  let sortCondition = {};
+  let targetDate = {};
+  let targetNextDate = {};
+
+  // CHECK PERIOD VALIDITY
+  if(!(period === 'today' || period === 'thisMonth')) {
+      return res.status(400).json({
+          error: "INVALID PERIOD",
+          code: 1
+      });
   }
 
+  if(period === 'today') {
+    //get api/angkeiteu/hot/today
+    targetDate = today.toDate();
+    targetNextDate = tomorrow.toDate();
+  } else if(period === 'thisMonth') {
+    //get api/angkeiteu/hot/thisMonth
+    targetDate = thisMonth.toDate();
+    targetNextDate = nextMoth.toDate();
+  }
+  findCondition = {
+    'createdDate': {
+      '$gte': targetDate,
+      '$lt': targetNextDate
+    }
+  }
+  // CHECK LISTTYPE VALIDITY
+  if(!(listType === 'old' || listType === 'new')) {
+    return res.status(400).json({
+      error: "INVALID LISTTYPE",
+      code: 2
+    });
+  }
   // CHECK ANGKEITEU ID VALIDITY
   if(!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
@@ -199,27 +231,36 @@ router.get('/hot/:period/:id?', (req, res) => {
       });
   }
 
-  //GET UNDER HOT ANGKEITEU
   Angkeiteu.findOne({
     '_id': id
   }).exec((err, angkeiteu) => {
     if(err) throw err;
-    return Angkeiteu.find({
-      viewCount: { $lt: angkeiteu.viewCount},
-      createdDate: {
-        $gte: today.toDate(),
-        $lt: today.toDate()
-      }
-    }).sort({viewCount: -1})
-      .limit(8)
-      .exec((err, angkeiteus) => {
-        if(err) throw err;
+    if(listType === 'old') {
+      findCondition['viewCount'] = {
+        '$lt': angkeiteu.viewCount
+      };
+      sortCondition = {'viewCount': -1};
+    } else if(listType === 'new') {
+      findCondition['viewCount'] = {
+        '$gt': angkeiteu.viewCount
+      };
+      sortCondition = {'viewCount': 1};
+    }
+    return Angkeiteu.find(findCondition)
+    .sort(sortCondition)
+    .limit(4)
+    .exec((err, angkeiteus) => {
+      if(err) throw err;
+      if(listType === 'old')
         return res.json(angkeiteus);
-      });
+      else if(listType === 'new')
+        return res.json(angkeiteus.reverse());
+    });
+    return;
   });
 });
 
-//PARTICIPATE ANGKEITEU
+// PARTICIPATE ANGKEITEU
 router.put('/:id/selectOption/:optionId', (req, res) => {
   let id = req.params.id;
   let optionId = req.params.optionId;
