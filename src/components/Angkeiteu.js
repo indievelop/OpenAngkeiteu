@@ -1,14 +1,10 @@
 import React from 'react';
 import TimeAgo from 'react-timeago';
+import { Link } from 'react-router-dom';
 
 class Angkeiteu extends React.Component {
   constructor(props) {
       super(props);
-      this.handleOpenAngkeiteu = this.handleOpenAngkeiteu.bind(this);
-  }
-
-  handleOpenAngkeiteu() {
-    this.props.onOpenAngkeiteu(this.props.data._id);
   }
 
   render() {
@@ -38,7 +34,7 @@ class Angkeiteu extends React.Component {
             </div>
           </div>
           <div className='card-action'>
-            <a onClick={this.handleOpenAngkeiteu}>open</a>
+            <Link to={`/readAngkeiteu/${data._id}`}>open</Link>
           </div>
         </div>
       </div>

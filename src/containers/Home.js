@@ -10,7 +10,6 @@ class Home extends React.Component {
       this.state = {
         selectedPeriod: 'Today'
       }
-      this.handleOpenAngkeiteu = this.handleOpenAngkeiteu.bind(this);
       this.handleExpandMoreAngkeiteuList = this.handleExpandMoreAngkeiteuList.bind(this);
       this.handleChangePeriod = this.handleChangePeriod.bind(this);
   }
@@ -29,10 +28,6 @@ class Home extends React.Component {
       alignment: 'left', // Displays dropdown with edge aligned to the left of button
       stopPropagation: false // Stops event propagation
     });
-  }
-
-  handleOpenAngkeiteu(id) {
-    this.props.history.push('/readAngkeiteu/'+id);
   }
 
   handleChangePeriod(e) {
@@ -89,18 +84,16 @@ class Home extends React.Component {
             <div className='section'>
               <h5>hot angkeiteu</h5>
               {selectPeriodDropdownBtn}
-                <AngkeiteuList onOpenAngkeiteu={this.handleOpenAngkeiteu}
-                               data={this.props.angkeiteuHotListStatus.data}/>
-                             {this.props.angkeiteuHotListStatus.isLast ? undefined : expandMoreBtn('hot')}
+              <AngkeiteuList data={this.props.angkeiteuHotListStatus.data}/>
+              {this.props.angkeiteuHotListStatus.isLast ? undefined : expandMoreBtn('hot')}
             </div>
           </div>
           <div className='col s12'>
             <div className='divider'></div>
             <div className='section'>
               <h5>recent angkeiteu</h5>
-                <AngkeiteuList onOpenAngkeiteu={this.handleOpenAngkeiteu}
-                               data={this.props.angkeiteuListStatus.data}/>
-                             {this.props.angkeiteuListStatus.isLast ? undefined : expandMoreBtn('recent')}
+              <AngkeiteuList data={this.props.angkeiteuListStatus.data}/>
+              {this.props.angkeiteuListStatus.isLast ? undefined : expandMoreBtn('recent')}
             </div>
           </div>
         </div>
