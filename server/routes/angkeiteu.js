@@ -95,44 +95,21 @@ router.get('/:id', (req, res) => {
   });
 });
 
-// GET OLD OR NEW ANGKEITEU LIST BY LAST ANGKEITEU ID IN CLIENT DATAS
-router.get('/:listType/:id', (req, res) => {
-  let listType = req.params.listType;
-  let id = req.params.id;
+// SEARCH ANGKEITEU
+router.get('/search/:title', (req, res) => {
+  let title = req.params.title;
+  let regexp = new RegExp('^' + title);
   let findCondition = {};
   let sortCondition = {};
 
-  // CHECK LISTTYPE VALIDITY
-  if(!(listType === 'old' || listType === 'new')) {
-    return res.status(400).json({
-      error: "INVALID LISTTYPE",
-      code: 1
-    });
-  }
-  //CHECK ID VALIDITY
-  if(!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({
-          error: "INVALID ID",
-          code: 2
-      });
-  }
-  if(listType === 'old') {
-    findCondition = { '_id': { '$lt': id } };
-    sortCondition = { '_id': -1};
-  } else if(listType === 'new') {
-    findCondition = { '_id': { '$gt': id } };
-    sortCondition = { '_id': 1};
-  }
-
+  findCondition = {'title': {'$regex': regexp}};
+  sortCondition = {'title': 1};
   Angkeiteu.find(findCondition)
+  .limit(5)
   .sort(sortCondition)
-  .limit(4)
   .exec((err, angkeiteus) => {
     if(err) throw err;
-    if(listType === 'old')
-      return res.json(angkeiteus);
-    else(listType === 'new')
-      return res.json(angkeiteus.reverse());
+    return res.json(angkeiteus);
   });
 });
 
@@ -176,6 +153,47 @@ router.get('/hot/:period', (req, res) => {
   .exec((err, angkeiteus) => {
     if(err) throw err;
     return res.json(angkeiteus);
+  });
+});
+
+// GET OLD OR NEW ANGKEITEU LIST BY LAST ANGKEITEU ID IN CLIENT DATAS
+router.get('/:listType/:id', (req, res) => {
+  let listType = req.params.listType;
+  let id = req.params.id;
+  let findCondition = {};
+  let sortCondition = {};
+
+  // CHECK LISTTYPE VALIDITY
+  if(!(listType === 'old' || listType === 'new')) {
+    return res.status(400).json({
+      error: "INVALID LISTTYPE",
+      code: 1
+    });
+  }
+  //CHECK ID VALIDITY
+  if(!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+          error: "INVALID ID",
+          code: 2
+      });
+  }
+  if(listType === 'old') {
+    findCondition = { '_id': { '$lt': id } };
+    sortCondition = { '_id': -1};
+  } else if(listType === 'new') {
+    findCondition = { '_id': { '$gt': id } };
+    sortCondition = { '_id': 1};
+  }
+
+  Angkeiteu.find(findCondition)
+  .sort(sortCondition)
+  .limit(4)
+  .exec((err, angkeiteus) => {
+    if(err) throw err;
+    if(listType === 'old')
+      return res.json(angkeiteus);
+    else(listType === 'new')
+      return res.json(angkeiteus.reverse());
   });
 });
 
