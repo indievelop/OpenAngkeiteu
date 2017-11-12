@@ -37,35 +37,30 @@ class Header extends React.Component {
 
   render () {
     const loginButton = (
-            <li>
-                <Link to='/login'>
-                    <i className="material-icons">vpn_key</i>
-                </Link>
-            </li>
-        );
+      <Link to='/login'>
+        <i className="material-icons">vpn_key</i>
+      </Link>
+    );
 
     const logoutButton = (
-        <li>
-            <a onClick={this.handleLogout}>
-                <i className="material-icons">lock_open</i>
-            </a>
-        </li>
+      <a onClick={this.handleLogout}>
+        <i className="material-icons">lock_open</i>
+      </a>
     );
 
     return(
-      <div className='navbar-fixed'>
+      <div className={!this.props.searchStatus.view.isOpen ? 'navbar-fixed' : ''}>
         <nav>
           <div className="nav-wrapper s12 darken-1">
-              <Link to='/' className='brand-logo center' >My Angkeiteu</Link>
+            <Link to='/' className='brand-logo center' >My Angkeiteu</Link>
+            <ul>
+              <li><a><i data-activates='slide-out' className="material-icons menu">menu</i></a></li>
+            </ul>
+            <div className="right">
               <ul>
-                <li><a><i data-activates='slide-out' className="material-icons menu">menu</i></a></li>
+                <li>{this.props.isLoggedIn ? logoutButton : loginButton}</li>
               </ul>
-
-              <div className="right">
-                <ul>
-                  {this.props.isLoggedIn ? logoutButton : loginButton}
-                </ul>
-              </div>
+            </div>
           </div>
         </nav>
       </div>
@@ -85,7 +80,8 @@ Header.defaultProps = {
 
 const mapStateToProps = (state) => {
     return {
-        isLoggedIn: state.authentication.status.isLoggedIn
+        isLoggedIn: state.authentication.status.isLoggedIn,
+        searchStatus: state.search
     };
 };
 

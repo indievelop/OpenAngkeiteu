@@ -2,9 +2,10 @@ import React from 'react';
 //route
 import {BrowserRouter as Router, Route, IndexRoute} from 'react-router-dom';
 //components
-import { Header, Footer, Sidemenu } from 'components';
+import { Header, Footer, Sidemenu, Search } from 'components';
 //containers
-import {Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu} from 'containers';
+import {Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu,
+        SearchAngkeiteu} from 'containers';
 import { connect } from 'react-redux';
 import { getStatusRequest } from 'actions/authentication';
 
@@ -61,12 +62,14 @@ class App extends React.Component {
                 <Header/>
               </header>
               <main>
+                {this.props.searchStatus.view.isOpen ? <Route component = {Search}/> : undefined}
                 <Sidemenu/>
                 <Route exact path = '/' component = {Home}/>
                 <Route path = '/login' component = {Login}/>
                 <Route path = '/register' component = {Register}/>
                 <Route path = '/writeAngkeiteu' component = {WriteAngkeiteu}/>
                 <Route path = '/readAngkeiteu/:id' component = {ReadAngkeiteu}/>
+                <Route path = '/searchAngkeiteu/:keyword' component = {SearchAngkeiteu}/>
               </main>
               <footer className='page-footer'>
                 <Footer/>
@@ -79,7 +82,8 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        status: state.authentication.status
+        status: state.authentication.status,
+        searchStatus: state.search
     };
 };
 

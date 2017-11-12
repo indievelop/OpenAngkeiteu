@@ -2,31 +2,41 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { openSearchView } from 'actions/search';
 
 class Sidemenu extends React.Component {
 
+  constructor(props) {
+    super(props);
+  }
+
   render() {
+    const searchButton = (
+        <a onClick={this.props.openSearchView}>
+          search
+        </a>
+    );
 
     const writeButton = (
-        <li>
-          <Link to='/writeAngkeiteu'>
-                write Angkeiteu
-          </Link>
-        </li>
+        <Link to='/writeAngkeiteu'>
+              write Angkeiteu
+        </Link>
     );
 
     return (
+      <div>
         <ul id='slide-out' className='side-nav'>
-          <li><a>search</a></li>
+          <li>{searchButton}</li>
+          <li>{writeButton}</li>
           <li><a>option1</a></li>
           <li><a>option2</a></li>
-          {this.props.isLoggedIn ? writeButton : undefined}
         </ul>
+      </div>
     );
   }
 }
 
-Sidemenu.PropTypes = {
+Sidemenu.propTypes = {
   isLoggedIn: PropTypes.bool
 };
 
@@ -35,9 +45,17 @@ Sidemenu.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-    return {
-        isLoggedIn: state.authentication.status.isLoggedIn
-    };
+  return {
+      isLoggedIn: state.authentication.status.isLoggedIn
+  };
 };
 
-export default connect(mapStateToProps)(Sidemenu);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    openSearchView: () => {
+      return dispatch(openSearchView());
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidemenu);
