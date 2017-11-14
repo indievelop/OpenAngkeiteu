@@ -1,24 +1,24 @@
 {
-  "name": "myangkeiteu",
+  "name": "OpenAngkeiteu",
   "version": "0.0.1",
   "description": "survey web service project",
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf build public/bundle.js",
     "build": "babel server --out-dir build --presets=es2015 && webpack",
-    "start": "cross-env NODE_ENV=production node ./build/main.js",
-    "development": "cross-env NODE_ENV=development nodemon --exec babel-node --presets=es2015 ./server/main.js --watch server"
+    "win_start": "cross-env NODE_ENV=production node ./build/main.js",
+    "win_development": "cross-env NODE_ENV=development nodemon --exec babel-node --presets=es2015 ./server/main.js --watch server"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yearsalary/myAngkeiteu.git"
+    "url": "git+https://github.com/indievelop/OpenAngkeiteu.git"
   },
   "author": "yearsalary",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/yearsalary/myAngkeiteu/issues"
+    "url": "https://github.com/indievelop/OpenAngkeiteu/issues"
   },
-  "homepage": "https://github.com/yearsalary/myAngkeiteu#readme",
+  "homepage": "https://github.com/indievelop/OpenAngkeiteu#readme",
   "dependencies": {
     "axios": "^0.16.2",
     "bcryptjs": "^2.4.3",
