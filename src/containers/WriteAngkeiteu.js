@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import update from 'react-addons-update';
 import { angkeiteuPostRequest } from 'actions/angkeiteu';
@@ -13,7 +13,7 @@ class WriteAngkeiteu extends React.Component {
         title: '',
         description: '',
         option_desc: '',
-        options:[],
+        options: [],
         isCompleted: false
       };
       this.handleChange = this.handleChange.bind(this);
@@ -75,45 +75,26 @@ class WriteAngkeiteu extends React.Component {
     let nextState = {};
 
     this.props.angkeiteuPostRequest(title, description, options).then(()=>{
-      //console.log(this.props.postStatus);
       if(this.props.postStatus.status === 'SUCCESS') {
         nextState = update(this.state, {
           isCompleted:{ $set: true}
         });
         this.setState(nextState);
       } else {
-        let $toastContent;
-        switch(this.props.postStatus.error) {
-          case 1:
-            $toastContent = $('<span style="color: #FFB4BA">You are not logged in</span>');
-            Materialize.toast($toastContent, 2000);
-            setTimeout(()=> {location.reload(false);}, 2000);
-            break;
-
-          case 2:
-            $toastContent = $('<span style="color: #FFB4BA">Please write title</span>');
-            Materialize.toast($toastContent, 2000);
-            break;
-
-          case 3:
-            $toastContent = $('<span style="color: #FFB4BA">Please write description</span>');
-            Materialize.toast($toastContent, 2000);
-            break;
-
-          case 4:
-            $toastContent = $('<span style="color: #FFB4BA">Please add options</span>');
-            Materialize.toast($toastContent, 2000);
-            break;
-
-        }
+        let errorMessage = [
+          'You are not logged in.',
+          'Please write title.',
+          'Please write description',
+          'Please add options'
+        ];
+        $toastContent = $('<span style="color: #FFB4BA">' + errorMessage[this.props.postStatus.error-1] + 'Please add options</span>');
+          Materialize.toast($toastContent, 2000);
+          break;
       }
-
     });
-
   }
 
   render() {
-
     const mapToOptions = options => {
       return options.map((option, i) => {
         return (
