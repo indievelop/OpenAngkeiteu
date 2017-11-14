@@ -4,8 +4,8 @@ import {BrowserRouter as Router, Route, IndexRoute} from 'react-router-dom';
 //components
 import { Header, Footer, Sidemenu, Search } from 'components';
 //containers
-import {Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu,
-        SearchAngkeiteu} from 'containers';
+import { Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu,
+        SearchAngkeiteu } from 'containers';
 import { connect } from 'react-redux';
 import { getStatusRequest } from 'actions/authentication';
 

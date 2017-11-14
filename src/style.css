@@ -11,14 +11,9 @@ main {
   background-color: #f2f2f2;
 }
 
-footer {
-  background-color: pink;
-}
-
 footer.page-footer {
   margin-top: 0px;
 }
-
 
 /* Authentication */
 .auth {

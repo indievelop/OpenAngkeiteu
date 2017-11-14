@@ -52,7 +52,7 @@ class Header extends React.Component {
       <div className={!this.props.searchStatus.view.isOpen ? 'navbar-fixed' : ''}>
         <nav>
           <div className="nav-wrapper s12 darken-1">
-            <Link to='/' className='brand-logo center' >My Angkeiteu</Link>
+            <Link to='/' className='brand-logo center' >Open Angkeiteu</Link>
             <ul>
               <li><a><i data-activates='slide-out' className="material-icons menu">menu</i></a></li>
             </ul>
@@ -67,16 +67,6 @@ class Header extends React.Component {
     );
   }
 }
-
-Header.propTypes = {
-  isLoggedIn: PropTypes.bool,
-  onLogout: PropTypes.func
-};
-
-Header.defaultProps = {
-  isLoggedIn: false,
-  onLogout: () => { console.error("logout function not defined");}
-};
 
 const mapStateToProps = (state) => {
     return {

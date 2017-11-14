@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginRequest } from 'actions/authentication';
 
@@ -8,8 +8,8 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email:"",
-      password:""
+      email: "",
+      password: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -42,7 +42,7 @@ class Login extends React.Component {
             } else {
                 let $toastContent = $('<span style="color: #FFB4BA">Incorrect email or password</span>');
                 Materialize.toast($toastContent, 2000);
-                this.setState({password:''});
+                this.setState({password: ''});
                 return false;
             }
         }
@@ -82,7 +82,6 @@ class Login extends React.Component {
                    onClick={this.handleLogin}>SUBMIT</a>
             </div>
           </div>
-
           <div className='footer'>
             <div className='card-content'>
               <div className='right'>
@@ -90,7 +89,6 @@ class Login extends React.Component {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     );
@@ -110,6 +108,5 @@ const mapDispatchToProps = (dispatch) => {
         }
     };
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

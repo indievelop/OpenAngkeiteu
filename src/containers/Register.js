@@ -8,9 +8,9 @@ class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email:"",
-      password:"",
-      confirmPassword:""
+      email: "",
+      password: "",
+      confirmPassword: ""
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);

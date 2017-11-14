@@ -5,6 +5,7 @@ import { angkeiteuListRequest } from 'actions/angkeiteu';
 
 
 class Home extends React.Component {
+
   constructor(props) {
       super(props);
       this.state = {
@@ -51,7 +52,6 @@ class Home extends React.Component {
   }
 
   render() {
-
     const selectPeriodDropdownBtn = (
       <div>
         <a className='dropdown-button btn' onClick={()=>{}} data-activates='dropdown1'>
