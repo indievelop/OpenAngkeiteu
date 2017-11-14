@@ -12,7 +12,7 @@ const app = express();
 const port = 3000;
 const devPort = 4000;
 const db = mongoose.connection;
-const dbURL = 'mongodb://localhost/myAngkeiteu';
+const dbURL = 'mongodb://localhost/OpenAngkeiteu';
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -24,7 +24,7 @@ db.once('open', () => { console.log('Connected to mongodb server'); });
 mongoose.connect(dbURL);
 /* use session */
 app.use(session({
-    secret: 'myAngkeiteu$1$234',
+    secret: 'OpenAngkeiteu$1$234',
     resave: false,
     saveUninitialized: true
 }));
