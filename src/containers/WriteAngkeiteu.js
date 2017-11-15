@@ -89,7 +89,6 @@ class WriteAngkeiteu extends React.Component {
         ];
         $toastContent = $('<span style="color: #FFB4BA">' + errorMessage[this.props.postStatus.error-1] + 'Please add options</span>');
           Materialize.toast($toastContent, 2000);
-          break;
       }
     });
   }
