@@ -13,12 +13,14 @@ class Sidemenu extends React.Component {
   render() {
     const searchButton = (
         <a onClick={this.props.openSearchView}>
+          <i className='material-icons'>search</i>
           search
         </a>
     );
 
     const writeButton = (
         <Link to='/writeAngkeiteu'>
+          <i className='material-icons'>create</i>
               write Angkeiteu
         </Link>
     );
