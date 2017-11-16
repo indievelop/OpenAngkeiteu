@@ -21,6 +21,7 @@ app.use('/', express.static(path.join(__dirname, './../public')));
 /* mongodb connection */
 db.on('error', console.error);
 db.once('open', () => { console.log('Connected to mongodb server'); });
+mongoose.Promise = global.Promise;
 mongoose.connect(dbURL);
 /* use session */
 app.use(session({
