@@ -65,6 +65,43 @@ router.get('/', (req, res) => {
    });
 });
 
+//test tree insert
+router.post('/tree', (req, res) => {
+  let data = req.body.angkeiteus;
+  let angkeiteus = [];
+  let angkeiteu = {};
+
+  data.forEach((item, i) => {
+    angkeiteus[i] = new Angkeiteu({
+      writer: item.writer,
+      title: item.title,
+      description: item.description,
+      options: item.options
+    });
+
+    //set relationship.
+    if(item.parent !== '') {
+      angkeiteus[i].parent = angkeiteus.find((element) => {
+        return element.title === item.parent;
+      });
+    }
+  });
+
+  const saveTree = () => {
+    if(angkeiteus.length === 0) {
+      return;
+    } else {
+      angkeiteu = angkeiteus.shift();
+      return angkeiteu.save(() => {
+        saveTree();
+      });
+    }
+  }
+
+  saveTree();
+  return res.json({ success: true});
+});
+
 // GET ANGKEITEU
 router.get('/:id', (req, res) => {
   let id = req.params.id;
