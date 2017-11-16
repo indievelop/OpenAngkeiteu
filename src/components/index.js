@@ -5,6 +5,7 @@ import Angkeiteu from './Angkeiteu';
 import AngkeiteuList from './AngkeiteuList';
 import AngkeiteuPieChart from './AngkeiteuPieChart';
 import Search from './Search';
+import AngkeiteuForm from './AngkeiteuForm';
 
 export {Header, Footer, Sidemenu, Angkeiteu, AngkeiteuList,
-        AngkeiteuPieChart, Search};
+        AngkeiteuPieChart, Search, AngkeiteuForm };
