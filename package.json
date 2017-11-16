@@ -28,6 +28,7 @@
     "express-session": "^1.15.6",
     "moment": "^2.19.1",
     "mongoose": "^4.11.13",
+    "mongoose-mpath": "^1.0.1",
     "morgan": "^1.9.0",
     "prop-types": "^15.6.0",
     "react": "^15.2.1",
