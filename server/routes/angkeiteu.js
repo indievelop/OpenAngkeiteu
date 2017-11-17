@@ -47,10 +47,40 @@ router.post('/', (req, res)=>{
     options: req.body.options
   });
 
+  if(typeof req.body.parentId !== 'undefined' && typeof req.body.triggerOptionId !== 'undefined') {
+    //CHECK PARENT ID VALIDITY
+    if(!mongoose.Types.ObjectId.isValid(req.body.parentId)) {
+        return res.status(400).json({
+            error: "INVALID PARENT ID",
+            code: 5
+        });
+    }
+    //CHECK TRIGGEROPTION ID VALIDITY
+    if(!mongoose.Types.ObjectId.isValid(req.body.triggerOptionId)) {
+        return res.status(400).json({
+            error: "INVALID TRIGGEROPTION ID",
+            code: 6
+        });
+    }
+    Angkeiteu.findOne({'_id': req.body.parentId})
+    .exec((err, parentAngkeiteu) => {
+      if(err) throw err;
+      angkeiteu.parent = parentAngkeiteu;
+    });
+  }
+
   // SAVE IN DATABASE
-  angkeiteu.save( err => {
+  angkeiteu.save((err, doc) => {
     if(err) throw err;
-    return res.json({ success: true});
+    if(typeof req.body.triggerOptionId === 'undefined')
+      return res.json({ success: true, id: doc._id});
+    Angkeiteu.findOneAndUpdate(
+      {'_id': req.body.parentId, 'option._id': req.body.triggerOptionId},
+      {'$push': {'options.$.targetSubAngkeiteu': doc}})
+      .exec((err, doc) => {
+        if(err) throw err
+        return res.json({doc});
+      });
   });
 });
 
