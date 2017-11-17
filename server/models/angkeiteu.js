@@ -9,7 +9,8 @@ const Angkeiteu = new Schema({
   description: String,
   options: [{
     description: String,
-    selectCount: {type: Number, default: 0}
+    selectCount: {type: Number, default: 0},
+    targetSubAngkeiteus: [{type: Schema.Types.ObjectId, ref: 'angkeiteu'}]
   }],
   participants: [{
     email: String,
