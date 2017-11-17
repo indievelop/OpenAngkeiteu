@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import update from 'react-addons-update';
+import { angkeiteuPostRequest } from 'actions/angkeiteu';
 
 class AngkeiteuForm extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      parent: props.parent,
-      title: props.title,
+      title: '',
       description: '',
       option_desc: '',
       options: [],
@@ -16,10 +17,7 @@ class AngkeiteuForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
     this.handleRemoveOption = this.handleRemoveOption.bind(this);
-  }
-
-  componentDidMount() {
-    console.log(this.state);
+    this.handlePost = this.handlePost.bind(this);
   }
 
   handleChange(e) {
@@ -64,13 +62,34 @@ class AngkeiteuForm extends React.Component {
     this.setState(nextState);
   }
 
-  handleCreateSubAngkeiteu(optionId) {
-    //to implement
-    let data = {
-      title: this.state.title,
-      optionId
+  handlePost() {
+    let title = this.state.title;
+    let description = this.state.description;
+    let options = this.state.options;
+    let parentId = '';
+    let triggerOptionId = '';
+
+    if(this.props.mode === 'createSubAngkeiteu') {
+      parentId = this.props.parent._id;
+      triggerOptionId = this.props.triggerOption._id;
     }
-    this.props.onCreateSubAngkeiteu(data);
+    this.props.angkeiteuPostRequest(title, description, options, parentId, triggerOptionId).then(()=>{
+      if(this.props.postStatus.status === 'SUCCESS') {
+        console.log(this.props.postStatus.id);
+        this.props.onCompleteCreate(this.props.postStatus.id);
+      } else {
+        let errorMessage = [
+          'You are not logged in.',
+          'Please write title.',
+          'Please write description.',
+          'Please add option.',
+          'Wrong Parent id.',
+          'Wrong triggerOption id.'
+        ];
+        let $toastContent = $('<span style="color: #FFB4BA">' + errorMessage[this.props.postStatus.error-1] + '</span>');
+        Materialize.toast($toastContent, 2000);
+      }
+    });
   }
 
   render() {
@@ -79,51 +98,22 @@ class AngkeiteuForm extends React.Component {
         return (
           <div className='row'
                key={option.id}>
-            <div className='col s8'>
+            <div className='col s10'>
               <input name='optionGroup'
                      type='radio'
                      disabled='disabled'/>
               <label htmlFor='test1'>{option.description}</label>
             </div>
             <div className='col s2'>
-              <a className='waves-effect waves-light btn'
-                 onClick={() => this.handleCreateSubAngkeiteu(option.id)}>
-                <i className='material-icons cneter'>note_add</i>
+              <a className="waves-effect waves-light btn"
+                 onClick={() => this.handleRemoveOption(option.id)}>
+                <i className="material-icons center">close</i>
               </a>
-            </div>
-            <div className='col s2'>
-                <a className="waves-effect waves-light btn"
-                   onClick={() => this.handleRemoveOption(option.id)}>
-                  <i className="material-icons center">close</i>
-                </a>
             </div>
           </div>
         );
       });
     }
-
-    const disabledInputTitle = (
-      <div className='input-field col s6'>
-          <label className='active'>Title</label>
-        <input name='title'
-               type='text'
-               className='validate'
-               disabled value={this.state.title}>
-        </input>
-      </div>
-    );
-
-    const abledInputTitle = (
-      <div className='input-field col s6'>
-        <label>Title</label>
-        <input name='title'
-               type='text'
-               className='validate'
-               onChange={this.handleChange}
-               value={this.state.title}>
-        </input>
-      </div>
-    );
 
     return (
       <div className='row'>
@@ -136,7 +126,15 @@ class AngkeiteuForm extends React.Component {
             </div>
             <div className='card-content'>
               <div className='row'>
-                {this.state.parent === '' ? abledInputTitle: disabledInputTitle }
+                <div className='input-field col s6'>
+                  <label>Title</label>
+                  <input name='title'
+                         type='text'
+                         className='validate'
+                         onChange={this.handleChange}
+                         value={this.state.title}>
+                  </input>
+                </div>
                 <div className='input-field col s12'>
                   <label htmlFor="textarea1">Description</label>
                   <textarea id="textarea1"
@@ -187,5 +185,19 @@ class AngkeiteuForm extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.authentication.status.isLoggedIn,
+    postStatus: state.angkeiteu.post
+  }
+};
 
-export default AngkeiteuForm;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    angkeiteuPostRequest: (title, description, options) => {
+      return dispatch(angkeiteuPostRequest(title, description, options));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AngkeiteuForm);
