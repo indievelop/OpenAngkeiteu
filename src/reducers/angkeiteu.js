@@ -4,7 +4,8 @@ import update from 'react-addons-update';
 const initialState = {
     post: {
         status: 'INIT',
-        error: -1
+        error: -1,
+        id: ''
     },
     list: {
         status: 'INIT',
@@ -49,13 +50,15 @@ export default function angkeiteu(state, action) {
             return update(state, {
                 post: {
                     status: { $set: 'WAITING' },
-                    error: { $set: -1 }
+                    error: { $set: -1 },
+                    id: {$set: ''}
                 }
             });
         case types.ANGKEITEU_POST_SUCCESS:
             return update(state, {
                 post: {
-                    status: { $set: 'SUCCESS' }
+                    status: { $set: 'SUCCESS' },
+                    id: { $set: action.id }
                 }
             });
         case types.ANGKEITEU_POST_FAILURE:

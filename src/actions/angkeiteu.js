@@ -15,14 +15,14 @@ import {
 import axios from 'axios';
 
 /* angkeiteu POST */
-export function angkeiteuPostRequest(title, description, options) {
+export function angkeiteuPostRequest(title, description, options, parentId, triggerOptionId) {
     return (dispatch) => {
         // inform angkeiteu POST API is starting
         dispatch(angkeiteuPost());
 
-        return axios.post('/api/angkeiteu/', { title, description, options })
+        return axios.post('/api/angkeiteu/', { title, description, options, parentId, triggerOptionId, })
         .then((response) => {
-            dispatch(angkeiteuPostSuccess());
+            dispatch(angkeiteuPostSuccess(response.data.id));
         }).catch((error) => {
             dispatch(angkeiteuPostFailure(error.response.data.code));
         });
@@ -35,9 +35,10 @@ export function angkeiteuPost() {
     };
 }
 
-export function angkeiteuPostSuccess() {
+export function angkeiteuPostSuccess(id) {
     return {
-        type: ANGKEITEU_POST_SUCCESS
+        type: ANGKEITEU_POST_SUCCESS,
+        id
     };
 }
 
