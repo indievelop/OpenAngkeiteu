@@ -47,39 +47,28 @@ router.post('/', (req, res)=>{
     options: req.body.options
   });
 
-  if(typeof req.body.parentId !== 'undefined' && typeof req.body.triggerOptionId !== 'undefined') {
-    //CHECK PARENT ID VALIDITY
-    if(!mongoose.Types.ObjectId.isValid(req.body.parentId)) {
-        return res.status(400).json({
-            error: "INVALID PARENT ID",
-            code: 5
-        });
-    }
+  if(typeof req.body.triggerOptionId !== 'undefined') {
     //CHECK TRIGGEROPTION ID VALIDITY
     if(!mongoose.Types.ObjectId.isValid(req.body.triggerOptionId)) {
         return res.status(400).json({
-            error: "INVALID TRIGGEROPTION ID",
-            code: 6
+            error: "INVALID TRIGGER OPTION ID",
+            code: 5
         });
     }
-    Angkeiteu.findOne({'_id': req.body.parentId})
-    .exec((err, parentAngkeiteu) => {
-      if(err) throw err;
-      angkeiteu.parent = parentAngkeiteu;
-    });
   }
-
+  console.log(req.body.triggerOptionId)
   // SAVE IN DATABASE
-  angkeiteu.save((err, doc) => {
+  angkeiteu.save((err, newAngkeiteu) => {
     if(err) throw err;
     if(typeof req.body.triggerOptionId === 'undefined')
-      return res.json({ success: true, id: doc._id});
+      return res.json({ success: true, id: newAngkeiteu._id});
     Angkeiteu.findOneAndUpdate(
-      {'_id': req.body.parentId, 'option._id': req.body.triggerOptionId},
-      {'$push': {'options.$.targetSubAngkeiteu': doc}})
+      {'options._id': req.body.triggerOptionId},
+      {'$push': {'options.$.targetSubAngkeiteus': newAngkeiteu._id}})
       .exec((err, doc) => {
-        if(err) throw err
-        return res.json({doc});
+        if(err) throw err;
+        console.log(doc);
+        return res.json({ success: true, id: newAngkeiteu._id});
       });
   });
 });
@@ -392,7 +381,7 @@ router.put('/:id/selectOption/:optionId', (req, res) => {
       '_id': id, 'options._id': optionId
     };
     update = {
-      '$inc': {'options.$.selectCount' :1},
+      '$inc': {'options.$.selectCount': 1},
       '$push': {'participants': {'email': loginInfo.email, 'selectedOptionId': optionId} }
     };
     option = {
