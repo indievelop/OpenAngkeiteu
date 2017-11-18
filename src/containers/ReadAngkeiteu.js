@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { angkeiteuGetRequest, angkeiteuParticipateRequest } from 'actions/angkeiteu';
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
-import { AngkeiteuPieChart } from 'components';
+import { AngkeiteuPieChart, AngkeiteuForm } from 'components';
 
 class ReadAngkeiteu extends React.Component {
 
@@ -15,29 +15,43 @@ class ReadAngkeiteu extends React.Component {
       data: {},
       option: '',
       participation: false,
+      triggerOption: {},
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.showParticipationInform = this.showParticipationInform.bind(this);
     this.loadAngkeiteu = this.loadAngkeiteu.bind(this);
+    this.handleCompleteCreate = this.handleCompleteCreate.bind(this);
   }
 
   componentDidMount() {
-    this.loadAngkeiteu();
+    this.loadAngkeiteu(this.props.match.params.id);
+    $(document).ready(() => {
+      $('.modal').modal({
+        //set scroll location.
+        ready: (modal, trigger) => { modal.scrollTop(0); }
+      });
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if(Object.keys(this.state.data).length === 0)
       return;
+    // update params.id
+    if(prevProps.match.params.id !== this.props.match.params.id)
+      this.loadAngkeiteu(this.props.match.params.id);
     if(!this.state.participation && this.props.authenticateStatus.currentUser !== '')
       this.showParticipationInform();
   }
 
-  loadAngkeiteu() {
+  loadAngkeiteu(id) {
     let nextState = {};
 
-    this.props.angkeiteuGetRequest(this.props.match.params.id).then(() => {
+    this.props.angkeiteuGetRequest(id).then(() => {
+      nextState['option'] = '';
+      nextState['participation'] = false;
       nextState['data'] = this.props.angkeiteuGetStaus.data;
+      nextState['triggerOption'] = {};
       return this.setState(nextState);
     });
   }
@@ -79,38 +93,19 @@ class ReadAngkeiteu extends React.Component {
       }
     });
   }
-/*
-  drawChart() {
-    console.log(this.state.data);
-    let options = this.state.data.options;
-    var canvas = $('#chart').get(0);
-    var ctx = canvas.getContext('2d');
-    let optionDescriptions = [];
-    let optionSelectCounts = [];
 
-    options.forEach((option, i) => {
-      optionDescriptions.push(option.description)
-      optionSelectCounts.push(option.selectCount);
-    });
-
-    chart = new Chart(ctx, {
-      // The type of chart we want to create
-      type: 'pie',
-      // The data for our dataset
-      data: {
-          labels: optionDescriptions,
-          datasets: [{
-              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-              data: optionSelectCounts,
-          }]
-        },
-        // Configuration options go here
-        options: {}
-      }
-    );
-    return window.chart = chart;
+  handleCreateSubAngkeiteu(triggerOption) {
+    let nextState = {};
+    nextState['triggerOption'] = triggerOption;
+    this.setState(nextState);
+    $('#createSubAngkeiteuModal').modal('open');
   }
-*/
+
+  handleCompleteCreate(id) {
+    $('#createSubAngkeiteuModal').modal('close');
+    this.props.history.push('/readAngkeiteu/' + id);
+  }
+
   render() {
     const {data} = this.state;
 
@@ -119,7 +114,7 @@ class ReadAngkeiteu extends React.Component {
         return (
           <div className='row'
                key={option._id}>
-            <div className='col s12'>
+            <div className='col s10'>
               <input name='option'
                      type='radio'
                      onChange={this.handleChange}
@@ -127,7 +122,13 @@ class ReadAngkeiteu extends React.Component {
                      disabled={this.state.participation}
                      value={option._id}
                      id={option._id}/>
-                   <label htmlFor={option._id}>{option.description}</label>
+              <label htmlFor={option._id}>{option.description}</label>
+            </div>
+            <div className='col s2'>
+              <a className='waves-effect waves-light btn'
+                 onClick={() => this.handleCreateSubAngkeiteu(option)}>
+                <i className='material-icons center'>create</i>
+              </a>
             </div>
           </div>
         );
@@ -153,6 +154,16 @@ class ReadAngkeiteu extends React.Component {
     const submitBtn = (
       <div className='card-action'>
         <a onClick={this.handleSubmit}>submit</a>
+      </div>
+    );
+
+    const createSubAngkeiteuModal = (
+      <div id='createSubAngkeiteuModal' className='modal'>
+        <div className='modal-content'>
+          <AngkeiteuForm mode='SubAngkeiteu'
+                         triggerOption={this.state.triggerOption}
+                         onCompleteCreate={this.handleCompleteCreate}/>
+        </div>
       </div>
     );
 
@@ -190,6 +201,7 @@ class ReadAngkeiteu extends React.Component {
             </div>
           </div>
         </div>
+        {createSubAngkeiteuModal}
       </div>
     );
   }
