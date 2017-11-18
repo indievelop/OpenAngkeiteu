@@ -12,12 +12,18 @@ class AngkeiteuForm extends React.Component {
       title: '',
       description: '',
       option_desc: '',
-      options: [],
+      options: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
     this.handleRemoveOption = this.handleRemoveOption.bind(this);
     this.handlePost = this.handlePost.bind(this);
+    this.initFormData = this.initFormData.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.triggerOption._id !== this.props.triggerOption._id)
+      this.initFormData();
   }
 
   handleChange(e) {
@@ -62,20 +68,23 @@ class AngkeiteuForm extends React.Component {
     this.setState(nextState);
   }
 
+  initFormData() {
+    let nextState = {};
+    nextState['title'] = '';
+    nextState['description'] = '';
+    nextState['option_desc'] = '';
+    nextState['options'] = [];
+    this.setState(nextState);
+  }
+
   handlePost() {
     let title = this.state.title;
     let description = this.state.description;
     let options = this.state.options;
-    let parentId = '';
-    let triggerOptionId = '';
-
-    if(this.props.mode === 'createSubAngkeiteu') {
-      parentId = this.props.parent._id;
-      triggerOptionId = this.props.triggerOption._id;
-    }
-    this.props.angkeiteuPostRequest(title, description, options, parentId, triggerOptionId).then(()=>{
+    let triggerOptionId = this.props.triggerOption._id;
+    //let parentId = '';
+    this.props.angkeiteuPostRequest(title, description, options, triggerOptionId).then(() => {
       if(this.props.postStatus.status === 'SUCCESS') {
-        console.log(this.props.postStatus.id);
         this.props.onCompleteCreate(this.props.postStatus.id);
       } else {
         let errorMessage = [
@@ -83,7 +92,6 @@ class AngkeiteuForm extends React.Component {
           'Please write title.',
           'Please write description.',
           'Please add option.',
-          'Wrong Parent id.',
           'Wrong triggerOption id.'
         ];
         let $toastContent = $('<span style="color: #FFB4BA">' + errorMessage[this.props.postStatus.error-1] + '</span>');
@@ -102,7 +110,7 @@ class AngkeiteuForm extends React.Component {
               <input name='optionGroup'
                      type='radio'
                      disabled='disabled'/>
-              <label htmlFor='test1'>{option.description}</label>
+              <label>{option.description}</label>
             </div>
             <div className='col s2'>
               <a className="waves-effect waves-light btn"
@@ -121,7 +129,8 @@ class AngkeiteuForm extends React.Component {
           <div className='card'>
             <div className='header blue white-text center'>
               <div className='card-content'>
-                NEW ANGKEITEU
+                {this.props.mode === 'RootAngkeiteu' ?
+                  this.props.mode : this.props.triggerOption.description +" of "+ this.props.mode}
               </div>
             </div>
             <div className='card-content'>
@@ -185,6 +194,18 @@ class AngkeiteuForm extends React.Component {
     );
   }
 }
+
+AngkeiteuForm.propTpes = {
+  mode: PropTypes.string,
+  triggerOption: PropTypes.object
+}
+
+AngkeiteuForm.defaultProps = {
+  mode: '',
+  triggerOption: {
+    _id: ''
+  }
+}
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.authentication.status.isLoggedIn,
@@ -194,8 +215,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    angkeiteuPostRequest: (title, description, options) => {
-      return dispatch(angkeiteuPostRequest(title, description, options));
+    angkeiteuPostRequest: (title, description, options, triggerOptionId) => {
+      return dispatch(angkeiteuPostRequest(title, description, options, triggerOptionId));
     }
   };
 };
