@@ -9,13 +9,13 @@ class WriteAngkeiteu extends React.Component {
   }
 
   handleCompleteCreate(id) {
-    this.props.history.push('/readAngkeiteu/'+id);
+    this.props.history.push('/readAngkeiteu/' + id);
   }
 
   render() {
     return (
       <div className='container writeAngkeiteu'>
-        <AngkeiteuForm mode='createNewAngkeiteu'
+        <AngkeiteuForm mode='RootAngkeiteu'
                        onCompleteCreate={this.handleCompleteCreate}
         />
       </div>
