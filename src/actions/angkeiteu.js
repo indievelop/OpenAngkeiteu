@@ -15,12 +15,12 @@ import {
 import axios from 'axios';
 
 /* angkeiteu POST */
-export function angkeiteuPostRequest(title, description, options, parentId, triggerOptionId) {
+export function angkeiteuPostRequest(title, description, options, triggerOptionId) {
     return (dispatch) => {
         // inform angkeiteu POST API is starting
         dispatch(angkeiteuPost());
 
-        return axios.post('/api/angkeiteu/', { title, description, options, parentId, triggerOptionId, })
+        return axios.post('/api/angkeiteu/', { title, description, options, triggerOptionId })
         .then((response) => {
             dispatch(angkeiteuPostSuccess(response.data.id));
         }).catch((error) => {
