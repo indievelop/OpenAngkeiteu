@@ -47,7 +47,7 @@ router.post('/', (req, res)=>{
     options: req.body.options
   });
 
-  if(typeof req.body.triggerOptionId !== 'undefined') {
+  if(typeof req.body.triggerOptionId === 'string' && req.body.triggerOptionId !== '') {
     //CHECK TRIGGEROPTION ID VALIDITY
     if(!mongoose.Types.ObjectId.isValid(req.body.triggerOptionId)) {
         return res.status(400).json({
@@ -56,11 +56,10 @@ router.post('/', (req, res)=>{
         });
     }
   }
-  console.log(req.body.triggerOptionId)
   // SAVE IN DATABASE
   angkeiteu.save((err, newAngkeiteu) => {
     if(err) throw err;
-    if(typeof req.body.triggerOptionId === 'undefined')
+    if(typeof req.body.triggerOptionId !== 'string' || req.body.triggerOptionId === '')
       return res.json({ success: true, id: newAngkeiteu._id});
     Angkeiteu.findOneAndUpdate(
       {'options._id': req.body.triggerOptionId},
@@ -382,7 +381,7 @@ router.put('/:id/selectOption/:optionId', (req, res) => {
     };
     update = {
       '$inc': {'options.$.selectCount': 1},
-      '$push': {'participants': {'email': loginInfo.email, 'selectedOptionId': optionId} }
+      '$push': {'participants': {'accountId': loginInfo._id, 'selectedOptionId': optionId} }
     };
     option = {
       'new': true
