@@ -85,9 +85,10 @@ router.post('/signin', (req, res) => {
         _id: account._id,
         email: account.email
     };
-    // RETURN SUCCESS
+    // RETURN SUCCESS and info.
     return res.json({
-        success: true
+        success: true,
+        info: req.session.loginInfo
     });
   });
 });
