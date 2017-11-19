@@ -12,7 +12,10 @@ const initialState = {
   status: {
     valid: false,
     isLoggedIn: false,
-    currentUser: ''
+    currentUser: {
+      _id: '',
+      email: ''
+    }
   }
 };
 
@@ -35,7 +38,10 @@ export default function authentication(state, action) {
         },
         status: {
           isLoggedIn: {$set: true},
-          currentUser: {$set: action.email}
+          currentUser: {
+            _id: {$set: action.info._id},
+            email: {$set: action.info.email}
+          }
         }
       });
 
@@ -80,7 +86,10 @@ export default function authentication(state, action) {
          return update(state, {
              status: {
                  valid: { $set: true },
-                 currentUser: { $set: action.email }
+                 currentUser: {
+                   _id: {$set: action.info._id},
+                   email: {$set: action.info.email}
+                 }
              }
          });
 
@@ -95,7 +104,10 @@ export default function authentication(state, action) {
         return update(state, {
             status: {
                 isLoggedIn: { $set: false },
-                currentUser: { $set: '' }
+                currentUser: {
+                  _id: {$set: ''},
+                  email: {$set: ''}
+                }
             }
         });
 
