@@ -18,10 +18,10 @@ export function loginRequest(email, password) {
     dispatch(login());
     //api request
     return axios.post('/api/account/signin', { email, password })
-    .then((res) => {
+    .then((response) => {
       //succed
-      dispatch(loginSuccess(email));
-    }).catch((err) => {
+      dispatch(loginSuccess(response.data.info));
+    }).catch((error) => {
       //failed
       dispatch(loginFailure());
     });
@@ -51,7 +51,7 @@ export function getStatusRequest() {
 
       return axios.get('/api/account/getInfo')
       .then((response) => {
-          dispatch(getStatusSuccess(response.data.info.email));
+          dispatch(getStatusSuccess(response.data.info));
       }).catch((error) => {
           dispatch(getStatusFailure());
       });
@@ -74,10 +74,10 @@ export function login() {
   };
 }
 
-export function loginSuccess(email) {
+export function loginSuccess(info) {
   return {
     type: AUTH_LOGIN_SUCCESS,
-    email
+    info
   };
 }
 
@@ -112,10 +112,10 @@ export function getStatus() {
     };
 }
 
-export function getStatusSuccess(email) {
+export function getStatusSuccess(info) {
     return {
         type: AUTH_GET_STATUS_SUCCESS,
-        email
+        info
     };
 }
 
