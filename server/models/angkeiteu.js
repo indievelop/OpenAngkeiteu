@@ -13,8 +13,8 @@ const Angkeiteu = new Schema({
     targetSubAngkeiteus: [{type: Schema.Types.ObjectId, ref: 'angkeiteu'}]
   }],
   participants: [{
-    email: String,
-    selectedOptionId: String,
+    accountId: {type: Schema.Types.ObjectId, ref: 'account'},
+    selectedOptionId: {type: Schema.Types.ObjectId, ref: 'options'},
     participationDate: {type: Date , default: Date.now}
   }],
   viewCount: {type: Number, default: 0},
