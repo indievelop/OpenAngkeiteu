@@ -37,11 +37,14 @@ class ReadAngkeiteu extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if(Object.keys(this.state.data).length === 0)
       return;
-    // update params.id
-    if(prevProps.match.params.id !== this.props.match.params.id)
-      this.loadAngkeiteu(this.props.match.params.id);
     if(!this.state.participation && this.props.authenticateStatus.currentUser !== '')
       this.showParticipationInform();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // update params.id
+    if(nextProps.match.params.id !== this.props.match.params.id)
+      this.loadAngkeiteu(nextProps.match.params.id);
   }
 
   loadAngkeiteu(id) {
@@ -59,9 +62,9 @@ class ReadAngkeiteu extends React.Component {
   showParticipationInform() {
     let participation = {};
     let nextState = {};
-
+    console.log(this.props.authenticateStatus.currentUser);
     participation = this.state.data.participants.find((element) => {
-      return element.email === this.props.authenticateStatus.currentUser;
+      return element.accountId === this.props.authenticateStatus.currentUser._id;
     });
 
     if(typeof participation !== 'undefined') {
