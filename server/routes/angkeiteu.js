@@ -66,7 +66,7 @@ router.post('/', (req, res)=>{
 
 // GET RECENT ANGKEITEU LIST
 router.get('/', (req, res) => {
-  Angkeiteu.find()
+  Angkeiteu.find(req.query)
    .sort({"_id": -1})
    .limit(8)
    .exec((err, angkeiteus) => {
