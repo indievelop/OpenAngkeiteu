@@ -44,7 +44,7 @@ router.post('/', (req, res)=>{
     writer: req.session.loginInfo.email,
     title: req.body.title,
     description: req.body.description,
-    options: req.body.options
+    options: req.body.options,
   });
 
   if(typeof req.body.triggerOptionId === 'string' && req.body.triggerOptionId !== '') {
@@ -55,20 +55,12 @@ router.post('/', (req, res)=>{
             code: 5
         });
     }
+    angkeiteu.triggerOptionId = req.body.triggerOptionId;
   }
   // SAVE IN DATABASE
   angkeiteu.save((err, newAngkeiteu) => {
     if(err) throw err;
-    if(typeof req.body.triggerOptionId !== 'string' || req.body.triggerOptionId === '')
-      return res.json({ success: true, id: newAngkeiteu._id});
-    Angkeiteu.findOneAndUpdate(
-      {'options._id': req.body.triggerOptionId},
-      {'$push': {'options.$.targetSubAngkeiteus': newAngkeiteu._id}})
-      .exec((err, doc) => {
-        if(err) throw err;
-        console.log(doc);
-        return res.json({ success: true, id: newAngkeiteu._id});
-      });
+    return res.json({ success: true, id: newAngkeiteu._id});
   });
 });
 
