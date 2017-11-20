@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { angkeiteuGetRequest, angkeiteuParticipateRequest } from 'actions/angkeiteu';
+import { targetAngkeiteuListRequest, targetAngkeiteuListInit } from 'actions/targetAngkeiteu';
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
-import { AngkeiteuPieChart, AngkeiteuForm } from 'components';
+import { AngkeiteuPieChart, AngkeiteuForm, AngkeiteuList } from 'components';
 
 class ReadAngkeiteu extends React.Component {
 
@@ -15,7 +16,7 @@ class ReadAngkeiteu extends React.Component {
       data: {},
       option: '',
       participation: false,
-      triggerOption: {},
+      triggerOption: {}
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,6 +26,7 @@ class ReadAngkeiteu extends React.Component {
   }
 
   componentDidMount() {
+    this.props.targetAngkeiteuListInit();
     this.loadAngkeiteu(this.props.match.params.id);
     $(document).ready(() => {
       $('.modal').modal({
@@ -37,7 +39,7 @@ class ReadAngkeiteu extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if(Object.keys(this.state.data).length === 0)
       return;
-    if(!this.state.participation && this.props.authenticateStatus.currentUser !== '')
+    if(!this.state.participation && this.props.authenticateStatus.currentUser._id !== '')
       this.showParticipationInform();
   }
 
@@ -62,7 +64,7 @@ class ReadAngkeiteu extends React.Component {
   showParticipationInform() {
     let participation = {};
     let nextState = {};
-    console.log(this.props.authenticateStatus.currentUser);
+
     participation = this.state.data.participants.find((element) => {
       return element.accountId === this.props.authenticateStatus.currentUser._id;
     });
@@ -70,6 +72,7 @@ class ReadAngkeiteu extends React.Component {
     if(typeof participation !== 'undefined') {
       nextState['option'] = participation.selectedOptionId;
       nextState['participation'] = true;
+      this.props.targetAngkeiteuListRequest(participation.selectedOptionId);
       return this.setState(nextState);
     }
   }
@@ -97,15 +100,15 @@ class ReadAngkeiteu extends React.Component {
     });
   }
 
-  handleCreateSubAngkeiteu(triggerOption) {
+  handleCreateTargetAngkeiteu(triggerOption) {
     let nextState = {};
     nextState['triggerOption'] = triggerOption;
     this.setState(nextState);
-    $('#createSubAngkeiteuModal').modal('open');
+    $('#createTargetAngkeiteuModal').modal('open');
   }
 
   handleCompleteCreate(id) {
-    $('#createSubAngkeiteuModal').modal('close');
+    $('#createTargetAngkeiteuModal').modal('close');
     this.props.history.push('/readAngkeiteu/' + id);
   }
 
@@ -129,7 +132,7 @@ class ReadAngkeiteu extends React.Component {
             </div>
             <div className='col s2'>
               <a className='waves-effect waves-light btn'
-                 onClick={() => this.handleCreateSubAngkeiteu(option)}>
+                 onClick={() => this.handleCreateTargetAngkeiteu(option)}>
                 <i className='material-icons center'>create</i>
               </a>
             </div>
@@ -160,10 +163,10 @@ class ReadAngkeiteu extends React.Component {
       </div>
     );
 
-    const createSubAngkeiteuModal = (
-      <div id='createSubAngkeiteuModal' className='modal'>
+    const createTargetAngkeiteuModal = (
+      <div id='createTargetAngkeiteuModal' className='modal'>
         <div className='modal-content'>
-          <AngkeiteuForm mode='SubAngkeiteu'
+          <AngkeiteuForm mode='TargetAngkeiteu'
                          triggerOption={this.state.triggerOption}
                          onCompleteCreate={this.handleCompleteCreate}/>
         </div>
@@ -204,7 +207,8 @@ class ReadAngkeiteu extends React.Component {
             </div>
           </div>
         </div>
-        {createSubAngkeiteuModal}
+        {createTargetAngkeiteuModal}
+        <AngkeiteuList data={this.props.targetAngkeiteuListStatus.data}/>
       </div>
     );
   }
@@ -214,7 +218,8 @@ const mapStateToProps = (state) => {
     return {
         angkeiteuGetStaus: state.angkeiteu.get,
         participateStatus: state.angkeiteu.participate,
-        authenticateStatus: state.authentication.status
+        authenticateStatus: state.authentication.status,
+        targetAngkeiteuListStatus: state.targetAngkeiteu.list
     };
 };
 
@@ -225,8 +230,14 @@ const mapDispatchToProps = (dispatch) => {
     },
     angkeiteuParticipateRequest: (id, optionId) => {
       return dispatch(angkeiteuParticipateRequest(id, optionId));
+    },
+    targetAngkeiteuListRequest: (triggerOptionId) => {
+      return dispatch(targetAngkeiteuListRequest(triggerOptionId));
+    },
+    targetAngkeiteuListInit: () => {
+      return dispatch(targetAngkeiteuListInit());
     }
-  }
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReadAngkeiteu);
