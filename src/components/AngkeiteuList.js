@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Angkeiteu } from 'components';
-import { connect } from 'react-redux';
 
 class AngkeiteuList extends React.Component {
 
