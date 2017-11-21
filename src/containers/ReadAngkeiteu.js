@@ -14,7 +14,7 @@ class ReadAngkeiteu extends React.Component {
     super(props);
     this.state = {
       data: {},
-      option: '',
+      selectedOptionId: '',
       participation: false,
       triggerOption: {}
     };
@@ -26,7 +26,6 @@ class ReadAngkeiteu extends React.Component {
   }
 
   componentDidMount() {
-    this.props.targetAngkeiteuListInit();
     this.loadAngkeiteu(this.props.match.params.id);
     $(document).ready(() => {
       $('.modal').modal({
@@ -41,6 +40,7 @@ class ReadAngkeiteu extends React.Component {
       return;
     if(!this.state.participation && this.props.authenticateStatus.currentUser._id !== '')
       this.showParticipationInform();
+    $(window).scrollTop(0);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -53,7 +53,8 @@ class ReadAngkeiteu extends React.Component {
     let nextState = {};
 
     this.props.angkeiteuGetRequest(id).then(() => {
-      nextState['option'] = '';
+      this.props.targetAngkeiteuListInit();
+      nextState['selectedOptionId'] = '';
       nextState['participation'] = false;
       nextState['data'] = this.props.angkeiteuGetStaus.data;
       nextState['triggerOption'] = {};
@@ -68,9 +69,8 @@ class ReadAngkeiteu extends React.Component {
     participation = this.state.data.participants.find((element) => {
       return element.accountId === this.props.authenticateStatus.currentUser._id;
     });
-
     if(typeof participation !== 'undefined') {
-      nextState['option'] = participation.selectedOptionId;
+      nextState['selectedOptionId'] = participation.selectedOptionId;
       nextState['participation'] = true;
       this.props.targetAngkeiteuListRequest(participation.selectedOptionId);
       return this.setState(nextState);
@@ -85,7 +85,7 @@ class ReadAngkeiteu extends React.Component {
 
   handleSubmit() {
     let id = this.props.match.params.id;
-    let optionId = this.state.option;
+    let optionId = this.state.selectedOptionId;
     let msg = '';
     let nextState = {};
 
@@ -121,10 +121,10 @@ class ReadAngkeiteu extends React.Component {
           <div className='row'
                key={option._id}>
             <div className='col s10'>
-              <input name='option'
+              <input name='selectedOptionId'
                      type='radio'
                      onChange={this.handleChange}
-                     checked={this.state.option === option._id}
+                     checked={this.state.selectedOptionId === option._id}
                      disabled={this.state.participation}
                      value={option._id}
                      id={option._id}/>
@@ -173,6 +173,22 @@ class ReadAngkeiteu extends React.Component {
       </div>
     );
 
+    const targetAngkeiteuListView = () => {
+      let selectedOption = this.state.data.options.find((option, i) => {
+        return option._id === this.state.selectedOptionId;
+      });
+
+      return (
+        <div className='col s12'>
+          <div className='divider'></div>
+          <div className='section'>
+            <h5>{`${selectedOption.description} of target angkeiteu`}</h5>
+            <AngkeiteuList data={this.props.targetAngkeiteuListStatus.data}/>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className='container readAngkeiteu'>
         <div className='row'>
@@ -206,9 +222,9 @@ class ReadAngkeiteu extends React.Component {
               {this.state.participation ? undefined : submitBtn}
             </div>
           </div>
+          {this.state.participation ? targetAngkeiteuListView() : undefined}
         </div>
         {createTargetAngkeiteuModal}
-        <AngkeiteuList data={this.props.targetAngkeiteuListStatus.data}/>
       </div>
     );
   }
