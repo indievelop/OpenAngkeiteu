@@ -115,6 +115,7 @@ router.post('/tree', (req, res) => {
 // GET ANGKEITEU
 router.get('/:id', (req, res) => {
   let id = req.params.id;
+  let accountId = req.query.accountId;
   let condition = {};
   let update = {};
   let option ={};
@@ -126,7 +127,6 @@ router.get('/:id', (req, res) => {
           code: 1
       });
   }
-
   condition = {
     '_id': id
   };
@@ -138,6 +138,12 @@ router.get('/:id', (req, res) => {
   }
   Angkeiteu.findOneAndUpdate(condition, update, option, (err, angkeiteu) => {
     if(err) throw err;
+    angkeiteu = angkeiteu.toObject(); //mongoose model => object
+    if(typeof accountId === 'string' && accountId !== '') {
+      angkeiteu['accountParticipation'] = angkeiteu.participants.find((e) => {
+        return e.accountId.toString() === accountId;
+      });
+    }
     return res.json(angkeiteu);
   });
 });
@@ -357,7 +363,7 @@ router.put('/:id/selectOption/:optionId', (req, res) => {
   }
   //CHECK DUPLICATED PARTICIPATION
   condition = {
-    '_id': id, 'participants.email':  loginInfo.email
+    '_id': id, 'participants.accountId':  loginInfo._id
   }
   Angkeiteu.findOne(condition, (err, angkeiteu) => {
     if(err) throw err;
