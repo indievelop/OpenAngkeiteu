@@ -104,12 +104,16 @@ export function angkeiteuListFailure(orderType, error) {
 }
 
 /** ANGKEITEU GET **/
-export function angkeiteuGetRequest(id) {
+export function angkeiteuGetRequest(id, accountId) {
   return (dispatch) => {
     let url = '/api/angkeiteu';
 
     dispatch(angkeiteuGet());
-    url = `${url}/${id}`;
+
+    if(typeof accountId ==='undefined')
+      url = `${url}/${id}`;
+    else
+      url = `${url}/${id}?accountId=${accountId}`;
     return axios.get(url)
     .then((response) => {
       dispatch(angkeiteuGetSuccess(response.data));
