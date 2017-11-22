@@ -13,14 +13,11 @@ class ReadAngkeiteu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {},
       selectedOptionId: '',
-      participation: false,
       triggerOption: {}
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.showParticipationInform = this.showParticipationInform.bind(this);
     this.loadAngkeiteu = this.loadAngkeiteu.bind(this);
     this.handleCompleteCreate = this.handleCompleteCreate.bind(this);
   }
@@ -36,10 +33,6 @@ class ReadAngkeiteu extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(Object.keys(this.state.data).length === 0)
-      return;
-    if(!this.state.participation && this.props.authenticateStatus.currentUser._id !== '')
-      this.showParticipationInform();
     $(window).scrollTop(0);
   }
 
@@ -50,31 +43,17 @@ class ReadAngkeiteu extends React.Component {
   }
 
   loadAngkeiteu(id) {
-    let nextState = {};
+    let accountId = undefined;
+    let accountParticipation = undefined;
 
-    this.props.angkeiteuGetRequest(id).then(() => {
+    if(this.props.authenticateStatus.currentUser._id !== '')
+      accountId = this.props.authenticateStatus.currentUser._id;
+    this.props.angkeiteuGetRequest(id, accountId).then(() => {
       this.props.targetAngkeiteuListInit();
-      nextState['selectedOptionId'] = '';
-      nextState['participation'] = false;
-      nextState['data'] = this.props.angkeiteuGetStaus.data;
-      nextState['triggerOption'] = {};
-      return this.setState(nextState);
+      accountParticipation = this.props.angkeiteuGetStaus.data.accountParticipation;
+      if(typeof accountParticipation !== 'undefined')
+        this.props.targetAngkeiteuListRequest(accountParticipation.selectedOptionId);
     });
-  }
-
-  showParticipationInform() {
-    let participation = {};
-    let nextState = {};
-
-    participation = this.state.data.participants.find((element) => {
-      return element.accountId === this.props.authenticateStatus.currentUser._id;
-    });
-    if(typeof participation !== 'undefined') {
-      nextState['selectedOptionId'] = participation.selectedOptionId;
-      nextState['participation'] = true;
-      this.props.targetAngkeiteuListRequest(participation.selectedOptionId);
-      return this.setState(nextState);
-    }
   }
 
   handleChange(e) {
@@ -91,8 +70,7 @@ class ReadAngkeiteu extends React.Component {
 
     this.props.angkeiteuParticipateRequest(id, optionId).then(() => {
       if(this.props.participateStatus.status === 'SUCCESS') {
-        nextState['data'] = this.props.participateStatus.data;
-        return this.setState(nextState);
+        this.loadAngkeiteu(id);
       } else {
         msg = this.props.participateStatus.error.error;
         Materialize.toast($(`<span style="color: #FFB4BA">${msg}</span>`), 2000);
@@ -113,7 +91,7 @@ class ReadAngkeiteu extends React.Component {
   }
 
   render() {
-    const {data} = this.state;
+    const {data} = this.props.angkeiteuGetStaus;
 
     const mapToOptions = options => {
       return options.map((option, i) => {
@@ -124,8 +102,10 @@ class ReadAngkeiteu extends React.Component {
               <input name='selectedOptionId'
                      type='radio'
                      onChange={this.handleChange}
-                     checked={this.state.selectedOptionId === option._id}
-                     disabled={this.state.participation}
+                     checked={typeof data.accountParticipation === 'undefined' ?
+                              this.state.selectedOptionId === option._id :
+                              data.accountParticipation.selectedOptionId === option._id}
+                     disabled={typeof data.accountParticipation !== 'undefined'}
                      value={option._id}
                      id={option._id}/>
               <label htmlFor={option._id}>{option.description}</label>
@@ -173,28 +153,24 @@ class ReadAngkeiteu extends React.Component {
       </div>
     );
 
-    const targetAngkeiteuListView = () => {
-      let selectedOption = this.state.data.options.find((option, i) => {
-        return option._id === this.state.selectedOptionId;
-      });
-
-      return (
-        <div className='col s12'>
-          <div className='divider'></div>
-          <div className='section'>
-            <h5>{`${selectedOption.description} of target angkeiteu`}</h5>
-            <AngkeiteuList data={this.props.targetAngkeiteuListStatus.data}/>
-          </div>
+    const targetAngkeiteuListView = (
+      <div className='col s12'>
+        <div className='divider'></div>
+        <div className='section'>
+          <h5>{typeof data.accountParticipation !== 'undefined' ?
+            `${data.accountParticipation.selectedOptionId}` : undefined }</h5>
+          <AngkeiteuList data={this.props.targetAngkeiteuListStatus.data}/>
         </div>
-      );
-    }
+      </div>
+    );
+
 
     return (
       <div className='container readAngkeiteu'>
         <div className='row'>
           <div className='col s12'>
             <div className='card'>
-              {this.state.participation ? thankyouHeader : pleaseHeader}
+              {typeof data.accountParticipation !== 'undefined' ? thankyouHeader : pleaseHeader}
               <div className='card-content'>
                 <div className='card-title'>
                   <h3>{data.title}</h3>
@@ -219,10 +195,10 @@ class ReadAngkeiteu extends React.Component {
                   </div>
                 </div>
               </div>
-              {this.state.participation ? undefined : submitBtn}
+              {typeof data.accountParticipation !== 'undefined' ? undefined : submitBtn}
             </div>
           </div>
-          {this.state.participation ? targetAngkeiteuListView() : undefined}
+          {typeof data.accountParticipation !== 'undefined' ? targetAngkeiteuListView : undefined}
         </div>
         {createTargetAngkeiteuModal}
       </div>
@@ -241,8 +217,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    angkeiteuGetRequest: (id) => {
-      return dispatch(angkeiteuGetRequest(id));
+    angkeiteuGetRequest: (id, accountId) => {
+      return dispatch(angkeiteuGetRequest(id, accountId));
     },
     angkeiteuParticipateRequest: (id, optionId) => {
       return dispatch(angkeiteuParticipateRequest(id, optionId));
