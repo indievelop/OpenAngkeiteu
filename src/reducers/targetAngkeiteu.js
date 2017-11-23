@@ -24,13 +24,33 @@ export default function targetAngkeiteu(state, action) {
         }
       });
     case types.TARGET_ANGKEITEU_LIST_SUCCESS:
-      return update(state, {
-        list: {
-          status: { $set: 'SUCCESS' },
-          data: { $set: action.data },
-          isLast: { $set: action.data.length < 8 }
+      if(action.isInitial) {
+        return update(state, {
+          list: {
+            status: { $set: 'SUCCESS' },
+            data: { $set: action.data },
+            isLast: { $set: action.data.length < 8 }
+          }
+        });
+      } else {
+        if(action.listType === 'new') {
+          return update(state, {
+              list: {
+                status: { $set: 'SUCCESS' },
+                data: { $unshift: action.data },
+              }
+          });
+        } else {
+          return update(state, {
+              list: {
+                  status: { $set: 'SUCCESS' },
+                  data: { $push: action.data },
+                  isLast: { $set: action.data.length < 4 }
+              }
+          });
         }
-      });
+      }
+
     case types.TARGET_ANGKEITEU_LIST_FAILURE:
       return update(state, {
         list: {
