@@ -213,7 +213,7 @@ router.get('/hot/:period', (req, res) => {
 router.get('/:listType/:id', (req, res) => {
   let listType = req.params.listType;
   let id = req.params.id;
-  let findCondition = {};
+  let findCondition = req.query;
   let sortCondition = {};
 
   // CHECK LISTTYPE VALIDITY
@@ -231,11 +231,11 @@ router.get('/:listType/:id', (req, res) => {
       });
   }
   if(listType === 'old') {
-    findCondition = { '_id': { '$lt': id } };
-    sortCondition = { '_id': -1};
+    findCondition['_id'] = { '$lt': id };
+    sortCondition = { '_id': -1 };
   } else if(listType === 'new') {
-    findCondition = { '_id': { '$gt': id } };
-    sortCondition = { '_id': 1};
+    findCondition['_id'] = { '$gt': id } ;
+    sortCondition = { '_id': 1 };
   }
 
   Angkeiteu.find(findCondition)
