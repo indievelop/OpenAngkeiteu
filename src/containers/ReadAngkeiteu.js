@@ -23,7 +23,7 @@ class ReadAngkeiteu extends React.Component {
   }
 
   componentDidMount() {
-    this.loadAngkeiteu(this.props.match.params.id);
+    this.loadAngkeiteu(this.props.match.params.id, this.props.authenticateStatus.currentUser);
     $(document).ready(() => {
       $('.modal').modal({
         //set scroll location.
@@ -37,19 +37,25 @@ class ReadAngkeiteu extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    // update authenticateStatus
+    if(nextProps.authenticateStatus !== this.props.authenticateStatus)
+      this.loadAngkeiteu(this.props.match.params.id,
+                          nextProps.authenticateStatus.currentUser);
     // update params.id
     if(nextProps.match.params.id !== this.props.match.params.id)
-      this.loadAngkeiteu(nextProps.match.params.id);
+      this.loadAngkeiteu(nextProps.match.params.id,
+                          this.props.authenticateStatus.currentUser);
   }
 
-  loadAngkeiteu(id) {
+  loadAngkeiteu(id, currentUser) {
     let accountId = undefined;
     let accountParticipation = undefined;
 
-    if(this.props.authenticateStatus.currentUser._id !== '')
-      accountId = this.props.authenticateStatus.currentUser._id;
+    if(currentUser._id !== '')
+      accountId = currentUser._id;
     this.props.angkeiteuGetRequest(id, accountId).then(() => {
       this.props.targetAngkeiteuListInit();
+      //currentUser participation infrom.
       accountParticipation = this.props.angkeiteuGetStaus.data.accountParticipation;
       if(typeof accountParticipation !== 'undefined')
         this.props.targetAngkeiteuListRequest(accountParticipation.selectedOptionId);
@@ -70,7 +76,8 @@ class ReadAngkeiteu extends React.Component {
 
     this.props.angkeiteuParticipateRequest(id, optionId).then(() => {
       if(this.props.participateStatus.status === 'SUCCESS') {
-        this.loadAngkeiteu(id);
+        this.loadAngkeiteu(id, this.props.authenticateStatus.currentUser
+        );
       } else {
         msg = this.props.participateStatus.error.error;
         Materialize.toast($(`<span style="color: #FFB4BA">${msg}</span>`), 2000);
@@ -153,16 +160,20 @@ class ReadAngkeiteu extends React.Component {
       </div>
     );
 
-    const targetAngkeiteuListView = (
-      <div className='col s12'>
-        <div className='divider'></div>
-        <div className='section'>
-          <h5>{typeof data.accountParticipation !== 'undefined' ?
-            `${data.accountParticipation.selectedOptionId}` : undefined }</h5>
-          <AngkeiteuList data={this.props.targetAngkeiteuListStatus.data}/>
+    const targetAngkeiteuListView = () => {
+      let selectedOption = this.props.angkeiteuGetStaus.data.options.find((option) => {
+        return option._id === data.accountParticipation.selectedOptionId;
+      });
+      return (
+        <div className='col s12'>
+          <div className='divider'></div>
+          <div className='section'>
+            <h5>{`${selectedOption.description} of targetAngkeiteu`}</h5>
+            <AngkeiteuList data={this.props.targetAngkeiteuListStatus.data}/>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
 
 
     return (
@@ -198,7 +209,7 @@ class ReadAngkeiteu extends React.Component {
               {typeof data.accountParticipation !== 'undefined' ? undefined : submitBtn}
             </div>
           </div>
-          {typeof data.accountParticipation !== 'undefined' ? targetAngkeiteuListView : undefined}
+          {typeof data.accountParticipation !== 'undefined' ? targetAngkeiteuListView() : undefined}
         </div>
         {createTargetAngkeiteuModal}
       </div>
