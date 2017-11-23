@@ -20,6 +20,7 @@ class ReadAngkeiteu extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.loadAngkeiteu = this.loadAngkeiteu.bind(this);
     this.handleCompleteCreate = this.handleCompleteCreate.bind(this);
+    this.handleExpandMoreTargetAngkeiteuList = this.handleExpandMoreTargetAngkeiteuList.bind(this);
   }
 
   componentDidMount() {
@@ -58,7 +59,7 @@ class ReadAngkeiteu extends React.Component {
       //currentUser participation infrom.
       accountParticipation = this.props.angkeiteuGetStaus.data.accountParticipation;
       if(typeof accountParticipation !== 'undefined')
-        this.props.targetAngkeiteuListRequest(accountParticipation.selectedOptionId);
+        this.props.targetAngkeiteuListRequest(true, accountParticipation.selectedOptionId, undefined, undefined);
     });
   }
 
@@ -95,6 +96,13 @@ class ReadAngkeiteu extends React.Component {
   handleCompleteCreate(id) {
     $('#createTargetAngkeiteuModal').modal('close');
     this.props.history.push('/readAngkeiteu/' + id);
+  }
+
+  handleExpandMoreTargetAngkeiteuList() {
+    let accountParticipation = this.props.angkeiteuGetStaus.data.accountParticipation;
+    let targetAngkeiteuList = this.props.targetAngkeiteuListStatus;
+    this.props.targetAngkeiteuListRequest(false, accountParticipation.selectedOptionId,
+                                          'old', targetAngkeiteuList.data[targetAngkeiteuList.data.length-1]._id);
   }
 
   render() {
@@ -160,16 +168,27 @@ class ReadAngkeiteu extends React.Component {
       </div>
     );
 
+    const expandMoreBtn = (
+      <div className='center-align'>
+        <a className='waves-effect waves-light btn'
+           onClick={this.handleExpandMoreTargetAngkeiteuList}>
+          <i className='material-icons'>expand_more</i>
+        </a>
+      </div>
+    );
+
     const targetAngkeiteuListView = () => {
       let selectedOption = this.props.angkeiteuGetStaus.data.options.find((option) => {
         return option._id === data.accountParticipation.selectedOptionId;
       });
+
       return (
         <div className='col s12'>
           <div className='divider'></div>
           <div className='section'>
             <h5>{`${selectedOption.description} of targetAngkeiteu`}</h5>
             <AngkeiteuList data={this.props.targetAngkeiteuListStatus.data}/>
+            {this.props.targetAngkeiteuListStatus.isLast ? undefined : expandMoreBtn }
           </div>
         </div>
       );
@@ -234,8 +253,8 @@ const mapDispatchToProps = (dispatch) => {
     angkeiteuParticipateRequest: (id, optionId) => {
       return dispatch(angkeiteuParticipateRequest(id, optionId));
     },
-    targetAngkeiteuListRequest: (triggerOptionId) => {
-      return dispatch(targetAngkeiteuListRequest(triggerOptionId));
+    targetAngkeiteuListRequest: (isInitial, triggerOptionId, listType, id) => {
+      return dispatch(targetAngkeiteuListRequest(isInitial, triggerOptionId, listType, id));
     },
     targetAngkeiteuListInit: () => {
       return dispatch(targetAngkeiteuListInit());
