@@ -28,17 +28,25 @@ const initialState = {
         status: 'INIT',
         error: -1,
         data: {}
+    },
+    triggerList: {
+      status: 'INIT',
+      error: -1,
+      data: [],
+      isLast: false
     }
 };
 
 export default function angkeiteu(state, action) {
     let targetName = '';
 
-    if(typeof action.orderType !== 'undefined') {
-      if(action.orderType === 'recent')
+    if(typeof action.listName !== 'undefined') {
+      if(action.listName === 'recent')
         targetName = 'list'
-      if(action.orderType === 'hotToday' || action.orderType === 'hotThisMonth')
+      if(action.listName === 'hotToday' || action.listName === 'hotThisMonth')
         targetName = 'hotList';
+      if(action.listName === 'triggerList')
+        targetName ='triggerList';
     }
 
     if(typeof state === "undefined") {
