@@ -12,9 +12,10 @@ class AngkeiteuList extends React.Component {
     const mapToComponets = angkeiteuList => {
       return angkeiteuList.map((angkeiteu, i) => {
         return (
-          <Angkeiteu data={angkeiteu}
-                     key={angkeiteu._id}
-          />
+          <div className={this.props.mode === 'only s12' ? 'col s12' : 'col s12 l3'}
+               key={angkeiteu._id}>
+            <Angkeiteu data={angkeiteu}/>
+          </div>
         );
       });
     }
@@ -28,10 +29,12 @@ class AngkeiteuList extends React.Component {
 }
 
 AngkeiteuList.propTypes = {
+  mode: PropTypes.string,
   data: PropTypes.array
 }
 
 AngkeiteuList.defaultProps = {
+  mode: 'default',
   data:[]
 }
 
