@@ -85,6 +85,7 @@ class AngkeiteuForm extends React.Component {
     //let parentId = '';
     this.props.angkeiteuPostRequest(title, description, options, triggerOptionId).then(() => {
       if(this.props.postStatus.status === 'SUCCESS') {
+        this.initFormData();
         this.props.onCompleteCreate(this.props.postStatus.id);
       } else {
         let errorMessage = [
