@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { angkeiteuGetRequest, angkeiteuParticipateRequest } from 'actions/angkeiteu';
-import { targetAngkeiteuListRequest, targetAngkeiteuListInit } from 'actions/targetAngkeiteu';
+import { angkeiteuGetRequest, angkeiteuParticipateRequest, triggerAngkeiteuListRequest } from 'actions/angkeiteu';
+import { targetAngkeiteuListRequest } from 'actions/targetAngkeiteu';
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
 import { AngkeiteuPieChart, AngkeiteuForm, AngkeiteuList } from 'components';
@@ -50,16 +50,20 @@ class ReadAngkeiteu extends React.Component {
 
   loadAngkeiteu(id, currentUser) {
     let accountId = undefined;
-    let accountParticipation = undefined;
+    let data = {};
 
     if(currentUser._id !== '')
       accountId = currentUser._id;
     this.props.angkeiteuGetRequest(id, accountId).then(() => {
-      this.props.targetAngkeiteuListInit();
       //currentUser participation infrom.
-      accountParticipation = this.props.angkeiteuGetStaus.data.accountParticipation;
-      if(typeof accountParticipation !== 'undefined')
-        this.props.targetAngkeiteuListRequest(true, accountParticipation.selectedOptionId, undefined, undefined);
+      data = this.props.angkeiteuGetStaus.data;
+      if(typeof data.accountParticipation !== 'undefined')
+        this.props.targetAngkeiteuListRequest(true, data.accountParticipation.selectedOptionId, undefined, undefined);
+      //currentAngkeiteu triggerAngkeiteuList.
+      if(typeof data.triggerOptionId !== 'undefined')
+        this.props.triggerAngkeiteuListRequest(data.triggerOptionId).then(()=> {
+          console.log(this.props.triggerAngkeiteuListStatus);
+        })
     });
   }
 
@@ -183,22 +187,31 @@ class ReadAngkeiteu extends React.Component {
       });
 
       return (
-        <div className='col s12'>
+        <div className='col s12 m4'>
           <div className='divider'></div>
           <div className='section'>
             <h5>{`${selectedOption.description} of targetAngkeiteu`}</h5>
-            <AngkeiteuList data={this.props.targetAngkeiteuListStatus.data}/>
+            <AngkeiteuList mode='only s12' data={this.props.targetAngkeiteuListStatus.data}/>
             {this.props.targetAngkeiteuListStatus.isLast ? undefined : expandMoreBtn }
           </div>
         </div>
       );
-    }
+    };
 
+    const triggerAngkeiteuListView = (
+      <div className='col s12 m4'>
+        <div className='divider'></div>
+        <div className='section'>
+          <h5>{`${data.title} of triggerAngkeiteu`}</h5>
+          <AngkeiteuList mode='only s12' data={this.props.triggerAngkeiteuListStatus.data}/>
+        </div>
+      </div>
+    );
 
     return (
       <div className='container readAngkeiteu'>
         <div className='row'>
-          <div className='col s12'>
+          <div className='col s12 m8'>
             <div className='card'>
               {typeof data.accountParticipation !== 'undefined' ? thankyouHeader : pleaseHeader}
               <div className='card-content'>
@@ -228,6 +241,7 @@ class ReadAngkeiteu extends React.Component {
               {typeof data.accountParticipation !== 'undefined' ? undefined : submitBtn}
             </div>
           </div>
+          {typeof data.triggerOptionId !== 'undefined' ? triggerAngkeiteuListView : undefined}
           {typeof data.accountParticipation !== 'undefined' ? targetAngkeiteuListView() : undefined}
         </div>
         {createTargetAngkeiteuModal}
@@ -241,7 +255,8 @@ const mapStateToProps = (state) => {
         angkeiteuGetStaus: state.angkeiteu.get,
         participateStatus: state.angkeiteu.participate,
         authenticateStatus: state.authentication.status,
-        targetAngkeiteuListStatus: state.targetAngkeiteu.list
+        targetAngkeiteuListStatus: state.targetAngkeiteu.list,
+        triggerAngkeiteuListStatus: state.angkeiteu.triggerList
     };
 };
 
@@ -256,8 +271,8 @@ const mapDispatchToProps = (dispatch) => {
     targetAngkeiteuListRequest: (isInitial, triggerOptionId, listType, id) => {
       return dispatch(targetAngkeiteuListRequest(isInitial, triggerOptionId, listType, id));
     },
-    targetAngkeiteuListInit: () => {
-      return dispatch(targetAngkeiteuListInit());
+    triggerAngkeiteuListRequest: (triggerOptionId) => {
+      return dispatch(triggerAngkeiteuListRequest(triggerOptionId));
     }
   };
 }
