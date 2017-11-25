@@ -50,21 +50,11 @@ export default function targetAngkeiteu(state, action) {
           });
         }
       }
-
     case types.TARGET_ANGKEITEU_LIST_FAILURE:
       return update(state, {
         list: {
           status: { $set: 'FAILURE' },
           error: { $set: action.error }
-        }
-      });
-    case types.TARGET_ANGKEITEU_LIST_INIT:
-      return update(state, {
-        list: {
-          status: { $set: 'INIT' },
-          error: { $set: -1 },
-          data: { $set: [] },
-          isLast: { $set: false }
         }
       });
     default:
