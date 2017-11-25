@@ -50,16 +50,21 @@ export function angkeiteuPostFailure(error) {
 }
 
 /* ANGKEITEU LIST */
-export function angkeiteuListRequest(isInitial, orderType, listType, id, email) {
+export function angkeiteuListRequest(isInitial, listName, listType, id, email) {
     return (dispatch) => {
       let url = '/api/angkeiteu';
 
-      dispatch(angkeiteuList(orderType));
+      dispatch(angkeiteuList(listName));
 
-      if(orderType === 'hotToday') {
-        url += '/hot/today'
-      } else if(orderType === 'hotThisMonth') {
-        url += '/hot/thisMonth'
+      switch (listName) {
+        case 'hotToday':
+          url += '/hot/today';
+          break;
+        case 'hotThisMonth':
+          url += '/hot/thisMonth'
+          break;
+        default:
+          break;
       }
 
       if(typeof email === 'undefined') {
@@ -71,34 +76,34 @@ export function angkeiteuListRequest(isInitial, orderType, listType, id, email) 
 
       return axios.get(url)
       .then((response) => {
-          dispatch(angkeiteuListSuccess(response.data, isInitial, orderType, listType));
+          dispatch(angkeiteuListSuccess(response.data, isInitial, listName, listType));
       }).catch((error) => {
-          dispatch(angkeiteuListFailure(orderType, error));
+          dispatch(angkeiteuListFailure(listName, error));
       });
     };
 }
 
-export function angkeiteuList(orderType) {
+export function angkeiteuList(listName) {
     return {
         type: ANGKEITEU_LIST,
-        orderType
+        listName
     };
 }
 
-export function angkeiteuListSuccess(data, isInitial, orderType, listType) {
+export function angkeiteuListSuccess(data, isInitial, listName, listType) {
     return {
         type: ANGKEITEU_LIST_SUCCESS,
         data,
         isInitial,
-        orderType,
+        listName,
         listType
     };
 }
 
-export function angkeiteuListFailure(orderType, error) {
+export function angkeiteuListFailure(listName, error) {
     return {
         type: ANGKEITEU_LIST_FAILURE,
-        orderType,
+        listName,
         error
     };
 }
@@ -176,5 +181,25 @@ export function angkeiteuParticipateFailure(error) {
   return {
     type: ANGKEITEU_PARTICIPATE_FAILURE,
     error
+  };
+}
+
+/** TRIGGER ANGKEITEU LIST **/
+export function triggerAngkeiteuListRequest(triggerOptionId) {
+  return (dispatch) => {
+    let url = '/api/angkeiteu';
+    const listName = 'triggerList';
+    const isInitial = true;
+    const listType = undefined;
+
+    dispatch(angkeiteuList(listName));
+    url +=`?options._id=${triggerOptionId}`;
+    return axios.get(url)
+    .then((response) => {
+        console.log(response.data);
+        dispatch(angkeiteuListSuccess(response.data, isInitial, listName, listType));
+    }).catch((error) => {
+        dispatch(angkeiteuListFailure(listName, error));
+    });
   };
 }
