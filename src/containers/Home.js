@@ -16,9 +16,10 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    this.props.angkeiteuListRequest(true, 'recent');
-    this.props.angkeiteuListRequest(true, 'hot'+ this.state.selectedPeriod);
-
+    if(this.props.angkeiteuListStatus.data.length == 0 && this.props.angkeiteuHotListStatus.data.length ==0) {
+      this.props.angkeiteuListRequest(true, 'recent');
+      this.props.angkeiteuListRequest(true, 'hot'+ this.state.selectedPeriod);
+    }
     $('.dropdown-button').dropdown({
       inDuration: 300,
       outDuration: 225,
