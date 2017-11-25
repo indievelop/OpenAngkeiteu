@@ -44,9 +44,3 @@ export function targetAngkeiteuListFailure(error) {
     error
   };
 }
-
-export function targetAngkeiteuListInit() {
-  return {
-    type: TARGET_ANGKEITEU_LIST_INIT
-  }
-}
