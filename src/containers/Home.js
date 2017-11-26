@@ -1,7 +1,7 @@
 import React from 'react';
 import { AngkeiteuList } from 'components';
 import { connect } from 'react-redux';
-import { angkeiteuListRequest } from 'actions/angkeiteu';
+import { angkeiteuListRequest, hotAngkeiteuListRequest } from 'actions/angkeiteu';
 
 
 class Home extends React.Component {
@@ -9,16 +9,16 @@ class Home extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-        selectedPeriod: 'Today'
+        selectedPeriod: 'today'
       }
       this.handleExpandMoreAngkeiteuList = this.handleExpandMoreAngkeiteuList.bind(this);
       this.handleChangePeriod = this.handleChangePeriod.bind(this);
   }
 
   componentDidMount() {
-    if(this.props.angkeiteuListStatus.data.length == 0 && this.props.angkeiteuHotListStatus.data.length ==0) {
-      this.props.angkeiteuListRequest(true, 'recent');
-      this.props.angkeiteuListRequest(true, 'hot'+ this.state.selectedPeriod);
+    if(this.props.angkeiteuListStatus.data.length == 0) {
+      this.props.angkeiteuListRequest(true);
+      this.props.hotAngkeiteuListRequest(true, 'today');
     }
     $('.dropdown-button').dropdown({
       inDuration: 300,
@@ -36,33 +36,33 @@ class Home extends React.Component {
     let nextState = {};
     nextState['selectedPeriod'] = e.target.name;
 
-    this.props.angkeiteuListRequest(true, 'hot'+ e.target.name);
+    this.props.hotAngkeiteuListRequest(true, e.target.name);
     this.setState(nextState);
   }
 
   handleExpandMoreAngkeiteuList(targetName) {
     let angkeiteuList = [];
 
-    if(targetName === 'recent') {
+    if(targetName === 'list') {
       angkeiteuList = this.props.angkeiteuListStatus.data;
-      this.props.angkeiteuListRequest(false, 'recent', 'old', angkeiteuList[angkeiteuList.length-1]._id);
-    } else if(targetName === 'hot') {
-      angkeiteuList = this.props.angkeiteuHotListStatus.data;
-      this.props.angkeiteuListRequest(false, 'hot'+this.state.selectedPeriod, 'old', angkeiteuList[angkeiteuList.length-1]._id);
+      this.props.angkeiteuListRequest(false, 'old', angkeiteuList[angkeiteuList.length-1]._id);
+    } else {
+      angkeiteuList = this.props[`angkeiteu_hot_${targetName}ListStatus`].data;
+      this.props.hotAngkeiteuListRequest(false, this.state.selectedPeriod, 'old', angkeiteuList[angkeiteuList.length-1]._id);
     }
   }
 
   render() {
     const selectPeriodDropdownBtn = (
       <div>
-        <a className='dropdown-button btn' onClick={()=>{}} data-activates='dropdown1'>
+        <a className='dropdown-button btn' data-activates='dropdown1'>
           {this.state.selectedPeriod}
           <i className='material-icons right'>arrow_drop_down</i>
         </a>
 
         <ul id='dropdown1' className='dropdown-content'>
-          <li><a name='Today' onClick={this.handleChangePeriod}>Today</a></li>
-          <li><a name='ThisMonth' onClick={this.handleChangePeriod}>This Month</a></li>
+          <li><a name='today' onClick={this.handleChangePeriod}>Today</a></li>
+          <li><a name='thisMonth' onClick={this.handleChangePeriod}>This Month</a></li>
         </ul>
       </div>
     );
@@ -78,23 +78,29 @@ class Home extends React.Component {
       );
     }
 
+    const hotListView = (listStatus) => {
+      return (
+        <div className='section'>
+          <h5>hot angkeiteu</h5>
+          {selectPeriodDropdownBtn}
+          <AngkeiteuList data={listStatus.data}/>
+          {listStatus.isLast ? undefined : expandMoreBtn(this.state.selectedPeriod)}
+        </div>
+      );
+    }
+
     return (
       <div className='container home'>
         <div className='row'>
           <div className='col s12'>
-            <div className='section'>
-              <h5>hot angkeiteu</h5>
-              {selectPeriodDropdownBtn}
-              <AngkeiteuList data={this.props.angkeiteuHotListStatus.data}/>
-              {this.props.angkeiteuHotListStatus.isLast ? undefined : expandMoreBtn('hot')}
-            </div>
+            {hotListView(this.props[`angkeiteu_hot_${this.state.selectedPeriod}ListStatus`])}
           </div>
           <div className='col s12'>
             <div className='divider'></div>
             <div className='section'>
               <h5>recent angkeiteu</h5>
               <AngkeiteuList data={this.props.angkeiteuListStatus.data}/>
-              {this.props.angkeiteuListStatus.isLast ? undefined : expandMoreBtn('recent')}
+              {this.props.angkeiteuListStatus.isLast ? undefined : expandMoreBtn('list')}
             </div>
           </div>
         </div>
@@ -106,15 +112,19 @@ class Home extends React.Component {
 const mapStateToProps = (state) => {
     return {
       angkeiteuListStatus: state.angkeiteu.list,
-      angkeiteuHotListStatus: state.angkeiteu.hotList
+      angkeiteu_hot_todayListStatus: state.angkeiteu.hot_todayList,
+      angkeiteu_hot_thisMonthListStatus: state.angkeiteu.hot_thisMonthList
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-      angkeiteuListRequest: (isInitial, orderType ,id, email) => {
-          return dispatch(angkeiteuListRequest(isInitial, orderType, id, email));
-        }
+      angkeiteuListRequest: (isInitial, listType ,id, email) => {
+        return dispatch(angkeiteuListRequest(isInitial, listType, id, email));
+      },
+      hotAngkeiteuListRequest: (isInitial, period, listType ,id) => {
+        return dispatch(hotAngkeiteuListRequest(isInitial, period, listType ,id));
+      }
     };
 };
 
