@@ -50,23 +50,12 @@ export function angkeiteuPostFailure(error) {
 }
 
 /* ANGKEITEU LIST */
-export function angkeiteuListRequest(isInitial, listName, listType, id, email) {
+export function angkeiteuListRequest(isInitial, listType, id, email) {
     return (dispatch) => {
       let url = '/api/angkeiteu';
+      const listName = 'list';
 
       dispatch(angkeiteuList(listName));
-
-      switch (listName) {
-        case 'hotToday':
-          url += '/hot/today';
-          break;
-        case 'hotThisMonth':
-          url += '/hot/thisMonth'
-          break;
-        default:
-          break;
-      }
-
       if(typeof email === 'undefined') {
           url = isInitial ? url : `${url}/${listType}/${id}`;
       } else {
@@ -184,6 +173,23 @@ export function angkeiteuParticipateFailure(error) {
   };
 }
 
+/** HOT ANGKEITEU LIST **/
+export function hotAngkeiteuListRequest(isInitial, period, listType, id) {
+  return (dispatch) => {
+    let url = `/api/angkeiteu/hot/${period}`;
+    let listName = `hot_${period}List`;
+
+    dispatch(angkeiteuList(listName));
+    url = isInitial ? url : `${url}/${listType}/${id}`;
+    return axios.get(url)
+    .then((response) => {
+        dispatch(angkeiteuListSuccess(response.data, isInitial, listName, listType));
+    }).catch((error) => {
+        dispatch(angkeiteuListFailure(listName, error));
+    });
+  };
+}
+
 /** TRIGGER ANGKEITEU LIST **/
 export function triggerAngkeiteuListRequest(triggerOptionId) {
   return (dispatch) => {
@@ -196,10 +202,26 @@ export function triggerAngkeiteuListRequest(triggerOptionId) {
     url +=`?options._id=${triggerOptionId}`;
     return axios.get(url)
     .then((response) => {
-        console.log(response.data);
         dispatch(angkeiteuListSuccess(response.data, isInitial, listName, listType));
     }).catch((error) => {
         dispatch(angkeiteuListFailure(listName, error));
+    });
+  };
+}
+
+/** TARGET ANGKEITEU LIST **/
+export function targetAngkeiteuListRequest(isInitial, triggerOptionId, listType, id) {
+  return (dispatch) => {
+    let url = '/api/angkeiteu';
+    let listName = 'targetList';
+
+    dispatch(angkeiteuList(listName));
+    url = isInitial ? `${url}?triggerOptionId=${triggerOptionId}` : `${url}/${listType}/${id}?triggerOptionId=${triggerOptionId}`;
+    return axios.get(url)
+    .then((response) => {
+      dispatch(angkeiteuListSuccess(response.data, isInitial, listName, listType));
+    }).catch((error) => {
+      dispatch(angkeiteuListFailure(listName, error));
     });
   };
 }
