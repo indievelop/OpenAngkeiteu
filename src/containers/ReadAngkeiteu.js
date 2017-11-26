@@ -6,7 +6,8 @@ import { angkeiteuGetRequest, angkeiteuParticipateRequest,
          triggerAngkeiteuListRequest, targetAngkeiteuListRequest } from 'actions/angkeiteu';
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
-import { AngkeiteuPieChart, AngkeiteuForm, AngkeiteuList } from 'components';
+import { AngkeiteuPieChart, AngkeiteuForm, AngkeiteuList,
+         CommentForm, CommentList } from 'components';
 
 class ReadAngkeiteu extends React.Component {
 
@@ -61,9 +62,7 @@ class ReadAngkeiteu extends React.Component {
         this.props.targetAngkeiteuListRequest(true, data.accountParticipation.selectedOptionId, undefined, undefined);
       //currentAngkeiteu triggerAngkeiteuList.
       if(typeof data.triggerOptionId !== 'undefined')
-        this.props.triggerAngkeiteuListRequest(data.triggerOptionId).then(()=> {
-          console.log(this.props.triggerAngkeiteuListStatus);
-        })
+        this.props.triggerAngkeiteuListRequest(data.triggerOptionId);
     });
   }
 
@@ -208,6 +207,24 @@ class ReadAngkeiteu extends React.Component {
       </div>
     );
 
+    const commentView = (
+        <div className='card'>
+          <div className='card-content'>
+            <CommentForm angkeiteuId={this.props.angkeiteuGetStaus.data._id}/>
+          </div>
+          <div className='card-content'>
+            <div className='card-title'>
+              <h5>comments</h5>
+            </div>
+          </div>
+          <div className='card-content'>
+            <div className='divider'></div>
+            <CommentList angkeiteuId={this.props.angkeiteuGetStaus.data._id}/>
+          </div>
+        </div>
+    );
+
+
     return (
       <div className='container readAngkeiteu'>
         <div className='row'>
@@ -240,6 +257,7 @@ class ReadAngkeiteu extends React.Component {
               </div>
               {typeof data.accountParticipation !== 'undefined' ? undefined : submitBtn}
             </div>
+            {commentView}
           </div>
           {typeof data.triggerOptionId !== 'undefined' ? triggerAngkeiteuListView : undefined}
           {typeof data.accountParticipation !== 'undefined' ? targetAngkeiteuListView() : undefined}
