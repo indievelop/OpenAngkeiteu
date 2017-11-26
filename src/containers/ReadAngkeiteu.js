@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { angkeiteuGetRequest, angkeiteuParticipateRequest, triggerAngkeiteuListRequest } from 'actions/angkeiteu';
-import { targetAngkeiteuListRequest } from 'actions/targetAngkeiteu';
+import { angkeiteuGetRequest, angkeiteuParticipateRequest,
+         triggerAngkeiteuListRequest, targetAngkeiteuListRequest } from 'actions/angkeiteu';
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
 import { AngkeiteuPieChart, AngkeiteuForm, AngkeiteuList } from 'components';
@@ -255,7 +255,7 @@ const mapStateToProps = (state) => {
         angkeiteuGetStaus: state.angkeiteu.get,
         participateStatus: state.angkeiteu.participate,
         authenticateStatus: state.authentication.status,
-        targetAngkeiteuListStatus: state.targetAngkeiteu.list,
+        targetAngkeiteuListStatus: state.angkeiteu.targetList,
         triggerAngkeiteuListStatus: state.angkeiteu.triggerList
     };
 };
