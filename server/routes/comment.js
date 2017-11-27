@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 const router = express.Router();
 
 //WRITE COMMENT
-router.post('/:angkeiteuId', (req, res) => {
+router.post('/', (req, res) => {
   // CHECK LOGIN STATUS
   if(typeof req.session.loginInfo === 'undefined') {
       return res.status(403).json({
@@ -14,7 +14,7 @@ router.post('/:angkeiteuId', (req, res) => {
       });
   }
   // CHECK ANGKEITEU ID VALIDITY
-  if(!mongoose.Types.ObjectId.isValid(req.params.angkeiteuId)) {
+  if(!mongoose.Types.ObjectId.isValid(req.body.angkeiteuId)) {
       return res.status(400).json({
           error: "INVALID ANGKEITEU ID",
           code: 2
@@ -29,7 +29,7 @@ router.post('/:angkeiteuId', (req, res) => {
   }
   // CREATE NEW COMMENT
   let comment = new Comment({
-    angkeiteuId: req.params.angkeiteuId,
+    angkeiteuId: req.body.angkeiteuId,
     writer: req.session.loginInfo.email,
     content: req.body.content
   });
@@ -41,15 +41,15 @@ router.post('/:angkeiteuId', (req, res) => {
 });
 
 //GET COMMENT LIST
-router.get('/:angkeiteuId', (req, res) => {
+router.get('/', (req, res) => {
   // CHECK ANGKEITEU ID VALIDITY
-  if(!mongoose.Types.ObjectId.isValid(req.params.angkeiteuId)) {
+  if(!mongoose.Types.ObjectId.isValid(req.query.angkeiteuId)) {
       return res.status(400).json({
           error: "INVALID ANGKEITEU ID",
           code: 1
       });
   }
-  Comment.find({angkeiteuId: req.params.angkeiteuId})
+  Comment.find({angkeiteuId: req.query.angkeiteuId})
     .sort({'_id': -1})
     .limit(8)
     .exec((err, comments) => {

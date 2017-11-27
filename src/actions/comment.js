@@ -12,9 +12,10 @@ import axios from 'axios';
 
 export function commentPostRequest(angkeiteuId, content) {
   return (dispatch) => {
+    let url = '/api/comment';
     // inform comment POST API is starting
     dispatch(commentPost());
-    return axios.post(`/api/comment/${angkeiteuId}`, { content })
+    return axios.post(url, { angkeiteuId, content })
     .then((response) => {
         dispatch(commentPostSuccess(response.data.id));
     }).catch((error) => {
@@ -46,11 +47,12 @@ export function commentPostFailure(error) {
 /* COMMENT LIST */
 export function commentListRequest(isInitial, angkeiteuId, listType, id, email) {
     return (dispatch) => {
-      let url = `/api/comment/${angkeiteuId}`;
+      let url = '/api/comment';
+      let query = `angkeiteuId=${angkeiteuId}`;
 
       dispatch(commentList());
       if(typeof email === 'undefined') {
-          url = isInitial ? url : `${url}/${listType}/${id}`;
+          url = isInitial ? `${url}?${query}` : `${url}/${listType}/${id}?${query}`;
       } else {
           // load angkeiteus of specific user
           /* to be implemented */
