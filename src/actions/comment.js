@@ -9,7 +9,6 @@ import {
 import axios from 'axios';
 
 /* comment POST */
-
 export function commentPostRequest(angkeiteuId, content) {
   return (dispatch) => {
     let url = '/api/comment';

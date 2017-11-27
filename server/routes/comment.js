@@ -58,4 +58,52 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:listType/:id', (req, res) => {
+  let listType = req.params.listType;
+  let id = req.params.id;
+  let findCondition = {};
+  let sortCondition = {};
+
+  // CHECK ANGKEITEU ID VALIDITY
+  if(!mongoose.Types.ObjectId.isValid(req.query.angkeiteuId)) {
+      return res.status(400).json({
+          error: "INVALID ANGKEITEU ID",
+          code: 1
+      });
+  }
+  // CHECK LISTTYPE VALIDITY
+  if(!(listType === 'old' || listType === 'new')) {
+    return res.status(400).json({
+      error: "INVALID LISTTYPE",
+      code: 2
+    });
+  }
+  //CHECK ID VALIDITY
+  if(!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+          error: "INVALID ID",
+          code: 3
+      });
+  }
+  findCondition={angkeiteuId: req.query.angkeiteuId};
+  if(listType === 'old') {
+    findCondition['_id'] = { '$lt': id };
+    sortCondition = { '_id': -1 };
+  } else if(listType === 'new') {
+    findCondition['_id'] = { '$gt': id } ;
+    sortCondition = { '_id': 1 };
+  }
+
+  Comment.find(findCondition)
+    .sort(sortCondition)
+    .limit(4)
+    .exec((err, comments) => {
+      if(err) throw err;
+      if(listType === 'old')
+        return res.json(comments);
+      else(lsitType === 'new')
+        return res.json(comments.reverse());
+    });
+});
+
 export default router;
