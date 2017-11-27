@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { commentPostRequest } from 'actions/comment';
+import { commentPostRequest, commentListRequest } from 'actions/comment';
 
 class CommentForm extends React.Component {
 
@@ -31,6 +31,7 @@ class CommentForm extends React.Component {
     this.props.commentPostRequest(this.props.angkeiteuId, this.state.content).then(() => {
       if(this.props.commentPostStatus.status === 'SUCCESS') {
         this.initFormData();
+        this.props.commentListRequest(true, this.props.angkeiteuId);
       } else {
         let errorMessage = [
           'You are not logged in.',
@@ -78,6 +79,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     commentPostRequest: (angkeiteuId, content) => {
       return dispatch(commentPostRequest(angkeiteuId, content));
+    },
+    commentListRequest: (isInitial, angkeiteuId, listType, id, email) => {
+      return dispatch(commentListRequest(isInitial, angkeiteuId, listType, id, email));
     }
   };
 }
