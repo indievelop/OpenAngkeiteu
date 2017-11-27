@@ -12,11 +12,9 @@ class Comment extends React.Component {
 
     return (
       <div className='row'>
-        <div className='col s6'>
+        <div className='col s12'>
           <a>{data.writer}</a>
-        </div>
-        <div className='col s6'>
-          <TimeAgo date={data.createdDate}/>
+          (<TimeAgo date={data.createdDate}/>)
         </div>
         <div className='col s12'>
           {data.content}

@@ -12,9 +12,7 @@ class CommentList extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if(typeof this.props.angkeiteuId === 'undefined' && typeof nextProps.angkeiteuId !== 'undefined')
-        this.props.commentListRequest(true, nextProps.angkeiteuId).then(() => {
-          console.log(this.props.commentListStatus.data);
-        });
+        this.props.commentListRequest(true, nextProps.angkeiteuId);
   }
 
   render() {
