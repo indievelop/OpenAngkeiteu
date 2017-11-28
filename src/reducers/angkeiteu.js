@@ -46,6 +46,12 @@ const initialState = {
       error: -1,
       data: [],
       isLast: false
+    },
+    writerList: {
+      status: 'INIT',
+      error: -1,
+      data: [],
+      isLast: false
     }
 };
 
