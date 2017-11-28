@@ -225,3 +225,21 @@ export function targetAngkeiteuListRequest(isInitial, triggerOptionId, listType,
     });
   };
 }
+
+/* WRITER ANGKEITEU LIST */
+export function writerAngkeiteuListRequest(isInitial, writer, listType, id) {
+  return (dispatch) => {
+    let url = '/api/angkeiteu';
+    let query = `writer=${writer}`;
+    let listName = 'writerList';
+
+    dispatch(angkeiteuList(listName));
+    url = isInitial ? `${url}?${query}` : `${url}/${listType}/${id}?${query}`;
+    return axios.get(url)
+    .then((response) => {
+      dispatch(angkeiteuListSuccess(response.data, isInitial, listName, listType));
+    }).catch((error) => {
+      dispatch(angkeiteuListFailure(listName, error));
+    });
+  };
+}
