@@ -12,17 +12,24 @@ class Sidemenu extends React.Component {
 
   render() {
     const searchButton = (
-        <a onClick={this.props.openSearchView}>
-          <i className='material-icons'>search</i>
-          search
-        </a>
+      <a onClick={this.props.openSearchView}>
+        <i className='material-icons'>search</i>
+        search
+      </a>
     );
 
     const writeButton = (
-        <Link to='/writeAngkeiteu'>
-          <i className='material-icons'>create</i>
-              write Angkeiteu
-        </Link>
+      <Link to='/writeAngkeiteu'>
+        <i className='material-icons'>create</i>
+            write Angkeiteu
+      </Link>
+    );
+
+    const myAngkeiteuButton = (
+      <Link to={`/showWritingAngkeiteu/${this.props.authenticateStatus.currentUser.email}`}>
+        <i className='material-icons'>account_box</i>
+            my writing Angkeiteu
+      </Link>
     );
 
     return (
@@ -30,7 +37,7 @@ class Sidemenu extends React.Component {
         <ul id='slide-out' className='side-nav'>
           <li>{searchButton}</li>
           <li>{writeButton}</li>
-          <li><a>option1</a></li>
+          <li>{this.props.authenticateStatus.isLoggedIn ? myAngkeiteuButton : undefined}</li>
           <li><a>option2</a></li>
         </ul>
       </div>
@@ -38,17 +45,9 @@ class Sidemenu extends React.Component {
   }
 }
 
-Sidemenu.propTypes = {
-  isLoggedIn: PropTypes.bool
-};
-
-Sidemenu.defaultProps = {
-  isLoggedIn: false
-};
-
 const mapStateToProps = (state) => {
   return {
-      isLoggedIn: state.authentication.status.isLoggedIn
+      authenticateStatus: state.authentication.status
   };
 };
 
