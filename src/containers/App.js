@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Route, IndexRoute} from 'react-router-dom';
 import { Header, Footer, Sidemenu, Search } from 'components';
 //containers
 import { Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu,
-        SearchAngkeiteu } from 'containers';
+        SearchAngkeiteu, ShowWritingAngkeiteu } from 'containers';
 import { connect } from 'react-redux';
 import { getStatusRequest } from 'actions/authentication';
 
@@ -70,6 +70,7 @@ class App extends React.Component {
                 <Route path = '/writeAngkeiteu' component = {WriteAngkeiteu}/>
                 <Route path = '/readAngkeiteu/:id' component = {ReadAngkeiteu}/>
                 <Route path = '/searchAngkeiteu/:keyword' component = {SearchAngkeiteu}/>
+                <Route path = '/showWritingAngkeiteu/:email' component = {ShowWritingAngkeiteu}/>
               </main>
               <footer className='page-footer'>
                 <Footer/>
