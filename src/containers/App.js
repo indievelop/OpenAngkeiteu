@@ -43,7 +43,7 @@ class App extends React.Component {
                     email: ''
                 };
 
-                document.cookie='key=' + btoa(JSON.stringify(loginData));
+                document.cookie='key=' + btoa(JSON.stringify(loginData)) + '; Path=/';
 
                 // and notify
                 let $toastContent = $('<span style="color: #FFB4BA">Your session is expired, please log in again</span>');

@@ -34,7 +34,7 @@ class Login extends React.Component {
                     email: id
                 };
 
-                document.cookie = 'key=' + btoa(JSON.stringify(loginData));
+                document.cookie = 'key=' + btoa(JSON.stringify(loginData)) + '; Path=/';
 
                 Materialize.toast('Welcome, ' + id + '!', 2000);
                 this.props.history.push('/');
