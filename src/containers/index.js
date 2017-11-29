@@ -6,6 +6,7 @@ import WriteAngkeiteu from './WriteAngkeiteu';
 import ReadAngkeiteu from './ReadAngkeiteu';
 import SearchAngkeiteu from './SearchAngkeiteu';
 import ShowWritingAngkeiteu from './ShowWritingAngkeiteu';
+import ShowParticipationAngkeiteu from './ShowParticipationAngkeiteu';
 
-export {App, Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu,
-        SearchAngkeiteu, ShowWritingAngkeiteu};
+export { App, Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu,
+        SearchAngkeiteu, ShowWritingAngkeiteu, ShowParticipationAngkeiteu};
