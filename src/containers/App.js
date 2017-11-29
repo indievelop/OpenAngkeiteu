@@ -1,11 +1,11 @@
 import React from 'react';
 //route
-import {BrowserRouter as Router, Route, IndexRoute} from 'react-router-dom';
+import { BrowserRouter as Router, Route, IndexRoute } from 'react-router-dom';
 //components
 import { Header, Footer, Sidemenu, Search } from 'components';
 //containers
 import { Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu,
-        SearchAngkeiteu, ShowWritingAngkeiteu } from 'containers';
+        SearchAngkeiteu, ShowWritingAngkeiteu, ShowParticipationAngkeiteu } from 'containers';
 import { connect } from 'react-redux';
 import { getStatusRequest } from 'actions/authentication';
 
@@ -71,6 +71,7 @@ class App extends React.Component {
                 <Route path = '/readAngkeiteu/:id' component = {ReadAngkeiteu}/>
                 <Route path = '/searchAngkeiteu/:keyword' component = {SearchAngkeiteu}/>
                 <Route path = '/showWritingAngkeiteu/:email' component = {ShowWritingAngkeiteu}/>
+                <Route path = '/showParticipationAngkeiteu/:accountId' component = {ShowParticipationAngkeiteu}/>
               </main>
               <footer className='page-footer'>
                 <Footer/>
