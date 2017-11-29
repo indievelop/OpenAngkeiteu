@@ -25,10 +25,17 @@ class Sidemenu extends React.Component {
       </Link>
     );
 
-    const myAngkeiteuButton = (
+    const myWritingAngkeiteuButton = (
       <Link to={`/showWritingAngkeiteu/${this.props.authenticateStatus.currentUser.email}`}>
         <i className='material-icons'>account_box</i>
             my writing Angkeiteu
+      </Link>
+    );
+
+    const myParticipationAngkeiteuButton = (
+      <Link to={`/showParticipationAngkeiteu/${this.props.authenticateStatus.currentUser._id}`}>
+        <i className='material-icons'>account_box</i>
+            my participation Angkeiteu
       </Link>
     );
 
@@ -37,8 +44,8 @@ class Sidemenu extends React.Component {
         <ul id='slide-out' className='side-nav'>
           <li>{searchButton}</li>
           <li>{writeButton}</li>
-          <li>{this.props.authenticateStatus.isLoggedIn ? myAngkeiteuButton : undefined}</li>
-          <li><a>option2</a></li>
+          <li>{this.props.authenticateStatus.isLoggedIn ? myWritingAngkeiteuButton : undefined}</li>
+          <li>{this.props.authenticateStatus.isLoggedIn ? myParticipationAngkeiteuButton : undefined}</li>
         </ul>
       </div>
     );
