@@ -5,6 +5,9 @@ import {
     COMMENT_LIST,
     COMMENT_LIST_SUCCESS,
     COMMENT_LIST_FAILURE,
+    COMMENT_RECOMMEND,
+    COMMENT_RECOMMEND_SUCCESS,
+    COMMENT_RECOMMEND_FAILURE
 } from './ActionTypes';
 import axios from 'axios';
 
@@ -84,6 +87,41 @@ export function commentListSuccess(data, isInitial, listType) {
 export function commentListFailure(error) {
     return {
         type: COMMENT_LIST_FAILURE,
+        error
+    };
+}
+
+/* RECOMMEND COMMENT */
+export function recommendCommentRequest(id) {
+  return (dispatch) => {
+    let url = `/api/comment/${id}/recommend`;
+
+    dispatch(recommendComment());
+    return axios.put(url)
+    .then((response) => {
+      dispatch(recommendCommentSuccess(response.data));
+    }).catch((error) => {
+      dispatch(recommendCommentFailure(error.response.data.code));
+    });
+  }
+}
+
+export function recommendComment() {
+  return {
+    type: COMMENT_RECOMMEND,
+  };
+}
+
+export function recommendCommentSuccess(data) {
+    return {
+        type: COMMENT_RECOMMEND_SUCCESS,
+        data
+    };
+}
+
+export function recommendCommentFailure(error) {
+    return {
+        type: COMMENT_RECOMMEND_FAILURE,
         error
     };
 }
