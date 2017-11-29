@@ -22,7 +22,7 @@ class ShowWritingAngkeiteu extends React.Component {
 
   handleExpandMoreWritingAngkeiteuList() {
     let writingList = this.props.writerAngkeiteuListStatus.data;
-    this.props.writerAngkeiteuListRequest(false, this.props.authenticateStatus.currentUser.email, 'old', writingList[writingList.length-1]._id);
+    this.props.writerAngkeiteuListRequest(false, this.props.match.params.email, 'old', writingList[writingList.length-1]._id);
   }
 
   render() {
