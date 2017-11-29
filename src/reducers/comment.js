@@ -12,6 +12,11 @@ const initialState = {
       error: -1,
       data: [],
       isLast: false
+  },
+  recommend: {
+    status: 'INIT',
+    error: -1,
+    data: {}
   }
 }
 
@@ -80,6 +85,28 @@ export default function comment(state, action) {
     case types.COMMENT_LIST_FAILURE:
         return update(state, {
             list: {
+                status: { $set: 'FAILURE' },
+                error: { $set: action.error }
+            }
+        });
+    case types.COMMENT_RECOMMEND:
+        return update(state, {
+            recommend: {
+                status: { $set: 'WAITING' },
+                error: { $set: -1 },
+                data: { $set: {} }
+            }
+        });
+    case types.COMMENT_RECOMMEND_SUCCESS:
+        return update(state, {
+            recommend: {
+                status: { $set: 'SUCCESS' },
+                data: { $set: action.data }
+            }
+        });
+    case types.COMMENT_RECOMMEND_FAILURE:
+        return update(state, {
+            recommend: {
                 status: { $set: 'FAILURE' },
                 error: { $set: action.error }
             }
