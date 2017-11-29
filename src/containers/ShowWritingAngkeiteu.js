@@ -1,7 +1,7 @@
 import React from 'react';
 import { AngkeiteuList } from 'components';
 import { connect } from 'react-redux';
-import { writerAngkeiteuListRequest } from 'actions/angkeiteu';
+import { writingAngkeiteuListRequest } from 'actions/angkeiteu';
 
 class ShowWritingAngkeiteu extends React.Component {
 
@@ -11,18 +11,18 @@ class ShowWritingAngkeiteu extends React.Component {
   }
 
   componentDidMount() {
-    this.props.writerAngkeiteuListRequest(true, this.props.match.params.email);
+    this.props.writingAngkeiteuListRequest(true, this.props.match.params.email);
   }
 
   componentWillReceiveProps(nextProps) {
     //update params.email
     if(nextProps.match.params.email !== this.props.match.params.email)
-      this.props.writerAngkeiteuListRequest(true, nextProps.match.params.email);
+      this.props.writingAngkeiteuListRequest(true, nextProps.match.params.email);
   }
 
   handleExpandMoreWritingAngkeiteuList() {
-    let writingList = this.props.writerAngkeiteuListStatus.data;
-    this.props.writerAngkeiteuListRequest(false, this.props.match.params.email, 'old', writingList[writingList.length-1]._id);
+    let writingList = this.props.writingAngkeiteuListStatus.data;
+    this.props.writingAngkeiteuListRequest(false, this.props.match.params.email, 'old', writingList[writingList.length-1]._id);
   }
 
   render() {
@@ -49,7 +49,7 @@ class ShowWritingAngkeiteu extends React.Component {
       <div className='container showWritingAngkeiteu'>
         <div className='row'>
           <div className='col s12'>
-            {writingListView(this.props.writerAngkeiteuListStatus)}
+            {writingListView(this.props.writingAngkeiteuListStatus)}
           </div>
         </div>
       </div>
@@ -60,14 +60,14 @@ class ShowWritingAngkeiteu extends React.Component {
 const mapStateToProps = (state) => {
   return {
     authenticateStatus: state.authentication.status,
-    writerAngkeiteuListStatus: state.angkeiteu.writerList
+    writingAngkeiteuListStatus: state.angkeiteu.writingList
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    writerAngkeiteuListRequest: (isInitial, writer, listType, id) => {
-      return dispatch(writerAngkeiteuListRequest(isInitial, writer, listType, id));
+    writingAngkeiteuListRequest: (isInitial, writer, listType, id) => {
+      return dispatch(writingAngkeiteuListRequest(isInitial, writer, listType, id));
     }
   }
 }
