@@ -243,3 +243,21 @@ export function writerAngkeiteuListRequest(isInitial, writer, listType, id) {
     });
   };
 }
+
+/* PARTICIPATION ANGKEITEU LIST */
+export function participationAngkeiteuListRequest(isInitial, accountId, listType, id) {
+  return (dispatch) => {
+    let url = '/api/angkeiteu';
+    let query = `participants.accountId=${accountId}`;
+    let listName = 'participationList';
+
+    dispatch(angkeiteuList(listName));
+    url = isInitial ? `${url}?${query}` : `${url}/${listType}/${id}?${query}`;
+    return axios.get(url)
+    .then((response) => {
+      dispatch(angkeiteuListSuccess(response.data, isInitial, listName, listType));
+    }).catch((error) => {
+      dispatch(angkeiteuListFailure(listName, error));
+    });
+  };
+}
