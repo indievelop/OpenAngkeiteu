@@ -52,6 +52,12 @@ const initialState = {
       error: -1,
       data: [],
       isLast: false
+    },
+    participationList: {
+      status: 'INIT',
+      error: -1,
+      data: [],
+      isLast: false
     }
 };
 
