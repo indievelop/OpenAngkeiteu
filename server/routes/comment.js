@@ -106,4 +106,48 @@ router.get('/:listType/:id', (req, res) => {
     });
 });
 
+// INCREASE COMMENT RECOMMEDATION
+router.put('/:id/recommend', (req, res) => {
+  let id = req.params.id;
+  let loginInfo = req.session.loginInfo;
+  let condition = {};
+  let update = {};
+  let option = {};
+
+  //CHECK LOGIN STATUS
+  if(typeof loginInfo === 'undefined') {
+      return res.status(403).json({
+          error: "NOT LOGGED IN",
+          code: 1
+      });
+  }
+  //CHECK ANGKEITEU ID VALIDITY
+  if(!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      error:'INVALID ID',
+      code: 2
+    });
+  }
+  //CHECK DUPLICATED RECOMMEND
+  condition = {
+    '_id': id, 'recommendations.accountId': loginInfo._id
+  }
+  Comment.findOne(condition, (err, comment) => {
+    if(err) throw err;
+    if(comment !== null) {
+      return res.status(400).json({
+        error: 'DUPLICATED RECOMMEDATION',
+        code: 3
+      });
+    }
+    //ADD RECOMMEDATION
+    condition = { '_id': id };
+    update = { '$push': { 'recommendations': { 'accountId': loginInfo._id } } };
+    option = { 'new': true };
+    Comment.findOneAndUpdate(condition, update, option, (err, comment) => {
+      if(err) throw err;
+      return res.json(comment);
+    });
+  });
+});
 export default router;
