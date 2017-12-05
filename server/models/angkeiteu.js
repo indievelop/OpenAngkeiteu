@@ -4,6 +4,7 @@ import MpathPlugin  from 'mongoose-mpath';
 const Schema = mongoose.Schema;
 
 const Angkeiteu = new Schema({
+  accountId: {type: Schema.Types.ObjectId, ref: 'account'},
   writer: String,
   title: String,
   description: String,
