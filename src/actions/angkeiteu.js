@@ -227,10 +227,10 @@ export function targetAngkeiteuListRequest(isInitial, triggerOptionId, listType,
 }
 
 /* WRITING ANGKEITEU LIST */
-export function writingAngkeiteuListRequest(isInitial, writer, listType, id) {
+export function writingAngkeiteuListRequest(isInitial, accountId, listType, id) {
   return (dispatch) => {
     let url = '/api/angkeiteu';
-    let query = `writer=${writer}`;
+    let query = `accountId=${accountId}`;
     let listName = 'writingList';
 
     dispatch(angkeiteuList(listName));

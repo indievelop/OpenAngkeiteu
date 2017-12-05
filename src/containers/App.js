@@ -70,7 +70,7 @@ class App extends React.Component {
                 <Route path = '/writeAngkeiteu' component = {WriteAngkeiteu}/>
                 <Route path = '/readAngkeiteu/:id' component = {ReadAngkeiteu}/>
                 <Route path = '/searchAngkeiteu/:keyword' component = {SearchAngkeiteu}/>
-                <Route path = '/showWritingAngkeiteu/:email' component = {ShowWritingAngkeiteu}/>
+                <Route path = '/showWritingAngkeiteu/:accountId' component = {ShowWritingAngkeiteu}/>
                 <Route path = '/showParticipationAngkeiteu/:accountId' component = {ShowParticipationAngkeiteu}/>
               </main>
               <footer className='page-footer'>

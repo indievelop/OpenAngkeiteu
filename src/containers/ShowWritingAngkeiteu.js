@@ -11,18 +11,18 @@ class ShowWritingAngkeiteu extends React.Component {
   }
 
   componentDidMount() {
-    this.props.writingAngkeiteuListRequest(true, this.props.match.params.email);
+    this.props.writingAngkeiteuListRequest(true, this.props.match.params.accountId);
   }
 
   componentWillReceiveProps(nextProps) {
-    //update params.email
-    if(nextProps.match.params.email !== this.props.match.params.email)
-      this.props.writingAngkeiteuListRequest(true, nextProps.match.params.email);
+    //update params.accountId
+    if(nextProps.match.params.accountId !== this.props.match.params.accountId)
+      this.props.writingAngkeiteuListRequest(true, nextProps.match.params.accountId);
   }
 
   handleExpandMoreWritingAngkeiteuList() {
     let writingList = this.props.writingAngkeiteuListStatus.data;
-    this.props.writingAngkeiteuListRequest(false, this.props.match.params.email, 'old', writingList[writingList.length-1]._id);
+    this.props.writingAngkeiteuListRequest(false, this.props.match.params.accountId, 'old', writingList[writingList.length-1]._id);
   }
 
   render() {
@@ -38,7 +38,7 @@ class ShowWritingAngkeiteu extends React.Component {
     const writingListView = (listStatus) => {
       return (
         <div className='section'>
-          <h5>{this.props.match.params.email} of writing angkeiteu</h5>
+          <h5>{this.props.match.params.accountId} of writing angkeiteu</h5>
           <AngkeiteuList data={listStatus.data}/>
           {listStatus.isLast ? undefined : expandMoreBtn}
         </div>
@@ -66,8 +66,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    writingAngkeiteuListRequest: (isInitial, writer, listType, id) => {
-      return dispatch(writingAngkeiteuListRequest(isInitial, writer, listType, id));
+    writingAngkeiteuListRequest: (isInitial, accountId, listType, id) => {
+      return dispatch(writingAngkeiteuListRequest(isInitial, accountId, listType, id));
     }
   }
 }

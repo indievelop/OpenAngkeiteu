@@ -26,7 +26,7 @@ class Sidemenu extends React.Component {
     );
 
     const myWritingAngkeiteuButton = (
-      <Link to={`/showWritingAngkeiteu/${this.props.authenticateStatus.currentUser.email}`}>
+      <Link to={`/showWritingAngkeiteu/${this.props.authenticateStatus.currentUser._id}`}>
         <i className='material-icons'>account_box</i>
             my writing Angkeiteu
       </Link>
