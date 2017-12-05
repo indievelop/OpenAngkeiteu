@@ -41,6 +41,7 @@ router.post('/', (req, res)=>{
 
   // CREATE NEW ANGKEITEU
   let angkeiteu = new Angkeiteu({
+    accountId: req.session.loginInfo._id,
     writer: req.session.loginInfo.email,
     title: req.body.title,
     description: req.body.description,
