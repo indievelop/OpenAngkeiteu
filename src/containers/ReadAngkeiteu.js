@@ -213,11 +213,6 @@ class ReadAngkeiteu extends React.Component {
             <CommentForm angkeiteuId={this.props.angkeiteuGetStaus.data._id}/>
           </div>
           <div className='card-content'>
-            <div className='card-title'>
-              <h5>comments</h5>
-            </div>
-          </div>
-          <div className='card-content'>
             <div className='divider'></div>
             <CommentList angkeiteuId={this.props.angkeiteuGetStaus.data._id}/>
           </div>
