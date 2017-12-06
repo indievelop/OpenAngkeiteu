@@ -17,6 +17,11 @@ const initialState = {
     status: 'INIT',
     error: -1,
     data: {}
+  },
+  count: {
+    status: 'INIT',
+    error: -1,
+    data: {}
   }
 }
 
@@ -107,6 +112,28 @@ export default function comment(state, action) {
     case types.COMMENT_RECOMMEND_FAILURE:
         return update(state, {
             recommend: {
+                status: { $set: 'FAILURE' },
+                error: { $set: action.error }
+            }
+        });
+    case types.COMMENT_COUNT:
+        return update(state, {
+            count: {
+                status: { $set: 'WAITING' },
+                error: { $set: -1 },
+                data: { $set: {} }
+            }
+        });
+    case types.COMMENT_COUNT_SUCCESS:
+        return update(state, {
+            count: {
+                status: { $set: 'SUCCESS' },
+                data: { $set: action.data }
+            }
+        });
+    case types.COMMENT_COUNT_FAILURE:
+        return update(state, {
+            count: {
                 status: { $set: 'FAILURE' },
                 error: { $set: action.error }
             }

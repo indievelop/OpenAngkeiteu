@@ -13,7 +13,7 @@ class CommentList extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if(typeof this.props.angkeiteuId === 'undefined' && typeof nextProps.angkeiteuId !== 'undefined')
-        this.props.commentListRequest(true, nextProps.angkeiteuId);
+      this.props.commentListRequest(true, nextProps.angkeiteuId);
   }
 
   handleExpandMoreCommentList() {
@@ -44,6 +44,7 @@ class CommentList extends React.Component {
 
     return (
       <div>
+        <h5>{`${this.props.countCommentStatus.data.count} comments`}</h5>
         {mapToComponets(this.props.commentListStatus.data)}
         {this.props.commentListStatus.isLast ? undefined : expandMoreBtn}
       </div>
@@ -53,7 +54,8 @@ class CommentList extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    commentListStatus: state.comment.list
+    commentListStatus: state.comment.list,
+    countCommentStatus: state.comment.count
   }
 }
 
