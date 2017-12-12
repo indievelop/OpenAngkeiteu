@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import update from 'react-addons-update';
 import { angkeiteuPostRequest } from 'actions/angkeiteu';
+import { imgFileUploadRequest } from 'actions/file';
+import { ImageView } from 'components';
 
 class AngkeiteuForm extends React.Component {
 
@@ -12,13 +14,17 @@ class AngkeiteuForm extends React.Component {
       title: '',
       description: '',
       option_desc: '',
-      options: []
+      options: [],
+      imgFile: '',
+      imgUrl: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
     this.handleRemoveOption = this.handleRemoveOption.bind(this);
     this.handlePost = this.handlePost.bind(this);
     this.initFormData = this.initFormData.bind(this);
+    this.handleOnChangeImagefile = this.handleOnChangeImagefile.bind(this);
+    this.handleRemoveImage = this.handleRemoveImage.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -74,6 +80,8 @@ class AngkeiteuForm extends React.Component {
     nextState['description'] = '';
     nextState['option_desc'] = '';
     nextState['options'] = [];
+    nextState['imgFile'] = '';
+    nextState['imgUrl'] = '';
     this.setState(nextState);
   }
 
@@ -82,23 +90,56 @@ class AngkeiteuForm extends React.Component {
     let description = this.state.description;
     let options = this.state.options;
     let triggerOptionId = this.props.triggerOption._id;
+    let imgFile = this.state.imgFile;
+    const angkeiteuPostErrorMessage = [
+      'You are not logged in.',
+      'Please write title.',
+      'Please write description.',
+      'Please add option.',
+      'Wrong triggerOption id.'
+    ];
+    const imgFileUploadErrorMessage = [
+      'You are not logged in.',
+      'Wrong angkeiteuId',
+    ];
+
     //let parentId = '';
     this.props.angkeiteuPostRequest(title, description, options, triggerOptionId).then(() => {
       if(this.props.postStatus.status === 'SUCCESS') {
+        //imgFlile upload
+        if(imgFile !== '') {
+          this.props.imgFileUploadRequest(this.props.postStatus.id ,imgFile).then(() => {
+            if(this.props.imgFileUploadStatus.status === 'FAILURE') {
+              let $toastContent = $('<span style="color: #FFB4BA">' + this.props.imgFileUploadStatus.error + '</span>');
+              Materialize.toast($toastContent, 2000);
+            }
+          });
+        }
         this.initFormData();
         this.props.onCompleteCreate(this.props.postStatus.id);
       } else {
-        let errorMessage = [
-          'You are not logged in.',
-          'Please write title.',
-          'Please write description.',
-          'Please add option.',
-          'Wrong triggerOption id.'
-        ];
-        let $toastContent = $('<span style="color: #FFB4BA">' + errorMessage[this.props.postStatus.error-1] + '</span>');
+        let $toastContent = $('<span style="color: #FFB4BA">' + angkeiteuPostErrorMessage[this.props.postStatus.error-1] + '</span>');
         Materialize.toast($toastContent, 2000);
       }
     });
+  }
+
+  handleOnChangeImagefile(e) {
+    let nextState = {};
+    let file = e.target.files[0];
+    let reader = new FileReader();
+
+    reader.onload = () => {
+      this.setState({'imgFile': file, 'imgUrl': reader.result});
+    };
+    reader.readAsDataURL(file);
+  }
+
+  handleRemoveImage() {
+    let nextState = {};
+    nextState['imgFile'] = '';
+    nextState['imgUrl'] = '';
+    this.setState(nextState);
   }
 
   render() {
@@ -153,6 +194,19 @@ class AngkeiteuForm extends React.Component {
                             onChange={this.handleChange}
                             value={this.state.description}>
                   </textarea>
+                </div>
+                <div className='file-field input-field col s12'>
+                  <div className="waves-effect waves-light btn">
+                    <i className='large material-icons'>image</i>
+                    <input name="angkeiteuImg"
+                           type="file"
+                           onChange={this.handleOnChangeImagefile}
+                           accept='.jpg, .jpeg, .png'
+                           value=''/>
+                  </div>
+                </div>
+                <div className='input-field col s12'>
+                  {this.state.imgUrl !=='' ? <ImageView src={this.state.imgUrl} width={400} height={400} onRemoveClick={this.handleRemoveImage}/> : undefined}
                 </div>
               </div>
             </div>
@@ -210,7 +264,8 @@ AngkeiteuForm.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.authentication.status.isLoggedIn,
-    postStatus: state.angkeiteu.post
+    postStatus: state.angkeiteu.post,
+    imgFileUploadStatus: state.file.upload
   }
 };
 
@@ -218,6 +273,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     angkeiteuPostRequest: (title, description, options, triggerOptionId) => {
       return dispatch(angkeiteuPostRequest(title, description, options, triggerOptionId));
+    },
+    imgFileUploadRequest: (id, imgFile) => {
+      return dispatch(imgFileUploadRequest(id, imgFile));
     }
   };
 };
