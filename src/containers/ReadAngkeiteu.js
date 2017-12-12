@@ -7,7 +7,7 @@ import { angkeiteuGetRequest, angkeiteuParticipateRequest,
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
 import { AngkeiteuPieChart, AngkeiteuForm, AngkeiteuList,
-         CommentForm, CommentList } from 'components';
+         CommentForm, CommentList, ImageView } from 'components';
 
 class ReadAngkeiteu extends React.Component {
 
@@ -25,6 +25,7 @@ class ReadAngkeiteu extends React.Component {
   }
 
   componentDidMount() {
+    $(window).scrollTop(0);
     this.loadAngkeiteu(this.props.match.params.id, this.props.authenticateStatus.currentUser);
     $(document).ready(() => {
       $('.modal').modal({
@@ -32,10 +33,6 @@ class ReadAngkeiteu extends React.Component {
         ready: (modal, trigger) => { modal.scrollTop(0); }
       });
     });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    $(window).scrollTop(0);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -239,6 +236,9 @@ class ReadAngkeiteu extends React.Component {
               <div className='divider'></div>
               <div className='card-content'>
                 <h5>description: {data.description}</h5>
+              </div>
+              <div className='card-content'>
+                <ImageView src={`/uploads/${data._id}.jpeg`} width={400} height={400}/>
               </div>
               <div className='card-content'>
                 <div className='row'>
