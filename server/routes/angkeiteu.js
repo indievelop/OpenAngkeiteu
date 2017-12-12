@@ -58,6 +58,7 @@ router.post('/', (req, res)=>{
     }
     angkeiteu.triggerOptionId = req.body.triggerOptionId;
   }
+
   // SAVE IN DATABASE
   angkeiteu.save((err, newAngkeiteu) => {
     if(err) throw err;
@@ -77,6 +78,7 @@ router.get('/', (req, res) => {
 });
 
 //test tree insert
+/*
 router.post('/tree', (req, res) => {
   let data = req.body.angkeiteus;
   let angkeiteus = [];
@@ -112,6 +114,7 @@ router.post('/tree', (req, res) => {
   saveTree();
   return res.json({ success: true});
 });
+*/
 
 // GET ANGKEITEU
 router.get('/:id', (req, res) => {
