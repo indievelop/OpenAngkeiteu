@@ -5,6 +5,11 @@ const initialState = {
   upload: {
     status: 'INIT',
     error: ''
+  },
+  get: {
+    status: 'INIT',
+    error: '',
+    data: {}
   }
 }
 
@@ -31,6 +36,28 @@ export default function file(state, action) {
       return update(state, {
         upload: {
           status: { $set: 'FAILURE'},
+          error: { $set: action.error }
+        }
+      });
+    case types.IMAGE_FILE_GET:
+      return update(state, {
+        get: {
+          status: { $set: 'WAITING' },
+          error: { $set: -1 },
+          data: { $set: {} }
+        }
+      });
+    case types.IMAGE_FILE_GET_SUCCESS:
+      return update(state, {
+        get: {
+          status: { $set: 'SUCCESS' },
+          data: { $set: action.data }
+        }
+      });
+    case types.IMAGE_FILE_GET_FAILURE:
+      return update(state, {
+        get: {
+          status: { $set: 'FAILURE' },
           error: { $set: action.error }
         }
       });
