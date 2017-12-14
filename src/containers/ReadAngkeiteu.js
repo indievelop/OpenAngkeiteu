@@ -238,7 +238,7 @@ class ReadAngkeiteu extends React.Component {
                 <h5>description: {data.description}</h5>
               </div>
               <div className='card-content'>
-                <ImageView src={`/uploads/${data._id}.jpeg`} width={400} height={400}/>
+                <ImageView objId={data._id} width={400} height={400}/>
               </div>
               <div className='card-content'>
                 <div className='row'>

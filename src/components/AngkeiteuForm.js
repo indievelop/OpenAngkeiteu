@@ -108,7 +108,7 @@ class AngkeiteuForm extends React.Component {
       if(this.props.postStatus.status === 'SUCCESS') {
         //imgFlile upload
         if(imgFile !== '') {
-          this.props.imgFileUploadRequest(this.props.postStatus.id ,imgFile).then(() => {
+          this.props.imgFileUploadRequest(this.props.postStatus.id, 'angkeiteu', imgFile).then(() => {
             if(this.props.imgFileUploadStatus.status === 'FAILURE') {
               let $toastContent = $('<span style="color: #FFB4BA">' + this.props.imgFileUploadStatus.error + '</span>');
               Materialize.toast($toastContent, 2000);
@@ -148,11 +148,17 @@ class AngkeiteuForm extends React.Component {
         return (
           <div className='row'
                key={option.id}>
-            <div className='col s10'>
+            <div className='col s8'>
               <input name='optionGroup'
                      type='radio'
                      disabled='disabled'/>
               <label>{option.description}</label>
+            </div>
+            <div className='col s2'>
+              <a className="waves-effect waves-light btn"
+                 onClick={() => this.handleRemoveOption(option.id)}>
+                <i className="material-icons center">close</i>
+              </a>
             </div>
             <div className='col s2'>
               <a className="waves-effect waves-light btn"
@@ -203,6 +209,16 @@ class AngkeiteuForm extends React.Component {
                            onChange={this.handleOnChangeImagefile}
                            accept='.jpg, .jpeg, .png'
                            value=''/>
+                  </div>
+                  <div className="file-path-wrapper input-field">
+                    <input className="validate"
+                           disabled='disabled'
+                           value=''
+                           id="disabled"
+                           type="text" />
+                    <label htmlFor="disabled">
+                      {typeof this.state.imgFile.name !== 'undefined' ? this.state.imgFile.name : 'upload img file (.jpg, .jpeg, .png)'}
+                    </label>
                   </div>
                 </div>
                 <div className='input-field col s12'>
@@ -274,8 +290,8 @@ const mapDispatchToProps = (dispatch) => {
     angkeiteuPostRequest: (title, description, options, triggerOptionId) => {
       return dispatch(angkeiteuPostRequest(title, description, options, triggerOptionId));
     },
-    imgFileUploadRequest: (id, imgFile) => {
-      return dispatch(imgFileUploadRequest(id, imgFile));
+    imgFileUploadRequest: (objId ,objKind, imgFile) => {
+      return dispatch(imgFileUploadRequest(objId, objKind, imgFile));
     }
   };
 };
