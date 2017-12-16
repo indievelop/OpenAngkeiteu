@@ -43,7 +43,7 @@ router.post('/image', (req, res) =>{
       },
       path: req.file.uploadedFile.path
     });
-    console.log(file);
+
     file.save((err, newFile) => {
       if(err) throw err;
       return res.json({ success: true, id: newFile._id});
