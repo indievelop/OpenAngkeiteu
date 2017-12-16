@@ -25,8 +25,10 @@ class ImageView extends React.Component {
 
     if(nextProps.imageFileGetStatus !== this.props.imageFileGetStatus) {
       let nextState = {};
-      nextState['uploadedImagePath'] = nextProps.imageFileGetStatus.data.path;
-      this.setState(nextState);
+      if(nextProps.imageFileGetStatus.data !== null) {
+        nextState['uploadedImagePath'] = nextProps.imageFileGetStatus.data.path;
+        this.setState(nextState);
+      }
     }
   }
 
@@ -38,10 +40,15 @@ class ImageView extends React.Component {
       width: width || 100,
     };
 
+    const removeBtn = (
+      <a className='btn' onClick={onRemoveClick}>remove</a>
+    );
+
     return (
       <div>
-        <img className='materialboxed responsive-img' src={uploadedImagePath !== '' ? uploadedImagePath : src} {...defaults}/>
-        {typeof onRemoveClick !== 'undefined' ? <a className='btn' onClick={onRemoveClick}>remove</a> :undefined}
+        <img className='materialboxed responsive-img'
+             src={uploadedImagePath !== '' ? uploadedImagePath : src} {...defaults}/>
+        {typeof onRemoveClick !== 'undefined' ?  removeBtn :undefined}
       </div>
     );
   }
