@@ -95,7 +95,7 @@ ImageUpload.propTpes = {
 
 ImageUpload.defaultProps = {
   objId: '',
-  ojbKind: ''
+  objKind: ''
 }
 
 const mapStateToProps = (state) => {
