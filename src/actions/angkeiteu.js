@@ -22,7 +22,7 @@ export function angkeiteuPostRequest(title, description, options, triggerOptionI
 
         return axios.post('/api/angkeiteu/', { title, description, options, triggerOptionId })
         .then((response) => {
-            dispatch(angkeiteuPostSuccess(response.data.id));
+            dispatch(angkeiteuPostSuccess(response.data));
         }).catch((error) => {
             dispatch(angkeiteuPostFailure(error.response.data.code));
         });
@@ -35,10 +35,10 @@ export function angkeiteuPost() {
     };
 }
 
-export function angkeiteuPostSuccess(id) {
+export function angkeiteuPostSuccess(data) {
     return {
         type: ANGKEITEU_POST_SUCCESS,
-        id
+        data
     };
 }
 
