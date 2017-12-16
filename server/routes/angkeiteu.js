@@ -62,7 +62,7 @@ router.post('/', (req, res)=>{
   // SAVE IN DATABASE
   angkeiteu.save((err, newAngkeiteu) => {
     if(err) throw err;
-    return res.json({ success: true, id: newAngkeiteu._id});
+    return res.json(newAngkeiteu);
   });
 });
 
