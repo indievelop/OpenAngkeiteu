@@ -10,7 +10,8 @@ import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import Search from './Search';
 import ImageView from './ImageView';
+import ImageUpload from './ImageUpload';
 
 export { Header, Footer, Sidemenu, Angkeiteu, AngkeiteuForm,
          AngkeiteuList, AngkeiteuPieChart, Comment, CommentForm,
-         CommentList, Search, ImageView };
+         CommentList, Search, ImageView, ImageUpload };
