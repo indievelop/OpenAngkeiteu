@@ -10,22 +10,22 @@ class ImageView extends React.Component {
     super(props);
     this.state = {
       uploadedImagePath: ''
-    }
+    };
   }
 
   componentDidMount() {
     $(document).ready(function(){
       $('.materialboxed').materialbox();
     });
+
+    if(typeof this.props.objId !== 'undefined')
+      this.props.imageFileGetRequest(this.props.objId);
   }
 
   componentWillReceiveProps(nextProps) {
-    if(typeof nextProps.objId !== 'undefined' && nextProps.objId !== this.props.objId)
-      this.props.imageFileGetRequest(nextProps.objId);
-
     if(nextProps.imageFileGetStatus !== this.props.imageFileGetStatus) {
-      let nextState = {};
-      if(nextProps.imageFileGetStatus.data !== null) {
+      if(nextProps.imageFileGetStatus.data !== null && nextProps.imageFileGetStatus.data.connectedObj.id === this.props.objId) {
+        let nextState = {};
         nextState['uploadedImagePath'] = nextProps.imageFileGetStatus.data.path;
         this.setState(nextState);
       }
