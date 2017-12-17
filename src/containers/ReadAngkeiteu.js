@@ -7,7 +7,7 @@ import { angkeiteuGetRequest, angkeiteuParticipateRequest,
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
 import { AngkeiteuPieChart, AngkeiteuForm, AngkeiteuList,
-         CommentForm, CommentList, ImageView } from 'components';
+         CommentForm, CommentList, OptionList, ImageView } from 'components';
 
 class ReadAngkeiteu extends React.Component {
 
@@ -21,6 +21,7 @@ class ReadAngkeiteu extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.loadAngkeiteu = this.loadAngkeiteu.bind(this);
     this.handleCompleteCreate = this.handleCompleteCreate.bind(this);
+    this.handleCreateTargetAngkeiteu = this.handleCreateTargetAngkeiteu.bind(this);
     this.handleExpandMoreTargetAngkeiteuList = this.handleExpandMoreTargetAngkeiteuList.bind(this);
   }
 
@@ -64,9 +65,7 @@ class ReadAngkeiteu extends React.Component {
   }
 
   handleChange(e) {
-    let nextState = {};
-    nextState[e.target.name] = e.target.value;
-    this.setState(nextState);
+    this.setState(e);
   }
 
   handleSubmit() {
@@ -107,34 +106,6 @@ class ReadAngkeiteu extends React.Component {
 
   render() {
     const {data} = this.props.angkeiteuGetStaus;
-
-    const mapToOptions = options => {
-      return options.map((option, i) => {
-        return (
-          <div className='row'
-               key={option._id}>
-            <div className='col s10'>
-              <input name='selectedOptionId'
-                     type='radio'
-                     onChange={this.handleChange}
-                     checked={typeof data.accountParticipation === 'undefined' ?
-                              this.state.selectedOptionId === option._id :
-                              data.accountParticipation.selectedOptionId === option._id}
-                     disabled={typeof data.accountParticipation !== 'undefined'}
-                     value={option._id}
-                     id={option._id}/>
-              <label htmlFor={option._id}>{option.description}</label>
-            </div>
-            <div className='col s2'>
-              <a className='waves-effect waves-light btn'
-                 onClick={() => this.handleCreateTargetAngkeiteu(option)}>
-                <i className='material-icons center'>create</i>
-              </a>
-            </div>
-          </div>
-        );
-      });
-    }
 
     const pleaseHeader =  (
       <div className='header orange white-text center'>
@@ -238,14 +209,17 @@ class ReadAngkeiteu extends React.Component {
                 <h5>description: {data.description}</h5>
               </div>
               <div className='card-content'>
-                <ImageView objId={data._id} width={400} height={400}/>
+                {typeof data._id !== 'undefined' ? <ImageView objId={data._id} width={400} height={400}/> : undefined}
               </div>
               <div className='card-content'>
                 <div className='row'>
-                  <div className='col s12 l4'>
-                    {typeof data.options === 'undefined' ? undefined : mapToOptions(data.options)}
+                  <div className='col s12'>
+                    {typeof data.options !== 'undefined' ?
+                      <OptionList data={data}
+                                  onChange={this.handleChange}
+                                  handleCreateTargetAngkeiteu={this.handleCreateTargetAngkeiteu}/> : undefined}
                   </div>
-                  <div className='col s12 l8 chartContainer'>
+                  <div className='col s12 chartContainer'>
                      <AngkeiteuPieChart data={data}/>
                   </div>
                 </div>
