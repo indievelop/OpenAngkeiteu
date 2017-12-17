@@ -9,7 +9,7 @@ const initialState = {
   get: {
     status: 'INIT',
     error: '',
-    data: {}
+    data: null
   }
 }
 
@@ -44,7 +44,7 @@ export default function file(state, action) {
         get: {
           status: { $set: 'WAITING' },
           error: { $set: -1 },
-          data: { $set: {} }
+          data: { $set: null }
         }
       });
     case types.IMAGE_FILE_GET_SUCCESS:
