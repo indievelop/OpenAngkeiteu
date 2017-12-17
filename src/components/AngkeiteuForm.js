@@ -104,11 +104,13 @@ class AngkeiteuForm extends React.Component {
 
   render() {
     const mapToOptions = options => {
+      let {data} = this.props.postStatus;
+
       return options.map((option, i) => {
         return (
           <div className='row'
                key={option.id}>
-            <div className='col s8'>
+            <div className='col s10'>
               <input name='optionGroup'
                      type='radio'
                      disabled='disabled'/>
@@ -120,11 +122,8 @@ class AngkeiteuForm extends React.Component {
                 <i className="material-icons center">close</i>
               </a>
             </div>
-            <div className='col s2'>
-              <a className="waves-effect waves-light btn"
-                 onClick={() => this.handleRemoveOption(option.id)}>
-                <i className="material-icons center">close</i>
-              </a>
+            <div className='col s12'>
+              <ImageUpload objId={typeof data.options == 'undefined' ? '' : data.options[i]._id} objKind='option'/>
             </div>
           </div>
         );
