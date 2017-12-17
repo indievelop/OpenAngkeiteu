@@ -11,7 +11,9 @@ import CommentList from './CommentList';
 import Search from './Search';
 import ImageView from './ImageView';
 import ImageUpload from './ImageUpload';
+import Option from './Option';
+import OptionList from './OptionList';
 
 export { Header, Footer, Sidemenu, Angkeiteu, AngkeiteuForm,
          AngkeiteuList, AngkeiteuPieChart, Comment, CommentForm,
-         CommentList, Search, ImageView, ImageUpload };
+         CommentList, Search, ImageView, ImageUpload, Option, OptionList };
