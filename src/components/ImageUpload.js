@@ -14,12 +14,20 @@ class ImageUpload extends React.Component {
     this.handleOnChangeImagefile = this.handleOnChangeImagefile.bind(this);
     this.handleRemoveImage = this.handleRemoveImage.bind(this);
     this.uplaodImgfile = this.uplaodImgfile.bind(this);
+    this.initImageData = this.initImageData.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.objId !== this.props.objId && nextProps.objId !== '') {
       this.uplaodImgfile(nextProps);
     }
+  }
+
+  initImageData() {
+    let nextState = {};
+    nextState['imgFile'] = '';
+    nextState['imgUrl'] = '';
+    this.setState(nextState);
   }
 
   uplaodImgfile(nextProps) {
@@ -31,7 +39,9 @@ class ImageUpload extends React.Component {
 
     if(imgFile !== '') {
       this.props.imgFileUploadRequest(nextProps.objId, this.props.objKind, imgFile).then(()=> {
-        if(this.props.imgFileUploadStatus.status === 'FAILURE') {
+        if(this.props.imgFileUploadStatus.status === 'SUCCESS') {
+          this.initImageData();
+        } else if(this.props.imgFileUploadStatus.status === 'FAILURE') {
           let $toastContent = $('<span style="color: #FFB4BA">' + this.props.imgFileUploadStatus.error + '</span>');
           Materialize.toast($toastContent, 2000);
         }
