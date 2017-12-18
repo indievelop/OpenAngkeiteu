@@ -23,7 +23,7 @@ class ImageView extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.imageFileGetStatus !== this.props.imageFileGetStatus) {
+    if(nextProps.imageFileGetStatus.data !== this.props.imageFileGetStatus.data) {
       if(nextProps.imageFileGetStatus.data !== null && nextProps.imageFileGetStatus.data.connectedObj.id === this.props.objId) {
         let nextState = {};
         nextState['uploadedImagePath'] = nextProps.imageFileGetStatus.data.path;
