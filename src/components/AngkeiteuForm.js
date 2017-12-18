@@ -110,7 +110,6 @@ class AngkeiteuForm extends React.Component {
 
   render() {
     let postedData = this.props.postStatus.data;
-    console.log(postedData);
 
     const mapToOptions = (options) => {
       return options.map((option, i) => {
@@ -129,7 +128,7 @@ class AngkeiteuForm extends React.Component {
                 <i className="material-icons center">close</i>
               </a>
             </div>
-            <div className='col s12'>
+            <div className='input-field col s12'>
               <ImageUpload objId={typeof postedData.options == 'undefined' ? '' : postedData.options[i]._id} objKind='option'/>
             </div>
           </div>
