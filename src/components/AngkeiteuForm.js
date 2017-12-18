@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import update from 'react-addons-update';
-import { angkeiteuPostRequest } from 'actions/angkeiteu';
+import { angkeiteuPost, angkeiteuPostRequest } from 'actions/angkeiteu';
 import { ImageUpload } from 'components';
 
 class AngkeiteuForm extends React.Component {
@@ -13,7 +13,7 @@ class AngkeiteuForm extends React.Component {
       title: '',
       description: '',
       option_desc: '',
-      options: [],
+      options: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
@@ -22,9 +22,15 @@ class AngkeiteuForm extends React.Component {
     this.initFormData = this.initFormData.bind(this);
   }
 
+  componentDidMount() {
+    this.props.angkeiteuPost();
+  }
+
   componentWillReceiveProps(nextProps) {
-    if(nextProps.triggerOption._id !== this.props.triggerOption._id)
+    if(nextProps.triggerOption._id !== this.props.triggerOption._id) {
+      this.props.angkeiteuPost();
       this.initFormData();
+    }
   }
 
   handleChange(e) {
@@ -103,9 +109,10 @@ class AngkeiteuForm extends React.Component {
   }
 
   render() {
-    const mapToOptions = options => {
-      let {data} = this.props.postStatus;
+    let postedData = this.props.postStatus.data;
+    console.log(postedData);
 
+    const mapToOptions = (options) => {
       return options.map((option, i) => {
         return (
           <div className='row'
@@ -123,7 +130,7 @@ class AngkeiteuForm extends React.Component {
               </a>
             </div>
             <div className='col s12'>
-              <ImageUpload objId={typeof data.options == 'undefined' ? '' : data.options[i]._id} objKind='option'/>
+              <ImageUpload objId={typeof postedData.options == 'undefined' ? '' : postedData.options[i]._id} objKind='option'/>
             </div>
           </div>
         );
@@ -161,7 +168,7 @@ class AngkeiteuForm extends React.Component {
                   </textarea>
                 </div>
                 <div className='input-field col s12'>
-                  <ImageUpload objId={this.props.postStatus.data._id || ''} objKind='angkeiteu'/>
+                  <ImageUpload objId={postedData._id || ''} objKind='angkeiteu'/>
                 </div>
               </div>
             </div>
@@ -226,6 +233,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    angkeiteuPost: () => {
+      return dispatch(angkeiteuPost());
+    },
     angkeiteuPostRequest: (title, description, options, triggerOptionId) => {
       return dispatch(angkeiteuPostRequest(title, description, options, triggerOptionId));
     }
