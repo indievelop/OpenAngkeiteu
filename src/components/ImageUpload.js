@@ -18,8 +18,12 @@ class ImageUpload extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.objId !== this.props.objId && nextProps.objId !== '') {
-      this.uplaodImgfile(nextProps);
+    if(nextProps.objId !== this.props.objId) {
+      if(nextProps.objId !== '') {
+        this.uplaodImgfile(nextProps);
+      } else {
+        this.initImageData();
+      }
     }
   }
 
@@ -39,13 +43,16 @@ class ImageUpload extends React.Component {
 
     if(imgFile !== '') {
       this.props.imgFileUploadRequest(nextProps.objId, this.props.objKind, imgFile).then(()=> {
+        this.props.onUpload(nextProps.objId);
         if(this.props.imgFileUploadStatus.status === 'SUCCESS') {
-          this.initImageData();
+          //this.initImageData();
         } else if(this.props.imgFileUploadStatus.status === 'FAILURE') {
           let $toastContent = $('<span style="color: #FFB4BA">' + this.props.imgFileUploadStatus.error + '</span>');
           Materialize.toast($toastContent, 2000);
         }
       });
+    } else {
+      this.props.onUpload(nextProps.objId);
     }
   }
 
