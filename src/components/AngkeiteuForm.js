@@ -13,13 +13,15 @@ class AngkeiteuForm extends React.Component {
       title: '',
       description: '',
       option_desc: '',
-      options: []
+      options: [],
+      finishUploads: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
     this.handleRemoveOption = this.handleRemoveOption.bind(this);
     this.handlePost = this.handlePost.bind(this);
     this.initFormData = this.initFormData.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
   componentDidMount() {
@@ -81,6 +83,7 @@ class AngkeiteuForm extends React.Component {
     nextState['description'] = '';
     nextState['option_desc'] = '';
     nextState['options'] = [];
+    nextState['finishUploads'] = [];
     this.setState(nextState);
   }
 
@@ -99,13 +102,27 @@ class AngkeiteuForm extends React.Component {
 
     this.props.angkeiteuPostRequest(title, description, options, triggerOptionId).then(() => {
       if(this.props.postStatus.status === 'SUCCESS') {
-        this.initFormData();
-        this.props.onCompleteCreate(this.props.postStatus.data._id);
+        //this.initFormData();
+        //this.props.onCompleteCreate(this.props.postStatus.data._id);
       } else {
         let $toastContent = $('<span style="color: #FFB4BA">' + angkeiteuPostErrorMessage[this.props.postStatus.error-1] + '</span>');
         Materialize.toast($toastContent, 2000);
       }
     });
+  }
+
+  handleUpload(objId) {
+    let nextState = {}
+
+    if(this.state.finishUploads.length === this.state.options.length) {
+      //finish uploads
+      this.initFormData();
+      this.props.onCompleteCreate(this.props.postStatus.data._id);
+    } else {
+      nextState['finishUploads'] = this.state.finishUploads;
+      nextState['finishUploads'].push(objId);
+      this.setState(nextState);
+    }
   }
 
   render() {
@@ -129,7 +146,9 @@ class AngkeiteuForm extends React.Component {
               </a>
             </div>
             <div className='input-field col s12'>
-              <ImageUpload objId={typeof postedData.options == 'undefined' ? '' : postedData.options[i]._id} objKind='option'/>
+              <ImageUpload objId={typeof postedData.options == 'undefined' ? '' : postedData.options[i]._id}
+                           objKind='option'
+                           onUpload={this.handleUpload}/>
             </div>
           </div>
         );
@@ -167,7 +186,9 @@ class AngkeiteuForm extends React.Component {
                   </textarea>
                 </div>
                 <div className='input-field col s12'>
-                  <ImageUpload objId={postedData._id || ''} objKind='angkeiteu'/>
+                  <ImageUpload objId={postedData._id || ''}
+                               objKind='angkeiteu'
+                               onUpload={this.handleUpload}/>
                 </div>
               </div>
             </div>
