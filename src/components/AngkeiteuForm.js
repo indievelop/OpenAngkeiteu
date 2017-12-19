@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import update from 'react-addons-update';
-import { angkeiteuPostRequest } from 'actions/angkeiteu';
+import { angkeiteuPost, angkeiteuPostRequest } from 'actions/angkeiteu';
+import { ImageUpload } from 'components';
 
 class AngkeiteuForm extends React.Component {
 
@@ -12,18 +13,26 @@ class AngkeiteuForm extends React.Component {
       title: '',
       description: '',
       option_desc: '',
-      options: []
+      options: [],
+      finishUploads: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
     this.handleRemoveOption = this.handleRemoveOption.bind(this);
     this.handlePost = this.handlePost.bind(this);
     this.initFormData = this.initFormData.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.angkeiteuPost();
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.triggerOption._id !== this.props.triggerOption._id)
+    if(nextProps.triggerOption._id !== this.props.triggerOption._id) {
+      this.props.angkeiteuPost();
       this.initFormData();
+    }
   }
 
   handleChange(e) {
@@ -74,6 +83,7 @@ class AngkeiteuForm extends React.Component {
     nextState['description'] = '';
     nextState['option_desc'] = '';
     nextState['options'] = [];
+    nextState['finishUploads'] = [];
     this.setState(nextState);
   }
 
@@ -82,27 +92,43 @@ class AngkeiteuForm extends React.Component {
     let description = this.state.description;
     let options = this.state.options;
     let triggerOptionId = this.props.triggerOption._id;
-    //let parentId = '';
+    const angkeiteuPostErrorMessage = [
+      'You are not logged in.',
+      'Please write title.',
+      'Please write description.',
+      'Please add option.',
+      'Wrong triggerOption id.'
+    ];
+
     this.props.angkeiteuPostRequest(title, description, options, triggerOptionId).then(() => {
       if(this.props.postStatus.status === 'SUCCESS') {
-        this.initFormData();
-        this.props.onCompleteCreate(this.props.postStatus.id);
+        //this.initFormData();
+        //this.props.onCompleteCreate(this.props.postStatus.data._id);
       } else {
-        let errorMessage = [
-          'You are not logged in.',
-          'Please write title.',
-          'Please write description.',
-          'Please add option.',
-          'Wrong triggerOption id.'
-        ];
-        let $toastContent = $('<span style="color: #FFB4BA">' + errorMessage[this.props.postStatus.error-1] + '</span>');
+        let $toastContent = $('<span style="color: #FFB4BA">' + angkeiteuPostErrorMessage[this.props.postStatus.error-1] + '</span>');
         Materialize.toast($toastContent, 2000);
       }
     });
   }
 
+  handleUpload(objId) {
+    let nextState = {}
+
+    if(this.state.finishUploads.length === this.state.options.length) {
+      //finish uploads
+      this.initFormData();
+      this.props.onCompleteCreate(this.props.postStatus.data._id);
+    } else {
+      nextState['finishUploads'] = this.state.finishUploads;
+      nextState['finishUploads'].push(objId);
+      this.setState(nextState);
+    }
+  }
+
   render() {
-    const mapToOptions = options => {
+    let postedData = this.props.postStatus.data;
+
+    const mapToOptions = (options) => {
       return options.map((option, i) => {
         return (
           <div className='row'
@@ -118,6 +144,11 @@ class AngkeiteuForm extends React.Component {
                  onClick={() => this.handleRemoveOption(option.id)}>
                 <i className="material-icons center">close</i>
               </a>
+            </div>
+            <div className='input-field col s12'>
+              <ImageUpload objId={typeof postedData.options == 'undefined' ? '' : postedData.options[i]._id}
+                           objKind='option'
+                           onUpload={this.handleUpload}/>
             </div>
           </div>
         );
@@ -153,6 +184,11 @@ class AngkeiteuForm extends React.Component {
                             onChange={this.handleChange}
                             value={this.state.description}>
                   </textarea>
+                </div>
+                <div className='input-field col s12'>
+                  <ImageUpload objId={postedData._id || ''}
+                               objKind='angkeiteu'
+                               onUpload={this.handleUpload}/>
                 </div>
               </div>
             </div>
@@ -207,15 +243,19 @@ AngkeiteuForm.defaultProps = {
     _id: ''
   }
 }
+
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.authentication.status.isLoggedIn,
-    postStatus: state.angkeiteu.post
+    postStatus: state.angkeiteu.post,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    angkeiteuPost: () => {
+      return dispatch(angkeiteuPost());
+    },
     angkeiteuPostRequest: (title, description, options, triggerOptionId) => {
       return dispatch(angkeiteuPostRequest(title, description, options, triggerOptionId));
     }

@@ -5,7 +5,7 @@ const initialState = {
     post: {
         status: 'INIT',
         error: -1,
-        id: ''
+        data: {}
     },
     get: {
         status: 'INIT',
@@ -72,14 +72,14 @@ export default function angkeiteu(state, action) {
                 post: {
                     status: { $set: 'WAITING' },
                     error: { $set: -1 },
-                    id: {$set: ''}
+                    data: {$set: {} }
                 }
             });
         case types.ANGKEITEU_POST_SUCCESS:
             return update(state, {
                 post: {
                     status: { $set: 'SUCCESS' },
-                    id: { $set: action.id }
+                    data: { $set: action.data }
                 }
             });
         case types.ANGKEITEU_POST_FAILURE:

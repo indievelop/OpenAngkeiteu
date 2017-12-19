@@ -16,7 +16,7 @@ class WriteAngkeiteu extends React.Component {
     return (
       <div className='container writeAngkeiteu'>
         <div className='row'>
-          <div className='col s8 offset-s2'>
+          <div className='col s12 m8 offset-m2 '>
             <AngkeiteuForm mode='RootAngkeiteu'
                            onCompleteCreate={this.handleCompleteCreate}
             />
