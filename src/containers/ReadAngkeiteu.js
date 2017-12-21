@@ -6,8 +6,8 @@ import { angkeiteuGetRequest, angkeiteuParticipateRequest,
          triggerAngkeiteuListRequest, targetAngkeiteuListRequest } from 'actions/angkeiteu';
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
-import { AngkeiteuPieChart, AngkeiteuForm, AngkeiteuList,
-         CommentForm, CommentList, OptionList, ImageView } from 'components';
+import { AngkeiteuChart, AngkeiteuForm, AngkeiteuList,
+         AngkeiteuComment, OptionList, ImageView } from 'components';
 
 class ReadAngkeiteu extends React.Component {
 
@@ -175,19 +175,6 @@ class ReadAngkeiteu extends React.Component {
       </div>
     );
 
-    const commentView = (
-        <div className='card'>
-          <div className='card-content'>
-            <CommentForm angkeiteuId={this.props.angkeiteuGetStaus.data._id}/>
-          </div>
-          <div className='card-content'>
-            <div className='divider'></div>
-            <CommentList angkeiteuId={this.props.angkeiteuGetStaus.data._id}/>
-          </div>
-        </div>
-    );
-
-
     return (
       <div className='container readAngkeiteu'>
         <div className='row'>
@@ -212,21 +199,18 @@ class ReadAngkeiteu extends React.Component {
                 {typeof data._id !== 'undefined' ? <ImageView objId={data._id} width={400} height={400}/> : undefined}
               </div>
               <div className='card-content'>
-                <div className='row'>
-                  <div className='col s12'>
-                    {typeof data.options !== 'undefined' ?
-                      <OptionList data={data}
-                                  onChange={this.handleChange}
-                                  handleCreateTargetAngkeiteu={this.handleCreateTargetAngkeiteu}/> : undefined}
-                  </div>
-                  <div className='col s12 chartContainer'>
-                     <AngkeiteuPieChart data={data}/>
-                  </div>
-                </div>
+                options
+              </div>
+              <div className='card-content'>
+                {typeof data.options !== 'undefined' ?
+                  <OptionList data={data}
+                              onChange={this.handleChange}
+                              handleCreateTargetAngkeiteu={this.handleCreateTargetAngkeiteu}/> : undefined}
               </div>
               {typeof data.accountParticipation !== 'undefined' ? undefined : submitBtn}
             </div>
-            {commentView}
+            <AngkeiteuChart data={data}/>
+            <AngkeiteuComment angkeiteuId={data._id}/>
           </div>
           {typeof data.triggerOptionId !== 'undefined' ? triggerAngkeiteuListView : undefined}
           {typeof data.accountParticipation !== 'undefined' ? targetAngkeiteuListView() : undefined}
