@@ -8,6 +8,7 @@ import AngkeiteuChart from './AngkeiteuChart';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
+import AngkeiteuComment from './AngkeiteuComment';
 import Search from './Search';
 import ImageView from './ImageView';
 import ImageUpload from './ImageUpload';
@@ -16,4 +17,5 @@ import OptionList from './OptionList';
 
 export { Header, Footer, Sidemenu, Angkeiteu, AngkeiteuForm,
          AngkeiteuList, AngkeiteuChart, Comment, CommentForm,
-         CommentList, Search, ImageView, ImageUpload, Option, OptionList };
+         CommentList, AngkeiteuComment, Search, ImageView,
+         ImageUpload, Option, OptionList };
