@@ -42,10 +42,13 @@ class AngkeiteuPieChart extends React.Component {
     this.setState(nextState);
   }
 
-
   render() {
     return (
-      <Pie data={this.state.data}/>
+      <div className='card'>
+        <div className='card-content'>
+          <Pie data={this.state.data}/>
+        </div>
+      </div>
     );
   }
 }
