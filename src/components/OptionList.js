@@ -37,7 +37,7 @@ class OptionList extends React.Component {
     }
 
     return (
-      <div>
+      <div className='row'>
         {mapToComponets(data.options)}
       </div>
     );

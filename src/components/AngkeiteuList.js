@@ -21,7 +21,7 @@ class AngkeiteuList extends React.Component {
     }
 
     return (
-      <div>
+      <div className='row'>
         {mapToComponets(this.props.data)}
       </div>
     );
