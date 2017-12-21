@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ImageView } from 'components';
+import { ShowImgBtn } from 'components';
 
 class Option extends React.Component {
 
@@ -14,7 +14,7 @@ class Option extends React.Component {
 
     return (
       <div className='row'>
-        <div className='col s10'>
+        <div className='col s8'>
           <input name='selectedOptionId'
                  type='radio'
                  onChange={handleChange}
@@ -27,13 +27,13 @@ class Option extends React.Component {
           <label htmlFor={option._id}>{option.description}</label>
         </div>
         <div className='col s2'>
+          <ShowImgBtn objId={option._id}/>
+        </div>
+        <div className='col s2'>
           <a className='waves-effect waves-light btn'
              onClick={() => {handleCreateTargetAngkeiteu(option)}}>
             <i className='material-icons center'>create</i>
           </a>
-        </div>
-        <div className='col s12'>
-          <ImageView objId={option._id} width={400} height={400}/>
         </div>
       </div>
     );
