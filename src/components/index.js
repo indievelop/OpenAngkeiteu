@@ -12,10 +12,12 @@ import AngkeiteuComment from './AngkeiteuComment';
 import Search from './Search';
 import ImageView from './ImageView';
 import ImageUpload from './ImageUpload';
+import ShowImgBtn from './ShowImgBtn';
 import Option from './Option';
 import OptionList from './OptionList';
+
 
 export { Header, Footer, Sidemenu, Angkeiteu, AngkeiteuForm,
          AngkeiteuList, AngkeiteuChart, Comment, CommentForm,
          CommentList, AngkeiteuComment, Search, ImageView,
-         ImageUpload, Option, OptionList };
+         ImageUpload, ShowImgBtn, Option, OptionList };
