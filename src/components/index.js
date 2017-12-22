@@ -5,10 +5,11 @@ import Angkeiteu from './Angkeiteu';
 import AngkeiteuForm from './AngkeiteuForm';
 import AngkeiteuList from './AngkeiteuList';
 import AngkeiteuChart from './AngkeiteuChart';
+import AngkeiteuHeader from './AngkeiteuHeader';
+import AngkeiteuComment from './AngkeiteuComment';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
-import AngkeiteuComment from './AngkeiteuComment';
 import Search from './Search';
 import ImageView from './ImageView';
 import ImageUpload from './ImageUpload';
@@ -18,6 +19,6 @@ import OptionList from './OptionList';
 
 
 export { Header, Footer, Sidemenu, Angkeiteu, AngkeiteuForm,
-         AngkeiteuList, AngkeiteuChart, Comment, CommentForm,
-         CommentList, AngkeiteuComment, Search, ImageView,
-         ImageUpload, ShowImgBtn, Option, OptionList };
+         AngkeiteuList, AngkeiteuChart, AngkeiteuHeader,
+         Comment, CommentForm, CommentList, AngkeiteuComment,
+         Search, ImageView, ImageUpload, ShowImgBtn, Option, OptionList };
