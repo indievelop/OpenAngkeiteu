@@ -6,7 +6,7 @@ import { angkeiteuGetRequest, angkeiteuParticipateRequest,
          triggerAngkeiteuListRequest, targetAngkeiteuListRequest } from 'actions/angkeiteu';
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
-import { AngkeiteuChart, AngkeiteuForm, AngkeiteuList,
+import { AngkeiteuChart, AngkeiteuForm, AngkeiteuList, AngkeiteuHeader,
          AngkeiteuComment, OptionList, ImageView } from 'components';
 
 class ReadAngkeiteu extends React.Component {
@@ -107,22 +107,6 @@ class ReadAngkeiteu extends React.Component {
   render() {
     const {data} = this.props.angkeiteuGetStaus;
 
-    const pleaseHeader =  (
-      <div className='header orange white-text center'>
-        <div className='card-content'>
-          Please response Angkeiteu.
-        </div>
-      </div>
-    );
-
-    const thankyouHeader = (
-      <div className='header green white-text center'>
-        <div className='card-content'>
-          thank you for your participation.
-        </div>
-      </div>
-    );
-
     const submitBtn = (
       <div className='card-action'>
         <a onClick={this.handleSubmit}>submit</a>
@@ -180,7 +164,7 @@ class ReadAngkeiteu extends React.Component {
         <div className='row'>
           <div className='col s12 m8'>
             <div className='card'>
-              {typeof data.accountParticipation !== 'undefined' ? thankyouHeader : pleaseHeader}
+              <AngkeiteuHeader type={typeof data.accountParticipation !== 'undefined' ? 'PARTICIPATED' : 'UNPARTICIPATED'}/>
               <div className='card-content'>
                 <div className='card-title'>
                   <h3>{data.title}</h3>

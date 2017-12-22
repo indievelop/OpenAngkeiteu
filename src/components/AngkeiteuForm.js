@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import update from 'react-addons-update';
 import { angkeiteuPost, angkeiteuPostRequest } from 'actions/angkeiteu';
-import { ImageUpload } from 'components';
+import { ImageUpload, AngkeiteuHeader } from 'components';
 
 class AngkeiteuForm extends React.Component {
 
@@ -159,12 +159,9 @@ class AngkeiteuForm extends React.Component {
       <div className='row'>
         <div className='col s12'>
           <div className='card'>
-            <div className='header blue white-text center'>
-              <div className='card-content'>
-                {this.props.mode === 'RootAngkeiteu' ?
-                  this.props.mode : this.props.triggerOption.description +" of "+ this.props.mode}
-              </div>
-            </div>
+            <AngkeiteuHeader type='CREATING'
+                             mode={this.props.mode}
+                             description={this.props.triggerOption.description}/>
             <div className='card-content'>
               <div className='row'>
                 <div className='input-field col s6'>
