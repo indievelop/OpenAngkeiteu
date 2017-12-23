@@ -1,10 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TimeAgo from 'react-timeago';
-import { Link } from 'react-router-dom';
 
 class Angkeiteu extends React.Component {
   constructor(props) {
       super(props);
+      this.renderBtnChildren = this.renderBtnChildren.bind(this);
+  }
+
+  renderBtnChildren() {
+    return React.Children.map(this.props.children, child => {
+      return React.cloneElement(child, {
+        'data': this.props.data
+      });
+    });
   }
 
   render() {
@@ -33,7 +42,7 @@ class Angkeiteu extends React.Component {
           </div>
         </div>
         <div className='card-action'>
-          <Link to={`/readAngkeiteu/${data._id}`}>open</Link>
+          {this.renderBtnChildren()}
         </div>
       </div>
     );
