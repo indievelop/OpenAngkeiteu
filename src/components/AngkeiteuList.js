@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Angkeiteu } from 'components';
+import { Angkeiteu, List, LinkBtn } from 'components';
 
 class AngkeiteuList extends React.Component {
 
@@ -9,21 +9,12 @@ class AngkeiteuList extends React.Component {
   }
 
   render() {
-    const mapToComponets = angkeiteuList => {
-      return angkeiteuList.map((angkeiteu, i) => {
-        return (
-          <div className={this.props.mode === 'only s12' ? 'col s12' : 'col s12 l3'}
-               key={angkeiteu._id}>
-            <Angkeiteu data={angkeiteu}/>
-          </div>
-        );
-      });
-    }
-
     return (
-      <div className='row'>
-        {mapToComponets(this.props.data)}
-      </div>
+      <List mode={this.props.mode} data={this.props.data}>
+        <Angkeiteu>
+          <LinkBtn>open</LinkBtn>
+        </Angkeiteu>
+      </List>
     );
   }
 }
@@ -35,7 +26,7 @@ AngkeiteuList.propTypes = {
 
 AngkeiteuList.defaultProps = {
   mode: 'default',
-  data:[]
+  data: []
 }
 
 export default AngkeiteuList;
