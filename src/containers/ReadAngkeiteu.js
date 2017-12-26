@@ -6,7 +6,8 @@ import { angkeiteuGetRequest, angkeiteuParticipateRequest,
          triggerAngkeiteuListRequest, targetAngkeiteuListRequest } from 'actions/angkeiteu';
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
-import { AngkeiteuChart, AngkeiteuForm, AngkeiteuList, AngkeiteuHeader,
+import { AngkeiteuChart, AngkeiteuChartFilter, AngkeiteuForm,
+         AngkeiteuList, AngkeiteuHeader,
          AngkeiteuComment, OptionList, ImageView } from 'components';
 
 class ReadAngkeiteu extends React.Component {
@@ -193,7 +194,9 @@ class ReadAngkeiteu extends React.Component {
               </div>
               {typeof data.accountParticipation !== 'undefined' ? undefined : submitBtn}
             </div>
-            <AngkeiteuChart data={data}/>
+            <AngkeiteuChart data={data}>
+              <AngkeiteuChartFilter/>
+            </AngkeiteuChart>
             <AngkeiteuComment angkeiteuId={data._id}/>
           </div>
           {typeof data.triggerOptionId !== 'undefined' ? triggerAngkeiteuListView : undefined}
