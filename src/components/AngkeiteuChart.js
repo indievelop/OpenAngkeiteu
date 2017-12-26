@@ -1,7 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Pie } from 'react-chartjs-2';
 
-class AngkeiteuPieChart extends React.Component {
+class AngkeiteuChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +14,15 @@ class AngkeiteuPieChart extends React.Component {
         }]
       }
     };
+    this.renderFilterChildren = this.renderFilterChildren.bind(this);
+  }
+
+  renderFilterChildren() {
+    return React.Children.map(this.props.children, child => {
+      return React.cloneElement(child, {
+        'data': this.props.data
+      });
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -46,6 +56,10 @@ class AngkeiteuPieChart extends React.Component {
     return (
       <div className='card'>
         <div className='card-content'>
+          {this.renderFilterChildren()}
+        </div>
+        <div className='divider'></div>
+        <div className='card-content'>
           <Pie data={this.state.data}/>
         </div>
       </div>
@@ -53,4 +67,4 @@ class AngkeiteuPieChart extends React.Component {
   }
 }
 
-export default AngkeiteuPieChart;
+export default AngkeiteuChart;
