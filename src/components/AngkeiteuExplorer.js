@@ -8,10 +8,8 @@ class AngkeiteuExplorer extends React.Component {
 
 componentWillReceiveProps(nextProps) {
   if(nextProps.angkeiteuExplorerStatus.selectedAngkeiteu !== this.props.angkeiteuExplorerStatus.selectedAngkeiteu) {
-    if(typeof this.props.onChange !== 'undefined')
     $('#angkeiteuExplorer').scrollTop(0);
   }
-
 }
   render() {
     const selectedAngkeiteuView = (
@@ -36,7 +34,7 @@ componentWillReceiveProps(nextProps) {
     )
 
     return (
-      <div className='row' id='angkeiteuExplorer'>
+      <div id='angkeiteuExplorer' className='row'>
         <div className='col s12'>
           <h5>AngkeiteuExplorer</h5>
         </div>
@@ -59,7 +57,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     selectAngkeiteu: (angkeiteu) => {
-      console.log(angkeiteu);
       return dispatch(selectAngkeiteu(angkeiteu));
     },
     unselectAngkeiteu: () => {
