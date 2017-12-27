@@ -24,6 +24,10 @@ class SearchBar extends React.Component {
       document.onkeydown = listenEscKey;
     }
 
+    handleClose() {
+
+    }
+
     handleChange(e) {
       this.setState({
         keyword: e.target.value

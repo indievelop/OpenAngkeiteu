@@ -5,17 +5,16 @@ class SelectBtn extends React.Component {
 
   constructor(props) {
     super(props);
-    this.handleOnClick = this.handleOnClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleOnClick() {
+  handleClick() {
     this.props.onSelect(this.props.data);
   }
 
   render() {
-
     return (
-      <a onClick={this.handleOnClick}>
+      <a onClick={this.handleClick}>
         {this.props.children}
       </a>
     );
