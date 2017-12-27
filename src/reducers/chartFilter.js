@@ -34,10 +34,6 @@ export default function chartFilter(state, action) {
       } else {
         console.log('not exist');
       }
-    case types.CHART_FILTER_ANGKEITEU_SELECT:
-      return update(state, {
-        selectAngkeiteu: {$set: action.data}
-      });
     default:
       return state
   }
