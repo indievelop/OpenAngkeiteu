@@ -13,6 +13,7 @@ import AngkeiteuChartFilter from'./AngkeiteuChartFilter';
 import FilterCondition from './FilterCondition';
 import AngkeiteuHeader from './AngkeiteuHeader';
 import AngkeiteuComment from './AngkeiteuComment';
+import AngkeiteuExplorer from './AngkeiteuExplorer';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
@@ -28,6 +29,6 @@ import OptionList from './OptionList';
 export { Header, Footer, Sidemenu, List, LinkBtn,
          SelectBtn, Angkeiteu, AngkeiteuDetail, AngkeiteuForm, AngkeiteuList,
          AngkeiteuChart, AngkeiteuChartFilter, FilterCondition, AngkeiteuHeader,
-         Comment, CommentForm, CommentList, AngkeiteuComment,
+         AngkeiteuExplorer, Comment, CommentForm, CommentList, AngkeiteuComment,
          Search, SearchBar, ImageView, ImageUpload,
          ShowImgBtn, Option, OptionList };
