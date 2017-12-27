@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { SearchBar, SelectBtn, List, FilterCondition,
-         Angkeiteu, AngkeiteuDetail, AngkeiteuChart, AngkeiteuComment} from 'components';
-import { selectAngkeiteu } from 'actions/chartFilter';
+import { List, FilterCondition, AngkeiteuExplorer } from 'components';
+import { addChartFilterCondition, removeChartFilterCondition } from 'actions/chartFilter';
 
 class AngkeiteuChartFilter extends React.Component {
 
@@ -15,55 +14,40 @@ class AngkeiteuChartFilter extends React.Component {
     });
   }
 
-  handleOnAngkeiteuChartFilterEditor() {
+  handleOnAngkeiteuExplorer() {
     //find modal on
-    $('#filterConditionExplorer').modal('open');
+    $('#angkeiteuExplorer').modal('open');
   }
 
   render() {
-    const filterConditionExplorer = (
-      <div id='filterConditionExplorer' className='modal'>
-        <div className='modal-content'>
-          <div className='row'>
-            <div className='col s12'>
-              <h5>filter condtions </h5>
-              <List data={this.props.chartFilterStatus.conditions}>
-                <FilterCondition/>
-              </List>
-            </div>
-            <div className='col s6'>
-              <SearchBar/>
-              <List mode='only s12' data={this.props.searchStatus.result.data}>
-                <Angkeiteu>
-                  <SelectBtn onSelect={this.props.selectAngkeiteu}>open</SelectBtn>
-                </Angkeiteu>
-              </List>
-            </div>
-            <div className='col s6'>
-              selected angkeiteu
-              <AngkeiteuDetail data={this.props.chartFilterStatus.selectAngkeiteu}/>
-              <AngkeiteuChart data={this.props.chartFilterStatus.selectAngkeiteu}/>
-              <AngkeiteuComment angkeiteuId={this.props.chartFilterStatus.selectAngkeiteu._id}/>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-
     return (
       <div>
         <div className='row'>
-          <div className='col s10'>
+          <div className='col s12'>
             filtering conditions
+            <List data={this.props.chartFilterStatus.conditions}>
+              <FilterCondition/>
+            </List>
           </div>
-          <div className='col s2'>
-            <a className='waves-effect waves-light btn'
-               onClick={this.handleOnAngkeiteuChartFilterEditor}>
-               <i className='material-icons'>add</i>
-            </a>
+          <div className="input-field col s6">
+             <label>New filterCondition</label>
+              <input name="option_desc"
+                     type="text"
+                     disabled='true'>
+              </input>
+          </div>
+          <div className="input-field col s6">
+              <a className="btn waves-effect waves-light"
+                 onClick={this.handleOnAngkeiteuExplorer}>
+                 <i className="material-icons center">add</i>
+              </a>
           </div>
         </div>
-        {filterConditionExplorer}
+        <div id='angkeiteuExplorer' className='modal'>
+          <div className='modal-content'>
+            <AngkeiteuExplorer/>
+          </div>
+        </div>
       </div>
     );
   }
@@ -71,15 +55,17 @@ class AngkeiteuChartFilter extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-      searchStatus: state.search,
       chartFilterStatus: state.chartFilter
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    selectAngkeiteu: (angkeiteu) => {
-      return dispatch(selectAngkeiteu(angkeiteu));
+    addChartFilterCondition: (filterCondition) => {
+      return dispatch(addChartFilterCondition(filterCondition));
+    },
+    removeChartFilterCondition: (filterCondition) => {
+      return dispatch(removeChartFilterCondition(filterCondition));
     }
   };
 };
