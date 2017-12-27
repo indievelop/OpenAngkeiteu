@@ -15,25 +15,18 @@ class AngkeiteuChart extends React.Component {
       }
     };
     this.renderFilterChildren = this.renderFilterChildren.bind(this);
+    this.setChartData = this.setChartData.bind(this);
   }
 
-  renderFilterChildren() {
-    return React.Children.map(this.props.children, child => {
-      return React.cloneElement(child, {
-        'data': this.props.data
-      });
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    let options = {};
+  setChartData(data) {
+    let options = [];
     let optionDescriptions = [];
     let optionSelectCounts = [];
     let nextState = {};
 
-    if(typeof nextProps.data.options === 'undefined')
+    if(typeof data.options === 'undefined')
       return;
-    options = nextProps.data.options;
+    options = data.options;
     options.forEach((option, i) => {
       optionDescriptions.push(option.description);
       optionSelectCounts.push(option.selectCount);
@@ -48,8 +41,27 @@ class AngkeiteuChart extends React.Component {
         }]
       }
     };
-
     this.setState(nextState);
+  }
+
+  renderFilterChildren() {
+    return React.Children.map(this.props.children, child => {
+      return React.cloneElement(child, {
+        'data': this.props.data
+      });
+    });
+  }
+
+  componentDidMount() {
+    if(typeof this.props.data._id !== 'undefined') {
+      this.setChartData(this.props.data);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.data !== this.props.data) {
+      this.setChartData(nextProps.data);
+    }
   }
 
   render() {
