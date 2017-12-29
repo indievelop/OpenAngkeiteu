@@ -20,6 +20,8 @@ import CommentList from './CommentList';
 import Search from './Search';
 import SearchBar from './SearchBar';
 import ImageView from './ImageView';
+import ImageViewer from './ImageViewer';
+import ImageViewerModal from './ImageViewerModal';
 import ImageUpload from './ImageUpload';
 import ShowImgBtn from './ShowImgBtn';
 import Option from './Option';
@@ -30,5 +32,5 @@ export { Header, Footer, Sidemenu, List, LinkBtn,
          SelectBtn, Angkeiteu, AngkeiteuDetail, AngkeiteuForm, AngkeiteuList,
          AngkeiteuChart, AngkeiteuChartFilter, FilterCondition, AngkeiteuHeader,
          AngkeiteuExplorer, Comment, CommentForm, CommentList, AngkeiteuComment,
-         Search, SearchBar, ImageView, ImageUpload,
+         Search, SearchBar, ImageView, ImageViewer, ImageViewerModal, ImageUpload,
          ShowImgBtn, Option, OptionList };
