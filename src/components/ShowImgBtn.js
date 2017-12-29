@@ -14,14 +14,14 @@ class ShowImgBtn extends React.Component {
   }
 
   componentDidMount() {
-    if(typeof this.props.objId !== 'undefined') {
-      this.props.imageFileGetRequest(this.props.objId);
+    if(typeof this.props.data._id !== 'undefined') {
+      this.props.imageFileGetRequest(this.props.data._id);
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.imageFileGetStatus.data !== this.props.imageFileGetStatus.data) {
-      if(nextProps.imageFileGetStatus.data !== null && nextProps.imageFileGetStatus.data.connectedObj.id === this.props.objId) {
+      if(nextProps.imageFileGetStatus.data !== null && nextProps.imageFileGetStatus.data.connectedObj.id === this.props.data._id) {
         let nextState = {};
         nextState['uploadedImagePath'] = nextProps.imageFileGetStatus.data.path;
         this.setState(nextState);
@@ -30,19 +30,17 @@ class ShowImgBtn extends React.Component {
   }
 
   handleOnShowImgModal() {
-    this.props.selectObjId(this.props.objId);
+    this.props.selectObjId(this.props.data._id);
     $('#imageViewerModal').modal('open');
   }
 
   render() {
     return (
-      <div>
-        <a className='waves-effect waves-light btn'
-           disabled={this.state.uploadedImagePath === ''? 'disabled': undefined}
-           onClick={this.handleOnShowImgModal}>
-          <i className='material-icons center'>image</i>
-        </a>
-      </div>
+      <a className='btn'
+         disabled={this.state.uploadedImagePath === ''? 'disabled': undefined}
+         onClick={this.handleOnShowImgModal}>
+        <i className='material-icons center'>image</i>
+      </a>
     );
   }
 }
