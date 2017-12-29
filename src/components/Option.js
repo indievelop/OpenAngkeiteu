@@ -1,16 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ShowImgBtn } from 'components';
 
 class Option extends React.Component {
 
   constructor(props) {
     super(props);
+    this.renderBtnChildren = this.renderBtnChildren.bind(this);
+  }
+
+  renderBtnChildren() {
+    return React.Children.map(this.props.children, child => {
+      let cloneElement = React.cloneElement(child, {
+        'data': this.props.data
+      });
+      return <div className='col s2'>{cloneElement}</div>
+    });
   }
 
   render() {
-    let { option, accountParticipation, handleChange, selectedOptionId,
-          handleCreateTargetAngkeiteu } = this.props;
+    let { data, accountParticipation, handleChange, selectedOptionId } = this.props;
 
     return (
       <div className='row'>
@@ -19,22 +27,14 @@ class Option extends React.Component {
                  type='radio'
                  onChange={handleChange}
                  checked={typeof accountParticipation === 'undefined' ?
-                          selectedOptionId === option._id :
-                          accountParticipation.selectedOptionId === option._id}
+                          selectedOptionId === data._id :
+                           accountParticipation.selectedOptionId === data._id}
                  disabled={typeof accountParticipation !== 'undefined'}
-                 value={option._id}
-                 id={option._id}/>
-          <label htmlFor={option._id}>{option.description}</label>
+                 value={data._id}
+                 id={data._id}/>
+          <label htmlFor={data._id}>{data.description}</label>
         </div>
-        <div className='col s2'>
-          <ShowImgBtn objId={option._id}/>
-        </div>
-        <div className='col s2'>
-          <a className='waves-effect waves-light btn'
-             onClick={() => {handleCreateTargetAngkeiteu(option)}}>
-            <i className='material-icons center'>create</i>
-          </a>
-        </div>
+        {this.renderBtnChildren()}
       </div>
     );
   }
