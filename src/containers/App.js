@@ -2,7 +2,7 @@ import React from 'react';
 //route
 import { BrowserRouter as Router, Route, IndexRoute } from 'react-router-dom';
 //components
-import { Header, Footer, Sidemenu, Search } from 'components';
+import { Header, Footer, Sidemenu, Search, ImageViewerModal } from 'components';
 //containers
 import { Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu,
         SearchAngkeiteu, ShowWritingAngkeiteu, ShowParticipationAngkeiteu } from 'containers';
@@ -52,6 +52,13 @@ class App extends React.Component {
             }
         }
     );
+
+    //modal Initialization.
+    $(document).ready(() => {
+      $('.modal').modal({
+        ready: (modal, trigger) => { modal.scrollTop(0); }
+      });
+    });
   }
 
   render(){
@@ -76,6 +83,7 @@ class App extends React.Component {
               <footer className='page-footer'>
                 <Footer/>
               </footer>
+              <ImageViewerModal/>
             </div>
           </Router>
       );
