@@ -14,7 +14,7 @@ class SelectBtn extends React.Component {
 
   render() {
     return (
-      <a className='btn'
+      <a className={this.props.className ||''} 
          onClick={this.handleClick}>
         {this.props.children}
       </a>
