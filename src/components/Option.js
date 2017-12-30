@@ -18,12 +18,12 @@ class Option extends React.Component {
   }
 
   render() {
-    let { data, accountParticipation, handleChange, selectedOptionId } = this.props;
+    let { name, data, accountParticipation, handleChange, selectedOptionId } = this.props;
 
     return (
       <div className='row'>
         <div className='col s8'>
-          <input name='selectedOptionId'
+          <input name={name}
                  type='radio'
                  onChange={handleChange}
                  checked={typeof accountParticipation === 'undefined' ?
