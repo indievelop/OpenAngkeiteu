@@ -8,7 +8,7 @@ import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
 import { AngkeiteuChart, AngkeiteuChartFilter, AngkeiteuForm,
          AngkeiteuList, AngkeiteuHeader,
-         AngkeiteuComment, OptionList, ImageView } from 'components';
+         AngkeiteuComment, List, Option, ImageView, ShowImgBtn, SelectBtn } from 'components';
 
 class ReadAngkeiteu extends React.Component {
 
@@ -66,7 +66,9 @@ class ReadAngkeiteu extends React.Component {
   }
 
   handleChange(e) {
-    this.setState(e);
+    let nextState = {};
+    nextState[e.target.name] = e.target.value;
+    this.setState(nextState);
   }
 
   handleSubmit() {
@@ -188,9 +190,18 @@ class ReadAngkeiteu extends React.Component {
               </div>
               <div className='card-content'>
                 {typeof data.options !== 'undefined' ?
-                  <OptionList data={data}
-                              onChange={this.handleChange}
-                              handleCreateTargetAngkeiteu={this.handleCreateTargetAngkeiteu}/> : undefined}
+                  <List mode='only s12' data={data.options}>
+                      <Option name='selectedOptionId'
+                              handleChange={this.handleChange}
+                              selectedOptionId={this.state.selectedOptionId}
+                              accountParticipation={data.accountParticipation}>
+                        <ShowImgBtn/>
+                        <SelectBtn className='btn' onSelect={this.handleCreateTargetAngkeiteu}>
+                          <i className='material-icons'> create</i>
+                        </SelectBtn>
+                      </Option>
+                  </List>
+                  : undefined}
               </div>
               {typeof data.accountParticipation !== 'undefined' ? undefined : submitBtn}
             </div>
