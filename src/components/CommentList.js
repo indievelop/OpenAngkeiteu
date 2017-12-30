@@ -11,6 +11,11 @@ class CommentList extends React.Component {
     this.handleExpandMoreCommentList = this.handleExpandMoreCommentList.bind(this);
   }
 
+  componentDidMount() {
+    if(typeof this.props.angkeiteuId !== 'undefined')
+      this.props.commentListRequest(true, this.props.angkeiteuId);
+  }
+
   componentWillReceiveProps(nextProps) {
     if(typeof this.props.angkeiteuId === 'undefined' && typeof nextProps.angkeiteuId !== 'undefined')
       this.props.commentListRequest(true, nextProps.angkeiteuId);
