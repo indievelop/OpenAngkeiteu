@@ -2,12 +2,11 @@ import * as types from 'actions/ActionTypes';
 import update from 'react-addons-update';
 
 const initialState = {
-  conditions: [],
-  selectAngkeiteu: {}
+  conditions: []
 }
 
 const findFilterCondition = (state, filterCondition) => {
-  return state.chartFilter.conditions.findIndex((e) => {
+  return state.conditions.findIndex((e) => {
     return e.option._id === filterCondition.option._id;
   })
 }
@@ -21,10 +20,10 @@ export default function chartFilter(state, action) {
     case types.CHART_FILTER_CONDITION_ADD:
       if(findFilterCondition(state, action.data) === -1) {
         return update(state, {
-          conditions: {$push: action.data}
+          conditions: { $push: [action.data] }
         });
       } else {
-          console.log('duplicated');
+          return state
       }
     case types.CHART_FILTER_CONDITION_REMOVE:
       if(findFilterCondition(state, action.data) !== -1) {
