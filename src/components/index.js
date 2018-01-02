@@ -25,7 +25,6 @@ import ImageViewerModal from './ImageViewerModal';
 import ImageUpload from './ImageUpload';
 import ShowImgBtn from './ShowImgBtn';
 import Option from './Option';
-import OptionList from './OptionList';
 
 
 export { Header, Footer, Sidemenu, List, LinkBtn,
@@ -33,4 +32,4 @@ export { Header, Footer, Sidemenu, List, LinkBtn,
          AngkeiteuChart, AngkeiteuChartFilter, FilterCondition, AngkeiteuHeader,
          AngkeiteuExplorer, Comment, CommentForm, CommentList, AngkeiteuComment,
          Search, SearchBar, ImageView, ImageViewer, ImageViewerModal, ImageUpload,
-         ShowImgBtn, Option, OptionList };
+         ShowImgBtn, Option };
