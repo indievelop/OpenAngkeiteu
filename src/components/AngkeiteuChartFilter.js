@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { List, FilterCondition, AngkeiteuExplorer, SelectBtn } from 'components';
-import { addChartFilterCondition, removeChartFilterCondition, filtering } from 'actions/chartFilter';
+import { addChartFilterCondition, removeChartFilterCondition, filtering, init } from 'actions/chartFilter';
 
 class AngkeiteuChartFilter extends React.Component {
 
@@ -12,6 +12,7 @@ class AngkeiteuChartFilter extends React.Component {
         ready: (modal, trigger) => { modal.scrollTop(0); }
       });
     });
+    this.props.init();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -85,6 +86,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     filtering: (originParticipants) => {
       return dispatch(filtering(originParticipants));
+    },
+    init: () => {
+      return dispatch(init());
     }
   };
 };
