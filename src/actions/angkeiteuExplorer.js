@@ -26,9 +26,10 @@ export function selectOption(option) {
   }
 }
 
-export function init() {
+export function init(purpose) {
   return {
     type: ANGKEITEU_EXPLORER_INIT,
+    data: purpose
   }
 }
 
