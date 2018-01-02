@@ -30,7 +30,6 @@ class AngkeiteuExplorer extends React.Component {
     let {selectedAngkeiteu, selectedOption} = this.props.angkeiteuExplorerStatus
     if(selectedAngkeiteu._id !== 'undefined' && selectedOption._id !== 'undefined') {
       this.props.complete();
-      this.props.onSubmit(selectedAngkeiteu, selectedOption);
     }
   }
 
@@ -51,7 +50,7 @@ class AngkeiteuExplorer extends React.Component {
             </Option>
           </List>
           <SelectBtn onSelect={this.handleSubmit}>
-            {this.props.children}
+            {this.props.angkeiteuExplorerStatus.purpose}
           </SelectBtn>
         </AngkeiteuDetail>
         <AngkeiteuChart data={this.props.angkeiteuExplorerStatus.selectedAngkeiteu}/>
