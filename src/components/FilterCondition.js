@@ -7,10 +7,10 @@ class FilterCondition extends React.Component {
     return (
       <div className='row'>
         <div className='col s6'>
-          angkeiteu title
+          {data.angkeiteu.title}
         </div>
         <div className='col s6'>
-          selected option
+          {data.option.description}
         </div>
       </div>
     );
