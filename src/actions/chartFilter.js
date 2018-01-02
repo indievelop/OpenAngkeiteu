@@ -4,7 +4,12 @@ import {
   CHART_FILTER_FILTERING
 } from './ActionTypes';
 
-export function addChartFilterCondition(filterCondition) {
+export function addChartFilterCondition(angkeiteu, option) {
+  let filterCondition = {};
+  filterCondition['_id'] = option._id
+  filterCondition['angkeiteu'] = angkeiteu;
+  filterCondition['option'] = option;
+  
   return {
     type: CHART_FILTER_CONDITION_ADD,
     data: filterCondition
