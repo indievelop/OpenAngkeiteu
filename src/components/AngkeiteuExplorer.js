@@ -60,7 +60,7 @@ class AngkeiteuExplorer extends React.Component {
       </div>
     );
 
-    const findAngkieteuView = (
+    const findAngkeiteuView = (
       <div>
         <SearchBar/>
         <List mode='only s12' data={this.props.searchStatus.result.data}>
@@ -78,7 +78,7 @@ class AngkeiteuExplorer extends React.Component {
         </div>
         <div className='col s12'>
           {typeof this.props.angkeiteuExplorerStatus.selectedAngkeiteu._id === 'undefined' ?
-           findAngkieteuView : selectedAngkeiteuView}
+           findAngkeiteuView : selectedAngkeiteuView}
           {backBtn}
         </div>
       </div>
