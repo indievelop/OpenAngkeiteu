@@ -12,7 +12,6 @@ class AngkeiteuChartFilter extends React.Component {
         ready: (modal, trigger) => { modal.scrollTop(0); }
       });
     });
-    this.handleAddFilteringCondition = this.handleAddFilteringCondition.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -30,14 +29,6 @@ class AngkeiteuChartFilter extends React.Component {
     $('#angkeiteuExplorer').modal('open');
   }
 
-  handleAddFilteringCondition(angkeiteu, option) {
-    let filterCondition = {};
-    filterCondition['_id'] = option._id
-    filterCondition['angkeiteu'] = angkeiteu;
-    filterCondition['option'] = option;
-    this.props.addChartFilterCondition(filterCondition);
-  }
-
   render() {
     return (
       <div>
@@ -45,7 +36,11 @@ class AngkeiteuChartFilter extends React.Component {
           <div className='col s12'>
             filtering conditions
             <List mode='only s12'data={this.props.chartFilterStatus.conditions}>
-              <FilterCondition/>
+              <FilterCondition>
+                <SelectBtn className='btn' onSelect={this.props.removeChartFilterCondition}>
+                  <i className="material-icons center">close</i>
+                </SelectBtn>
+              </FilterCondition>
             </List>
           </div>
           <div className="input-field col s6">
@@ -64,7 +59,7 @@ class AngkeiteuChartFilter extends React.Component {
         </div>
         <div id='angkeiteuExplorer' className='modal'>
           <div className='modal-content'>
-            <AngkeiteuExplorer onSubmit={this.handleAddFilteringCondition}>
+            <AngkeiteuExplorer onSubmit={this.props.addChartFilterCondition}>
               Add filtering condition
             </AngkeiteuExplorer>
           </div>
@@ -82,8 +77,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addChartFilterCondition: (filterCondition) => {
-      return dispatch(addChartFilterCondition(filterCondition));
+    addChartFilterCondition: (angkeiteu, option) => {
+      return dispatch(addChartFilterCondition(angkeiteu, option));
     },
     removeChartFilterCondition: (filterCondition) => {
       return dispatch(removeChartFilterCondition(filterCondition));
