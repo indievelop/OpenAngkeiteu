@@ -14,6 +14,7 @@ import FilterCondition from './FilterCondition';
 import AngkeiteuHeader from './AngkeiteuHeader';
 import AngkeiteuComment from './AngkeiteuComment';
 import AngkeiteuExplorer from './AngkeiteuExplorer';
+import AngkeiteuExplorerModal from './AngkeiteuExplorerModal';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
@@ -25,11 +26,12 @@ import ImageViewerModal from './ImageViewerModal';
 import ImageUpload from './ImageUpload';
 import ShowImgBtn from './ShowImgBtn';
 import Option from './Option';
+import Modals from './Modals';
 
 
 export { Header, Footer, Sidemenu, List, LinkBtn,
          SelectBtn, Angkeiteu, AngkeiteuDetail, AngkeiteuForm, AngkeiteuList,
          AngkeiteuChart, AngkeiteuChartFilter, FilterCondition, AngkeiteuHeader,
-         AngkeiteuExplorer, Comment, CommentForm, CommentList, AngkeiteuComment,
-         Search, SearchBar, ImageView, ImageViewer, ImageViewerModal, ImageUpload,
-         ShowImgBtn, Option };
+         AngkeiteuExplorer, AngkeiteuExplorerModal, Comment, CommentForm, CommentList,
+         AngkeiteuComment, Search, SearchBar, ImageView, ImageViewer, ImageViewerModal, ImageUpload,
+         ShowImgBtn, Option, Modals };
