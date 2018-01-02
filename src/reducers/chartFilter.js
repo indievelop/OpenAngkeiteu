@@ -19,6 +19,10 @@ const filterParticipants = (state, originParticipants) => {
   let conditionAccountIds = null;
   let filteredParticipants = [];
 
+
+  if(conditions.length === 0)
+    return originParticipants;
+
   for(var i = 0; i < conditions.length; i++) {
     conditionParticipants = conditions[i].angkeiteu.participants.filter(participant => {
       return participant.selectedOptionId === conditions[i].option._id;
@@ -68,7 +72,7 @@ export default function chartFilter(state, action) {
     case types.CHART_FILTER_CONDITION_REMOVE:
       if(findFilterCondition(state, action.data) !== -1) {
         return update(state, {
-          conditions: {$splice: [findFilterCondition(state, action.data), 1]}
+          conditions: {$splice: [[findFilterCondition(state, action.data), 1]]}
         });
       } else {
         console.log('not exist');
