@@ -72,7 +72,7 @@ export default function chartFilter(state, action) {
     case types.CHART_FILTER_CONDITION_REMOVE:
       if(findFilterCondition(state, action.data) !== -1) {
         return update(state, {
-          conditions: {$splice: [[findFilterCondition(state, action.data), 1]]}
+          conditions: { $splice: [[findFilterCondition(state, action.data), 1]] }
         });
       } else {
         console.log('not exist');
@@ -80,6 +80,11 @@ export default function chartFilter(state, action) {
     case types.CHART_FILTER_FILTERING:
       return update(state, {
         filteredParticipants: { $set: filterParticipants(state, action.data) }
+      });
+    case types.CHART_FILTER_INIT:
+      return update(state, {
+        conditions: { $set: [] },
+        filteredParticipants: { $set: [] }
       });
     default:
       return state
