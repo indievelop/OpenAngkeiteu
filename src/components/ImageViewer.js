@@ -5,7 +5,6 @@ import { ImageView } from 'components';
 class ImageViewer extends React.Component {
   render() {
     let {imageViewerStatus} = this.props;
-    console.log(imageViewerStatus.selectedObjId);
     return (
       <div>
         { imageViewerStatus.selectedObjId !== '' ?
