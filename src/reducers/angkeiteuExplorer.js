@@ -4,7 +4,8 @@ import update from 'react-addons-update';
 const initialState = {
   status: 'INIT',
   selectedAngkeiteu: {},
-  selectedOption: {}
+  selectedOption: {},
+  purpose: ''
 }
 
 export default function angkeiteuExplorer(state, action) {
@@ -17,7 +18,8 @@ export default function angkeiteuExplorer(state, action) {
       return update(state, {
         status: { $set: 'INIT' },
         selectedAngkeiteu: { $set: {} },
-        selectedOption: { $set: {} }
+        selectedOption: { $set: {} },
+        purpose: { $set: action.data }
       });
     case types.ANGKEITEU_EXPLORER_ANGKEITEU_SELECT:
       return update(state, {
