@@ -2,20 +2,24 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { List, FilterCondition, AngkeiteuExplorer, SelectBtn } from 'components';
 import { addChartFilterCondition, removeChartFilterCondition, filtering, init } from 'actions/chartFilter';
+import { init as explorerInit } from 'actions/angkeiteuExplorer';
 
 class AngkeiteuChartFilter extends React.Component {
 
   componentDidMount() {
-    $(document).ready(() => {
-      $('.modal').modal({
-        //set scroll location.
-        ready: (modal, trigger) => { modal.scrollTop(0); }
-      });
-    });
     this.props.init();
+    this.handleOnAngkeiteuExplorer = this.handleOnAngkeiteuExplorer.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
+
+    if(nextProps.angkeiteuExplorerStatus !== this.props.angkeiteuExplorerStatus) {
+      if(nextProps.angkeiteuExplorerStatus.status === 'COMPLETE') {
+        let {selectedAngkeiteu, selectedOption} = nextProps.angkeiteuExplorerStatus;
+        this.props.addChartFilterCondition(selectedAngkeiteu, selectedOption);
+      }
+    }
+
     if(nextProps.chartFilterStatus.conditions !== this.props.chartFilterStatus.conditions) {
       this.props.filtering(this.props.data.participants);
     }
@@ -27,7 +31,8 @@ class AngkeiteuChartFilter extends React.Component {
 
   handleOnAngkeiteuExplorer() {
     //find modal on
-    $('#angkeiteuExplorer').modal('open');
+    this.props.explorerInit('Add FilterCondtion');
+    $('#angkeiteuExplorerModal').modal('open');
   }
 
   render() {
@@ -58,13 +63,6 @@ class AngkeiteuChartFilter extends React.Component {
               </a>
           </div>
         </div>
-        <div id='angkeiteuExplorer' className='modal'>
-          <div className='modal-content'>
-            <AngkeiteuExplorer onSubmit={this.props.addChartFilterCondition}>
-              Add filtering condition
-            </AngkeiteuExplorer>
-          </div>
-        </div>
       </div>
     );
   }
@@ -72,7 +70,8 @@ class AngkeiteuChartFilter extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-      chartFilterStatus: state.chartFilter
+      chartFilterStatus: state.chartFilter,
+      angkeiteuExplorerStatus: state.angkeiteuExplorer
   };
 };
 
@@ -89,6 +88,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     init: () => {
       return dispatch(init());
+    },
+    explorerInit: (purpose) => {
+      return dispatch(explorerInit(purpose));
     }
   };
 };
