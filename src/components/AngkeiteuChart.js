@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Pie } from 'react-chartjs-2';
 
 class AngkeiteuChart extends React.Component {
@@ -18,18 +17,21 @@ class AngkeiteuChart extends React.Component {
     this.setChartData = this.setChartData.bind(this);
   }
 
-  setChartData(data) {
-    let options = [];
+  setChartData(options, participants) {
     let optionDescriptions = [];
     let optionSelectCounts = [];
+    let optionParticipant = [];
     let nextState = {};
 
-    if(typeof data.options === 'undefined')
+    if(typeof options === 'undefined')
       return;
-    options = data.options;
     options.forEach((option, i) => {
+      optionParticipant = participants.filter(participant => {
+        return participant.selectedOptionId === option._id;
+      });
+
       optionDescriptions.push(option.description);
-      optionSelectCounts.push(option.selectCount);
+      optionSelectCounts.push(optionParticipant.length);
     });
 
     nextState = {
@@ -47,20 +49,21 @@ class AngkeiteuChart extends React.Component {
   renderFilterChildren() {
     return React.Children.map(this.props.children, child => {
       return React.cloneElement(child, {
-        'data': this.props.data
+        'data': this.props.data,
+        'setChartData': this.setChartData
       });
     });
   }
 
   componentDidMount() {
     if(typeof this.props.data._id !== 'undefined') {
-      this.setChartData(this.props.data);
+      this.setChartData(this.props.data.options, this.props.data.participants);
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.data !== this.props.data) {
-      this.setChartData(nextProps.data);
+      this.setChartData(nextProps.data.options, nextProps.data.participants);
     }
   }
 
