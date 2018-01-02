@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { List, FilterCondition, AngkeiteuExplorer } from 'components';
-import { addChartFilterCondition, removeChartFilterCondition } from 'actions/chartFilter';
+import { List, FilterCondition, AngkeiteuExplorer, SelectBtn } from 'components';
+import { addChartFilterCondition, removeChartFilterCondition, filtering } from 'actions/chartFilter';
 
 class AngkeiteuChartFilter extends React.Component {
 
@@ -12,11 +12,30 @@ class AngkeiteuChartFilter extends React.Component {
         ready: (modal, trigger) => { modal.scrollTop(0); }
       });
     });
+    this.handleAddFilteringCondition = this.handleAddFilteringCondition.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.chartFilterStatus.conditions !== this.props.chartFilterStatus.conditions) {
+      this.props.filtering(this.props.data.participants);
+    }
+
+    if(nextProps.chartFilterStatus.filteredParticipants !== this.props.chartFilterStatus.filteredParticipants) {
+      this.props.setChartData(this.props.data.options, nextProps.chartFilterStatus.filteredParticipants);
+    }
   }
 
   handleOnAngkeiteuExplorer() {
     //find modal on
     $('#angkeiteuExplorer').modal('open');
+  }
+
+  handleAddFilteringCondition(angkeiteu, option) {
+    let filterCondition = {};
+    filterCondition['_id'] = option._id
+    filterCondition['angkeiteu'] = angkeiteu;
+    filterCondition['option'] = option;
+    this.props.addChartFilterCondition(filterCondition);
   }
 
   render() {
@@ -25,7 +44,7 @@ class AngkeiteuChartFilter extends React.Component {
         <div className='row'>
           <div className='col s12'>
             filtering conditions
-            <List data={this.props.chartFilterStatus.conditions}>
+            <List mode='only s12'data={this.props.chartFilterStatus.conditions}>
               <FilterCondition/>
             </List>
           </div>
@@ -45,7 +64,9 @@ class AngkeiteuChartFilter extends React.Component {
         </div>
         <div id='angkeiteuExplorer' className='modal'>
           <div className='modal-content'>
-            <AngkeiteuExplorer/>
+            <AngkeiteuExplorer onSubmit={this.handleAddFilteringCondition}>
+              Add filtering condition
+            </AngkeiteuExplorer>
           </div>
         </div>
       </div>
@@ -66,6 +87,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     removeChartFilterCondition: (filterCondition) => {
       return dispatch(removeChartFilterCondition(filterCondition));
+    },
+    filtering: (originParticipants) => {
+      return dispatch(filtering(originParticipants));
     }
   };
 };
