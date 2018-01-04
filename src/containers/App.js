@@ -76,7 +76,7 @@ class App extends React.Component {
               <footer className='page-footer'>
                 <Footer/>
               </footer>
-              <Modals/>
+              <Route component = {Modals}/>
             </div>
           </Router>
       );

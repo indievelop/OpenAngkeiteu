@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageViewerModal, AngkeiteuExplorerModal } from 'components';
+import { ImageViewerModal, AngkeiteuExplorerModal, AngkeiteuCreatorModal } from 'components';
 
 class Modals extends React.Component {
 
@@ -13,8 +13,11 @@ class Modals extends React.Component {
   }
 
   render() {
+    let {history} =this.props;
+    
     return (
       <div>
+        <AngkeiteuCreatorModal history={history}/>
         <AngkeiteuExplorerModal/>
         <ImageViewerModal/>
       </div>
