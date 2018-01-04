@@ -5,10 +5,11 @@ import search from './search';
 import file from './file';
 import chartFilter from './chartFilter';
 import angkeiteuExplorer from './angkeiteuExplorer';
+import angkeiteuCreator from './angkeiteuCreator';
 import imageViewer from './imageViewer';
 import { combineReducers } from 'redux';
 
 export default combineReducers({
   authentication, angkeiteu, comment, search, file, chartFilter,
-  angkeiteuExplorer, imageViewer
+  angkeiteuExplorer, angkeiteuCreator, imageViewer
 });
