@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { angkeiteuGetRequest, angkeiteuParticipateRequest,
-         triggerAngkeiteuListRequest, targetAngkeiteuListRequest } from 'actions/angkeiteu';
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
 import { AngkeiteuChart, AngkeiteuChartFilter, AngkeiteuForm,
-         AngkeiteuList, AngkeiteuHeader,
-         AngkeiteuComment, List, Option, ImageView, ShowImgBtn, SelectBtn } from 'components';
+         AngkeiteuList, AngkeiteuHeader, AngkeiteuComment,
+         List, Option, ImageView, ShowImgBtn, SelectBtn } from 'components';
+import { angkeiteuGetRequest, angkeiteuParticipateRequest,
+         triggerAngkeiteuListRequest, targetAngkeiteuListRequest } from 'actions/angkeiteu';
+import { init as angkeiteuCreatorInit} from 'actions/angkeiteuCreator';
 
 class ReadAngkeiteu extends React.Component {
 
@@ -21,7 +22,6 @@ class ReadAngkeiteu extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.loadAngkeiteu = this.loadAngkeiteu.bind(this);
-    this.handleCompleteCreate = this.handleCompleteCreate.bind(this);
     this.handleCreateTargetAngkeiteu = this.handleCreateTargetAngkeiteu.bind(this);
     this.handleExpandMoreTargetAngkeiteuList = this.handleExpandMoreTargetAngkeiteuList.bind(this);
   }
@@ -29,12 +29,6 @@ class ReadAngkeiteu extends React.Component {
   componentDidMount() {
     $(window).scrollTop(0);
     this.loadAngkeiteu(this.props.match.params.id, this.props.authenticateStatus.currentUser);
-    $(document).ready(() => {
-      $('.modal').modal({
-        //set scroll location.
-        ready: (modal, trigger) => { modal.scrollTop(0); }
-      });
-    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -89,15 +83,8 @@ class ReadAngkeiteu extends React.Component {
   }
 
   handleCreateTargetAngkeiteu(triggerOption) {
-    let nextState = {};
-    nextState['triggerOption'] = triggerOption;
-    this.setState(nextState);
-    $('#createTargetAngkeiteuModal').modal('open');
-  }
-
-  handleCompleteCreate(id) {
-    $('#createTargetAngkeiteuModal').modal('close');
-    this.props.history.push('/readAngkeiteu/' + id);
+    this.props.angkeiteuCreatorInit(triggerOption);
+    $('#angkeiteuCreatorModal').modal('open');
   }
 
   handleExpandMoreTargetAngkeiteuList() {
@@ -213,7 +200,6 @@ class ReadAngkeiteu extends React.Component {
           {typeof data.triggerOptionId !== 'undefined' ? triggerAngkeiteuListView : undefined}
           {typeof data.accountParticipation !== 'undefined' ? targetAngkeiteuListView() : undefined}
         </div>
-        {createTargetAngkeiteuModal}
       </div>
     );
   }
@@ -225,7 +211,9 @@ const mapStateToProps = (state) => {
         participateStatus: state.angkeiteu.participate,
         authenticateStatus: state.authentication.status,
         targetAngkeiteuListStatus: state.angkeiteu.targetList,
-        triggerAngkeiteuListStatus: state.angkeiteu.triggerList
+        triggerAngkeiteuListStatus: state.angkeiteu.triggerList,
+        angkeiteuCreatorStaus: state.angkeiteuCreator
+
     };
 };
 
@@ -242,6 +230,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     triggerAngkeiteuListRequest: (triggerOptionId) => {
       return dispatch(triggerAngkeiteuListRequest(triggerOptionId));
+    },
+    angkeiteuCreatorInit: (triggerOption) => {
+      return dispatch(angkeiteuCreatorInit(triggerOption));
     }
   };
 }
