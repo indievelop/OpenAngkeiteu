@@ -1,30 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AngkeiteuForm } from 'components'
+import { connect } from 'react-redux';
+import { AngkeiteuCreator } from 'components'
+import { init as angkeiteuCreatorInit } from 'actions/angkeiteuCreator';
 
 class WriteAngkeiteu extends React.Component {
   constructor(props) {
       super(props);
-      this.handleCompleteCreate = this.handleCompleteCreate.bind(this);
   }
 
-  handleCompleteCreate(id) {
-    this.props.history.push('/readAngkeiteu/' + id);
+  componentDidMount() {
+    this.props.angkeiteuCreatorInit();
   }
 
   render() {
+
     return (
       <div className='container writeAngkeiteu'>
-        <div className='row'>
-          <div className='col s12 m8 offset-m2 '>
-            <AngkeiteuForm mode='RootAngkeiteu'
-                           onCompleteCreate={this.handleCompleteCreate}
-            />
-          </div>
-        </div>
+        <AngkeiteuCreator history={this.props.history}/>
       </div>
     );
   }
 }
 
-export default WriteAngkeiteu;
+const mapStateToProps = (state) => {
+    return {
+        angkeiteuCreatorStaus: state.angkeiteuCreator
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    angkeiteuCreatorInit: (triggerOption) => {
+      return dispatch(angkeiteuCreatorInit(triggerOption));
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(WriteAngkeiteu);
