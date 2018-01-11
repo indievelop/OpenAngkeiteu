@@ -56,6 +56,7 @@ class AngkeiteuExplorer extends React.Component {
         <AngkeiteuChart data={this.props.angkeiteuExplorerStatus.selectedAngkeiteu}/>
         {typeof this.props.angkeiteuExplorerStatus.selectedAngkeiteu._id !== 'undefined' ?
           <AngkeiteuComment angkeiteuId={this.props.angkeiteuExplorerStatus.selectedAngkeiteu._id}/> : undefined}
+        {backBtn}
       </div>
     );
 
@@ -78,7 +79,6 @@ class AngkeiteuExplorer extends React.Component {
         <div className='col s12'>
           {typeof this.props.angkeiteuExplorerStatus.selectedAngkeiteu._id === 'undefined' ?
            findAngkeiteuView : selectedAngkeiteuView}
-          {backBtn}
         </div>
       </div>
     );
