@@ -9,7 +9,7 @@ import { AngkeiteuChart, AngkeiteuChartFilter, AngkeiteuForm,
          List, Option, ImageView, ShowImgBtn, SelectBtn } from 'components';
 import { angkeiteuGetRequest, angkeiteuParticipateRequest,
          triggerAngkeiteuListRequest, targetAngkeiteuListRequest } from 'actions/angkeiteu';
-import { init as angkeiteuCreatorInit} from 'actions/angkeiteuCreator';
+import { init as initAngkeiteuCreator} from 'actions/angkeiteuCreator';
 
 class ReadAngkeiteu extends React.Component {
 
@@ -83,7 +83,7 @@ class ReadAngkeiteu extends React.Component {
   }
 
   handleCreateTargetAngkeiteu(triggerOption) {
-    this.props.angkeiteuCreatorInit(triggerOption);
+    this.props.initAngkeiteuCreator(triggerOption);
     $('#angkeiteuCreatorModal').modal('open');
   }
 
@@ -231,8 +231,8 @@ const mapDispatchToProps = (dispatch) => {
     triggerAngkeiteuListRequest: (triggerOptionId) => {
       return dispatch(triggerAngkeiteuListRequest(triggerOptionId));
     },
-    angkeiteuCreatorInit: (triggerOption) => {
-      return dispatch(angkeiteuCreatorInit(triggerOption));
+    initAngkeiteuCreator: (triggerOption) => {
+      return dispatch(initAngkeiteuCreator(triggerOption));
     }
   };
 }
