@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { AngkeiteuForm } from 'components'
-import { init, complete } from 'actions/angkeiteuCreator';
+import { complete } from 'actions/angkeiteuCreator';
 
 class AngkeiteuCreator extends React.Component {
   constructor(props) {
@@ -39,9 +39,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    init: (triggerOption) => {
-      return dispatch(init(triggerOption));
-    },
     complete: () => {
       return dispatch(complete());
     }
