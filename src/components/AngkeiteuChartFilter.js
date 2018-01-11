@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { List, FilterCondition, AngkeiteuExplorer, SelectBtn } from 'components';
-import { addChartFilterCondition, removeChartFilterCondition, filtering, init } from 'actions/chartFilter';
-import { init as explorerInit } from 'actions/angkeiteuExplorer';
+import { addChartFilterCondition, filtering, init } from 'actions/chartFilter';
+import { init as initExplorer } from 'actions/angkeiteuExplorer';
 
 class AngkeiteuChartFilter extends React.Component {
 
@@ -31,7 +31,7 @@ class AngkeiteuChartFilter extends React.Component {
 
   handleOnAngkeiteuExplorer() {
     //find modal on
-    this.props.explorerInit('Add FilterCondtion');
+    this.props.initExplorer('Add FilterCondtion');
     $('#angkeiteuExplorerModal').modal('open');
   }
 
@@ -42,11 +42,7 @@ class AngkeiteuChartFilter extends React.Component {
           <div className='col s12'>
             filtering conditions
             <List mode='only s12'data={this.props.chartFilterStatus.conditions}>
-              <FilterCondition>
-                <SelectBtn className='btn' onSelect={this.props.removeChartFilterCondition}>
-                  <i className="material-icons center">close</i>
-                </SelectBtn>
-              </FilterCondition>
+              <FilterCondition/>
             </List>
           </div>
           <div className="input-field col s6">
@@ -80,17 +76,14 @@ const mapDispatchToProps = (dispatch) => {
     addChartFilterCondition: (angkeiteu, option) => {
       return dispatch(addChartFilterCondition(angkeiteu, option));
     },
-    removeChartFilterCondition: (filterCondition) => {
-      return dispatch(removeChartFilterCondition(filterCondition));
-    },
     filtering: (originParticipants) => {
       return dispatch(filtering(originParticipants));
     },
     init: () => {
       return dispatch(init());
     },
-    explorerInit: (purpose) => {
-      return dispatch(explorerInit(purpose));
+    initExplorer: (purpose) => {
+      return dispatch(initExplorer(purpose));
     }
   };
 };
