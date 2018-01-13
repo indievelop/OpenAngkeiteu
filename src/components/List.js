@@ -12,11 +12,9 @@ class List extends React.Component {
     let itemElement = null;
 
     return React.Children.map(this.props.children, child => {
-
       itemElement = React.cloneElement(child, {
         'data': item
       });
-
       return (
         <div className={child.props.className}>
            {itemElement}
