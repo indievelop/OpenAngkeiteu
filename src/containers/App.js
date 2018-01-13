@@ -71,11 +71,11 @@ class App extends React.Component {
                 <Route path = '/searchAngkeiteu/:keyword' component = {SearchAngkeiteu}/>
                 <Route path = '/showWritingAngkeiteu/:accountId' component = {ShowWritingAngkeiteu}/>
                 <Route path = '/showParticipationAngkeiteu/:accountId' component = {ShowParticipationAngkeiteu}/>
+                <Route component = {Modals}/>
               </main>
               <footer className='page-footer'>
                 <Footer/>
               </footer>
-              <Route component = {Modals}/>
             </div>
           </Router>
       );
