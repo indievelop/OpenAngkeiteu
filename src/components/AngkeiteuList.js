@@ -10,8 +10,8 @@ class AngkeiteuList extends React.Component {
 
   render() {
     return (
-      <List mode={this.props.mode} data={this.props.data}>
-        <Angkeiteu>
+      <List className='row' data={this.props.data}>
+        <Angkeiteu className='col s12 l3'>
           <LinkBtn>open</LinkBtn>
         </Angkeiteu>
       </List>
@@ -20,12 +20,10 @@ class AngkeiteuList extends React.Component {
 }
 
 AngkeiteuList.propTypes = {
-  mode: PropTypes.string,
   data: PropTypes.array
 }
 
 AngkeiteuList.defaultProps = {
-  mode: 'default',
   data: []
 }
 

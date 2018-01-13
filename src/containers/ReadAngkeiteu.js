@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
-import { AngkeiteuChart, AngkeiteuChartFilter, AngkeiteuForm,
+import { Angkeiteu, AngkeiteuChart, AngkeiteuChartFilter, AngkeiteuForm,
          AngkeiteuList, AngkeiteuHeader, AngkeiteuComment,
-         List, Option, ImageView, ShowImgBtn, SelectBtn } from 'components';
+         List, Option, ImageView, ShowImgBtn, SelectBtn, LinkBtn } from 'components';
 import { angkeiteuGetRequest, angkeiteuParticipateRequest,
          triggerAngkeiteuListRequest, targetAngkeiteuListRequest } from 'actions/angkeiteu';
 import { init as initAngkeiteuCreator} from 'actions/angkeiteuCreator';
@@ -103,16 +103,6 @@ class ReadAngkeiteu extends React.Component {
       </div>
     );
 
-    const createTargetAngkeiteuModal = (
-      <div id='createTargetAngkeiteuModal' className='modal'>
-        <div className='modal-content'>
-          <AngkeiteuForm mode='TargetAngkeiteu'
-                         triggerOption={this.state.triggerOption}
-                         onCompleteCreate={this.handleCompleteCreate}/>
-        </div>
-      </div>
-    );
-
     const expandMoreBtn = (
       <div className='center-align'>
         <a className='waves-effect waves-light btn'
@@ -132,7 +122,11 @@ class ReadAngkeiteu extends React.Component {
           <div className='divider'></div>
           <div className='section'>
             <h5>{`${selectedOption.description} of targetAngkeiteu`}</h5>
-            <AngkeiteuList mode='only s12' data={this.props.targetAngkeiteuListStatus.data}/>
+            <List className='row' data={this.props.targetAngkeiteuListStatus.data}>
+              <Angkeiteu className='col s12'>
+                <LinkBtn>open</LinkBtn>
+              </Angkeiteu>
+            </List>
             {this.props.targetAngkeiteuListStatus.isLast ? undefined : expandMoreBtn }
           </div>
         </div>
@@ -144,7 +138,11 @@ class ReadAngkeiteu extends React.Component {
         <div className='divider'></div>
         <div className='section'>
           <h5>{`${data.title} of triggerAngkeiteu`}</h5>
-          <AngkeiteuList mode='only s12' data={this.props.triggerAngkeiteuListStatus.data}/>
+          <List className='row' data={this.props.triggerAngkeiteuListStatus.data}>
+            <Angkeiteu className='col s12'>
+              <LinkBtn>open</LinkBtn>
+            </Angkeiteu>
+          </List>
         </div>
       </div>
     );
@@ -177,8 +175,9 @@ class ReadAngkeiteu extends React.Component {
               </div>
               <div className='card-content'>
                 {typeof data.options !== 'undefined' ?
-                  <List mode='only s12' data={data.options}>
-                      <Option name='selectedOptionId'
+                  <List className='row' data={data.options}>
+                      <Option className='col s12'
+                              name='selectedOptionId'
                               handleChange={this.handleChange}
                               selectedOptionId={this.state.selectedOptionId}
                               accountParticipation={data.accountParticipation}>

@@ -9,10 +9,19 @@ class List extends React.Component {
   }
 
   renderChildren(item) {
+    let itemElement = null;
+
     return React.Children.map(this.props.children, child => {
-      return React.cloneElement(child, {
+
+      itemElement = React.cloneElement(child, {
         'data': item
       });
+
+      return (
+        <div className={child.props.className}>
+           {itemElement}
+        </div>
+      );
     });
   }
 
@@ -20,8 +29,7 @@ class List extends React.Component {
     const mapToComponets = list => {
       return list.map((item, i) => {
         return (
-          <div className={this.props.mode === 'only s12' ? 'col s12' : 'col s12 l3'}
-               key={item._id}>
+          <div key={item._id}>
             {this.renderChildren(item)}
           </div>
         );
@@ -29,7 +37,7 @@ class List extends React.Component {
     }
 
     return (
-      <div className='row'>
+      <div className={this.props.className || ''}>
         {mapToComponets(this.props.data)}
       </div>
     );
@@ -37,12 +45,10 @@ class List extends React.Component {
 }
 
 List.propTypes = {
-  mode: PropTypes.string,
   data: PropTypes.array
 }
 
 List.defaultProps = {
-  mode: 'default',
   data: []
 }
 

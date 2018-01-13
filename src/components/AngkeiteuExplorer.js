@@ -27,8 +27,8 @@ class AngkeiteuExplorer extends React.Component {
   }
 
   handleSubmit() {
-    let {selectedAngkeiteu, selectedOption} = this.props.angkeiteuExplorerStatus
-    if(selectedAngkeiteu._id !== 'undefined' && selectedOption._id !== 'undefined') {
+    let {selectedAngkeiteu, selectedOption} = this.props.angkeiteuExplorerStatus;
+    if(typeof selectedAngkeiteu._id !== 'undefined' && typeof selectedOption._id !== 'undefined') {
       this.props.complete();
     }
   }
@@ -43,8 +43,9 @@ class AngkeiteuExplorer extends React.Component {
     const selectedAngkeiteuView = (
       <div>
         <AngkeiteuDetail data={this.props.angkeiteuExplorerStatus.selectedAngkeiteu}>
-          <List mode='only s12'>
-            <Option handleChange={this.handleChange}
+          <List className='row'>
+            <Option className='col s12'
+                    handleChange={this.handleChange}
                     selectedOptionId={this.props.angkeiteuExplorerStatus.selectedOption._id}>
               <ShowImgBtn/>
             </Option>
@@ -63,8 +64,8 @@ class AngkeiteuExplorer extends React.Component {
     const findAngkeiteuView = (
       <div>
         <SearchBar/>
-        <List mode='only s12' data={this.props.searchStatus.result.data}>
-          <Angkeiteu>
+        <List className='row' data={this.props.searchStatus.result.data}>
+          <Angkeiteu className='col s12'>
             <SelectBtn onSelect={this.props.selectAngkeiteu}>open</SelectBtn>
           </Angkeiteu>
         </List>

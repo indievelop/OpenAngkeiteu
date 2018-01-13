@@ -39,9 +39,9 @@ class CommentList extends React.Component {
     return (
       <div>
         <h5>{`${this.props.countCommentStatus.data.count} comments`}</h5>
-          <List mode='only s12' data={this.props.commentListStatus.data}>
-            <Comment/>
-            <div className='divider'></div>
+          <List className='row' data={this.props.commentListStatus.data}>
+            <Comment className='col s12'/>
+            <div className='col s12 divider'></div>
           </List>
         {this.props.commentListStatus.isLast ? undefined : expandMoreBtn}
       </div>
