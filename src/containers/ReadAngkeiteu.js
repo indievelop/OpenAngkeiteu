@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
-import { Angkeiteu, AngkeiteuChart, AngkeiteuChartFilter, AngkeiteuForm,
-         AngkeiteuList, AngkeiteuHeader, AngkeiteuComment,
+import { Angkeiteu, AngkeiteuChart, AngkeiteuChartFilter,
+         AngkeiteuForm, AngkeiteuHeader, AngkeiteuComment,
          List, Option, ImageView, ShowImgBtn, SelectBtn, LinkBtn } from 'components';
 import { angkeiteuGetRequest, angkeiteuParticipateRequest,
          triggerAngkeiteuListRequest, targetAngkeiteuListRequest } from 'actions/angkeiteu';
