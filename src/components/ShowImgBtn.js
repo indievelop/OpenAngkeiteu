@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ImageView } from 'components';
+import { imageFileGetRequest } from 'actions/file';
+import { selectObjId } from 'actions/imageViewer';
 
 class ShowImgBtn extends React.Component {
   constructor(props) {
@@ -12,9 +13,15 @@ class ShowImgBtn extends React.Component {
     this.handleOnShowImgModal = this.handleOnShowImgModal.bind(this);
   }
 
+  componentDidMount() {
+    if(typeof this.props.data._id !== 'undefined') {
+      this.props.imageFileGetRequest(this.props.data._id);
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if(nextProps.imageFileGetStatus.data !== this.props.imageFileGetStatus.data) {
-      if(nextProps.imageFileGetStatus.data !== null && nextProps.imageFileGetStatus.data.connectedObj.id === this.props.objId) {
+      if(nextProps.imageFileGetStatus.data !== null && nextProps.imageFileGetStatus.data.connectedObj.id === this.props.data._id) {
         let nextState = {};
         nextState['uploadedImagePath'] = nextProps.imageFileGetStatus.data.path;
         this.setState(nextState);
@@ -22,36 +29,18 @@ class ShowImgBtn extends React.Component {
     }
   }
 
-  componentDidMount() {
-    $(document).ready(() => {
-      $('.modal').modal({
-        ready: (modal, trigger) => { modal.scrollTop(0); }
-      });
-    });
-  }
-
   handleOnShowImgModal() {
-    $(`#${this.props.objId}_showImgModal`).modal('open');
+    this.props.selectObjId(this.props.data._id);
+    $('#imageViewerModal').modal('open');
   }
 
   render() {
-    const showImgModal = (
-      <div id={`${this.props.objId}_showImgModal`} className='modal'>
-        <div className='modal-content'>
-          <ImageView objId={this.props.objId} height={500} width={500}/>
-        </div>
-      </div>
-    );
-
     return (
-      <div>
-        <a className='waves-effect waves-light btn'
-           disabled={this.state.uploadedImagePath === ''? 'disabled': undefined}
-           onClick={this.handleOnShowImgModal}>
-          <i className='material-icons center'>image</i>
-        </a>
-        {showImgModal}
-      </div>
+      <a className='btn'
+         disabled={this.state.uploadedImagePath === ''? 'disabled': undefined}
+         onClick={this.handleOnShowImgModal}>
+        <i className='material-icons center'>image</i>
+      </a>
     );
   }
 }
@@ -60,6 +49,17 @@ const mapStateToProps = (state) => {
     return {
       imageFileGetStatus: state.file.get
     };
-};
+}
 
-export default connect(mapStateToProps)(ShowImgBtn);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        imageFileGetRequest: (objId) => {
+            return dispatch(imageFileGetRequest(objId));
+        },
+        selectObjId: (obj) => {
+          return dispatch(selectObjId(obj));
+        }
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShowImgBtn);

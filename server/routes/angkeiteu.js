@@ -382,7 +382,6 @@ router.put('/:id/selectOption/:optionId', (req, res) => {
       '_id': id, 'options._id': optionId
     };
     update = {
-      '$inc': {'options.$.selectCount': 1},
       '$push': {'participants': {'accountId': loginInfo._id, 'selectedOptionId': optionId} }
     };
     option = {

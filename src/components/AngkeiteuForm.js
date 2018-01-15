@@ -24,13 +24,8 @@ class AngkeiteuForm extends React.Component {
     this.handleUpload = this.handleUpload.bind(this);
   }
 
-  componentDidMount() {
-    this.props.angkeiteuPost();
-  }
-
   componentWillReceiveProps(nextProps) {
     if(nextProps.triggerOption._id !== this.props.triggerOption._id) {
-      this.props.angkeiteuPost();
       this.initFormData();
     }
   }
@@ -104,7 +99,7 @@ class AngkeiteuForm extends React.Component {
       if(this.props.postStatus.status === 'SUCCESS') {
         //this.initFormData();
         //this.props.onCompleteCreate(this.props.postStatus.data._id);
-      } else {
+      } else if(this.props.postStatus.status === 'FAILURE'){
         let $toastContent = $('<span style="color: #FFB4BA">' + angkeiteuPostErrorMessage[this.props.postStatus.error-1] + '</span>');
         Materialize.toast($toastContent, 2000);
       }
@@ -160,7 +155,7 @@ class AngkeiteuForm extends React.Component {
         <div className='col s12'>
           <div className='card'>
             <AngkeiteuHeader type='CREATING'
-                             mode={this.props.mode}
+                             mode={this.props.triggerOption._id === '' ? 'RootAngkeiteu' : 'TargetAngkeiteu'}
                              description={this.props.triggerOption.description}/>
             <div className='card-content'>
               <div className='row'>

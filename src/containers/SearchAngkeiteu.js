@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { angkeiteuSearchRequest } from 'actions/search';
-import { AngkeiteuList } from 'components';
+import { AngkeiteuList, SearchBar } from 'components';
 
 class SearchAngkeiteu extends React.Component {
   constructor(props) {
@@ -16,6 +16,9 @@ class SearchAngkeiteu extends React.Component {
     return (
       <div className='container'>
         <div className='row'>
+          <div className='col s12'>
+            <SearchBar/>
+          </div>
           <div className='col s12'>
             <h5>search result</h5>
             <AngkeiteuList data={this.props.searchStatus.result.data}/>

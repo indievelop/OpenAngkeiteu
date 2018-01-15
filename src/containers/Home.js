@@ -1,5 +1,5 @@
 import React from 'react';
-import { AngkeiteuList } from 'components';
+import { List, Angkeiteu, LinkBtn } from 'components';
 import { connect } from 'react-redux';
 import { angkeiteuListRequest, hotAngkeiteuListRequest } from 'actions/angkeiteu';
 
@@ -83,7 +83,11 @@ class Home extends React.Component {
         <div className='section'>
           <h5>hot angkeiteu</h5>
           {selectPeriodDropdownBtn}
-          <AngkeiteuList data={listStatus.data}/>
+          <List className='row' data={listStatus.data}>
+            <Angkeiteu className='col s12 l3'>
+              <LinkBtn>open</LinkBtn>
+            </Angkeiteu>
+          </List>
           {listStatus.isLast ? undefined : expandMoreBtn(this.state.selectedPeriod)}
         </div>
       );
@@ -99,7 +103,11 @@ class Home extends React.Component {
             <div className='divider'></div>
             <div className='section'>
               <h5>recent angkeiteu</h5>
-              <AngkeiteuList data={this.props.angkeiteuListStatus.data}/>
+              <List className='row' data={this.props.angkeiteuListStatus.data}>
+               <Angkeiteu className='col s12 l3'>
+                 <LinkBtn>open</LinkBtn>
+               </Angkeiteu>
+              </List>
               {this.props.angkeiteuListStatus.isLast ? undefined : expandMoreBtn('list')}
             </div>
           </div>

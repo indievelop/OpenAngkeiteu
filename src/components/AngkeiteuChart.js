@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
 
-class AngkeiteuPieChart extends React.Component {
+class AngkeiteuChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,20 +13,25 @@ class AngkeiteuPieChart extends React.Component {
         }]
       }
     };
+    this.renderFilterChildren = this.renderFilterChildren.bind(this);
+    this.setChartData = this.setChartData.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    let options = {};
+  setChartData(options, participants) {
     let optionDescriptions = [];
     let optionSelectCounts = [];
+    let optionParticipant = [];
     let nextState = {};
 
-    if(typeof nextProps.data.options === 'undefined')
+    if(typeof options === 'undefined')
       return;
-    options = nextProps.data.options;
     options.forEach((option, i) => {
+      optionParticipant = participants.filter(participant => {
+        return participant.selectedOptionId === option._id;
+      });
+
       optionDescriptions.push(option.description);
-      optionSelectCounts.push(option.selectCount);
+      optionSelectCounts.push(optionParticipant.length);
     });
 
     nextState = {
@@ -38,13 +43,37 @@ class AngkeiteuPieChart extends React.Component {
         }]
       }
     };
-
     this.setState(nextState);
+  }
+
+  renderFilterChildren() {
+    return React.Children.map(this.props.children, child => {
+      return React.cloneElement(child, {
+        'data': this.props.data,
+        'setChartData': this.setChartData
+      });
+    });
+  }
+
+  componentDidMount() {
+    if(typeof this.props.data._id !== 'undefined') {
+      this.setChartData(this.props.data.options, this.props.data.participants);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.data !== this.props.data) {
+      this.setChartData(nextProps.data.options, nextProps.data.participants);
+    }
   }
 
   render() {
     return (
       <div className='card'>
+        <div className='card-content'>
+          {this.renderFilterChildren()}
+        </div>
+        <div className='divider'></div>
         <div className='card-content'>
           <Pie data={this.state.data}/>
         </div>
@@ -53,4 +82,4 @@ class AngkeiteuPieChart extends React.Component {
   }
 }
 
-export default AngkeiteuPieChart;
+export default AngkeiteuChart;

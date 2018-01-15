@@ -23,6 +23,10 @@ class ImageView extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if(nextProps.objId !== this.props.objId) {
+      this.props.imageFileGetRequest(nextProps.objId);
+    }
+
     if(nextProps.imageFileGetStatus.data !== this.props.imageFileGetStatus.data) {
       if(nextProps.imageFileGetStatus.data !== null && nextProps.imageFileGetStatus.data.connectedObj.id === this.props.objId) {
         let nextState = {};

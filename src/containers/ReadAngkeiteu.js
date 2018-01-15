@@ -2,12 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { angkeiteuGetRequest, angkeiteuParticipateRequest,
-         triggerAngkeiteuListRequest, targetAngkeiteuListRequest } from 'actions/angkeiteu';
 import update from 'react-addons-update';
 import TimeAgo from 'react-timeago';
-import { AngkeiteuChart, AngkeiteuForm, AngkeiteuList, AngkeiteuHeader,
-         AngkeiteuComment, OptionList, ImageView } from 'components';
+import { Angkeiteu, AngkeiteuChart, AngkeiteuChartFilter,
+         AngkeiteuForm, AngkeiteuHeader, AngkeiteuComment,
+         List, Option, ImageView, ShowImgBtn, SelectBtn, LinkBtn } from 'components';
+import { angkeiteuGetRequest, angkeiteuParticipateRequest,
+         triggerAngkeiteuListRequest, targetAngkeiteuListRequest } from 'actions/angkeiteu';
+import { init as initAngkeiteuCreator} from 'actions/angkeiteuCreator';
 
 class ReadAngkeiteu extends React.Component {
 
@@ -20,7 +22,6 @@ class ReadAngkeiteu extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.loadAngkeiteu = this.loadAngkeiteu.bind(this);
-    this.handleCompleteCreate = this.handleCompleteCreate.bind(this);
     this.handleCreateTargetAngkeiteu = this.handleCreateTargetAngkeiteu.bind(this);
     this.handleExpandMoreTargetAngkeiteuList = this.handleExpandMoreTargetAngkeiteuList.bind(this);
   }
@@ -28,12 +29,6 @@ class ReadAngkeiteu extends React.Component {
   componentDidMount() {
     $(window).scrollTop(0);
     this.loadAngkeiteu(this.props.match.params.id, this.props.authenticateStatus.currentUser);
-    $(document).ready(() => {
-      $('.modal').modal({
-        //set scroll location.
-        ready: (modal, trigger) => { modal.scrollTop(0); }
-      });
-    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,7 +60,9 @@ class ReadAngkeiteu extends React.Component {
   }
 
   handleChange(e) {
-    this.setState(e);
+    let nextState = {};
+    nextState[e.target.name] = e.target.value;
+    this.setState(nextState);
   }
 
   handleSubmit() {
@@ -86,15 +83,8 @@ class ReadAngkeiteu extends React.Component {
   }
 
   handleCreateTargetAngkeiteu(triggerOption) {
-    let nextState = {};
-    nextState['triggerOption'] = triggerOption;
-    this.setState(nextState);
-    $('#createTargetAngkeiteuModal').modal('open');
-  }
-
-  handleCompleteCreate(id) {
-    $('#createTargetAngkeiteuModal').modal('close');
-    this.props.history.push('/readAngkeiteu/' + id);
+    this.props.initAngkeiteuCreator(triggerOption);
+    $('#angkeiteuCreatorModal').modal('open');
   }
 
   handleExpandMoreTargetAngkeiteuList() {
@@ -110,16 +100,6 @@ class ReadAngkeiteu extends React.Component {
     const submitBtn = (
       <div className='card-action'>
         <a onClick={this.handleSubmit}>submit</a>
-      </div>
-    );
-
-    const createTargetAngkeiteuModal = (
-      <div id='createTargetAngkeiteuModal' className='modal'>
-        <div className='modal-content'>
-          <AngkeiteuForm mode='TargetAngkeiteu'
-                         triggerOption={this.state.triggerOption}
-                         onCompleteCreate={this.handleCompleteCreate}/>
-        </div>
       </div>
     );
 
@@ -142,7 +122,11 @@ class ReadAngkeiteu extends React.Component {
           <div className='divider'></div>
           <div className='section'>
             <h5>{`${selectedOption.description} of targetAngkeiteu`}</h5>
-            <AngkeiteuList mode='only s12' data={this.props.targetAngkeiteuListStatus.data}/>
+            <List className='row' data={this.props.targetAngkeiteuListStatus.data}>
+              <Angkeiteu className='col s12'>
+                <LinkBtn>open</LinkBtn>
+              </Angkeiteu>
+            </List>
             {this.props.targetAngkeiteuListStatus.isLast ? undefined : expandMoreBtn }
           </div>
         </div>
@@ -154,7 +138,11 @@ class ReadAngkeiteu extends React.Component {
         <div className='divider'></div>
         <div className='section'>
           <h5>{`${data.title} of triggerAngkeiteu`}</h5>
-          <AngkeiteuList mode='only s12' data={this.props.triggerAngkeiteuListStatus.data}/>
+          <List className='row' data={this.props.triggerAngkeiteuListStatus.data}>
+            <Angkeiteu className='col s12'>
+              <LinkBtn>open</LinkBtn>
+            </Angkeiteu>
+          </List>
         </div>
       </div>
     );
@@ -187,19 +175,30 @@ class ReadAngkeiteu extends React.Component {
               </div>
               <div className='card-content'>
                 {typeof data.options !== 'undefined' ?
-                  <OptionList data={data}
-                              onChange={this.handleChange}
-                              handleCreateTargetAngkeiteu={this.handleCreateTargetAngkeiteu}/> : undefined}
+                  <List className='row' data={data.options}>
+                      <Option className='col s12'
+                              name='selectedOptionId'
+                              handleChange={this.handleChange}
+                              selectedOptionId={this.state.selectedOptionId}
+                              accountParticipation={data.accountParticipation}>
+                        <ShowImgBtn/>
+                        <SelectBtn className='btn' onSelect={this.handleCreateTargetAngkeiteu}>
+                          <i className='material-icons'> create</i>
+                        </SelectBtn>
+                      </Option>
+                  </List>
+                  : undefined}
               </div>
               {typeof data.accountParticipation !== 'undefined' ? undefined : submitBtn}
             </div>
-            <AngkeiteuChart data={data}/>
+            <AngkeiteuChart data={data}>
+              <AngkeiteuChartFilter/>
+            </AngkeiteuChart>
             <AngkeiteuComment angkeiteuId={data._id}/>
           </div>
           {typeof data.triggerOptionId !== 'undefined' ? triggerAngkeiteuListView : undefined}
           {typeof data.accountParticipation !== 'undefined' ? targetAngkeiteuListView() : undefined}
         </div>
-        {createTargetAngkeiteuModal}
       </div>
     );
   }
@@ -211,7 +210,9 @@ const mapStateToProps = (state) => {
         participateStatus: state.angkeiteu.participate,
         authenticateStatus: state.authentication.status,
         targetAngkeiteuListStatus: state.angkeiteu.targetList,
-        triggerAngkeiteuListStatus: state.angkeiteu.triggerList
+        triggerAngkeiteuListStatus: state.angkeiteu.triggerList,
+        angkeiteuCreatorStaus: state.angkeiteuCreator
+
     };
 };
 
@@ -228,6 +229,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     triggerAngkeiteuListRequest: (triggerOptionId) => {
       return dispatch(triggerAngkeiteuListRequest(triggerOptionId));
+    },
+    initAngkeiteuCreator: (triggerOption) => {
+      return dispatch(initAngkeiteuCreator(triggerOption));
     }
   };
 }

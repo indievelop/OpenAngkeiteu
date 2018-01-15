@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Comment } from 'components';
+import { Comment, List } from 'components';
 import { commentListRequest } from 'actions/comment';
 
 class CommentList extends React.Component {
@@ -9,6 +9,11 @@ class CommentList extends React.Component {
   constructor(props) {
     super(props);
     this.handleExpandMoreCommentList = this.handleExpandMoreCommentList.bind(this);
+  }
+
+  componentDidMount() {
+    if(typeof this.props.angkeiteuId !== 'undefined')
+      this.props.commentListRequest(true, this.props.angkeiteuId);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -22,17 +27,6 @@ class CommentList extends React.Component {
   }
 
   render() {
-    const mapToComponets = commentList => {
-      return commentList.map((comment, i) => {
-        return(
-          <div key={comment._id}>
-            <Comment data={comment}/>
-            <div className='divider'></div>
-          </div>
-        )
-      })
-    }
-
     const expandMoreBtn = (
       <div className='center-align'>
         <a className='waves-effect waves-light btn'
@@ -45,7 +39,10 @@ class CommentList extends React.Component {
     return (
       <div>
         <h5>{`${this.props.countCommentStatus.data.count} comments`}</h5>
-        {mapToComponets(this.props.commentListStatus.data)}
+          <List className='row' data={this.props.commentListStatus.data}>
+            <Comment className='col s12'/>
+            <div className='col s12 divider'></div>
+          </List>
         {this.props.commentListStatus.isLast ? undefined : expandMoreBtn}
       </div>
     );

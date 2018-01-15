@@ -2,7 +2,7 @@ import React from 'react';
 //route
 import { BrowserRouter as Router, Route, IndexRoute } from 'react-router-dom';
 //components
-import { Header, Footer, Sidemenu, Search } from 'components';
+import { Header, Footer, Sidemenu, Search, Modals } from 'components';
 //containers
 import { Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu,
         SearchAngkeiteu, ShowWritingAngkeiteu, ShowParticipationAngkeiteu } from 'containers';
@@ -34,7 +34,6 @@ class App extends React.Component {
     // check whether this cookie is valid or not
     this.props.getStatusRequest().then(
         () => {
-            console.log(this.props.status);
             // if session is not valid
             if(!this.props.status.valid) {
                 // logout the session
@@ -72,6 +71,7 @@ class App extends React.Component {
                 <Route path = '/searchAngkeiteu/:keyword' component = {SearchAngkeiteu}/>
                 <Route path = '/showWritingAngkeiteu/:accountId' component = {ShowWritingAngkeiteu}/>
                 <Route path = '/showParticipationAngkeiteu/:accountId' component = {ShowParticipationAngkeiteu}/>
+                <Route component = {Modals}/>
               </main>
               <footer className='page-footer'>
                 <Footer/>
