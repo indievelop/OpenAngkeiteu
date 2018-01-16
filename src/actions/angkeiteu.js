@@ -177,7 +177,7 @@ export function angkeiteuParticipateFailure(error) {
 export function hotAngkeiteuListRequest(isInitial, period, listType, id) {
   return (dispatch) => {
     let url = `/api/angkeiteu/hot/${period}`;
-    let listName = `hot_${period}List`;
+    let listName = 'hotList'
 
     dispatch(angkeiteuList(listName));
     url = isInitial ? url : `${url}/${listType}/${id}`;

@@ -23,17 +23,11 @@ const initialState = {
         data: [],
         isLast: false
     },
-    hot_todayList: {
-        status: 'INIT',
-        error: -1,
-        data: [],
-        isLast: false
-    },
-    hot_thisMonthList: {
-        status: 'INIT',
-        error: -1,
-        data: [],
-        isLast: false
+    hotList: {
+      status: 'INIT',
+      error: -1,
+      data: [],
+      isLast: false
     },
     triggerList: {
       status: 'INIT',
