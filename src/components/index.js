@@ -33,6 +33,7 @@ import Option from './Option';
 import Modals from './Modals';
 import DropDownBtn from './DropDownBtn'
 import LoginForm from './LoginForm'
+import RegisterForm from './RegisterForm'
 
 export { App, Header, Footer, Sidemenu, List, LinkBtn,
          SelectBtn, Angkeiteu, AngkeiteuDetail, AngkeiteuForm, AngkeiteuList, HotAngkeiteuList,
@@ -40,4 +41,4 @@ export { App, Header, Footer, Sidemenu, List, LinkBtn,
          AngkeiteuCreatorModal, AngkeiteuChart, AngkeiteuChartFilter, FilterCondition, AngkeiteuHeader,
          AngkeiteuExplorer, AngkeiteuExplorerModal, Comment, CommentForm, CommentList,
          AngkeiteuComment, Search, SearchBar, ImageView, ImageViewer, ImageViewerModal, ImageUpload,
-         ShowImgBtn, Option, Modals, DropDownBtn ,LoginForm };
+         ShowImgBtn, Option, Modals, DropDownBtn ,LoginForm, RegisterForm };
