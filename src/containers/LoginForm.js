@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { loginRequest } from 'actions/authentication'
 import { LoginForm } from 'components'
@@ -53,6 +54,10 @@ class LoginFormContainer extends React.Component {
       <LoginForm {...{email, password, handleChange, handleLogin}}/>
     )
   }
+}
+
+LoginFormContainer.propTypes = {
+  history: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => {
