@@ -3,10 +3,9 @@ import React from 'react';
 import { BrowserRouter as Router, Route, IndexRoute } from 'react-router-dom';
 //components
 import { Header, Footer, Sidemenu, Search, Modals } from 'components';
-import { Home, Login, Register } from 'components/pages'
+import { Home, Login, Register, WriteAngkeiteu } from 'components/pages'
 //containers
-import { WriteAngkeiteu, ReadAngkeiteu,
-        SearchAngkeiteu, ShowWritingAngkeiteu, ShowParticipationAngkeiteu } from 'containers';
+import { ReadAngkeiteu, SearchAngkeiteu, ShowWritingAngkeiteu, ShowParticipationAngkeiteu } from 'containers';
 
 class App extends React.Component {
   render(){

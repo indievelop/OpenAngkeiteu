@@ -13,28 +13,18 @@ class ImageUpload extends React.Component {
     }
     this.handleOnChangeImagefile = this.handleOnChangeImagefile.bind(this);
     this.handleRemoveImage = this.handleRemoveImage.bind(this);
-    this.uplaodImgfile = this.uplaodImgfile.bind(this);
-    this.initImageData = this.initImageData.bind(this);
+    this.uploadImgFile = this.uploadImgFile.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.objId !== this.props.objId) {
       if(nextProps.objId !== '') {
-        this.uplaodImgfile(nextProps);
-      } else {
-        this.initImageData();
+        this.uploadImgFile(nextProps);
       }
     }
   }
 
-  initImageData() {
-    let nextState = {};
-    nextState['imgFile'] = '';
-    nextState['imgUrl'] = '';
-    this.setState(nextState);
-  }
-
-  uplaodImgfile(nextProps) {
+  uploadImgFile(nextProps) {
     let imgFile = this.state.imgFile;
     const imgFileUploadErrorMessage = [
       'You are not logged in.',
@@ -45,7 +35,7 @@ class ImageUpload extends React.Component {
       this.props.imgFileUploadRequest(nextProps.objId, this.props.objKind, imgFile).then(()=> {
         this.props.onUpload(nextProps.objId);
         if(this.props.imgFileUploadStatus.status === 'SUCCESS') {
-          //this.initImageData();
+          //SUCCESS
         } else if(this.props.imgFileUploadStatus.status === 'FAILURE') {
           let $toastContent = $('<span style="color: #FFB4BA">' + this.props.imgFileUploadStatus.error + '</span>');
           Materialize.toast($toastContent, 2000);
@@ -106,13 +96,9 @@ class ImageUpload extends React.Component {
 }
 
 ImageUpload.propTpes = {
-  objId: PropTypes.string,
-  objKind: PropTypes.string,
-}
-
-ImageUpload.defaultProps = {
-  objId: '',
-  objKind: ''
+  objId: PropTypes.string.isRequired,
+  objKind: PropTypes.string.isRequired,
+  onUpload: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
