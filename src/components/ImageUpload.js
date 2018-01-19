@@ -82,7 +82,6 @@ class ImageUpload extends React.Component {
             <input className="validate"
                    disabled='disabled'
                    value=''
-                   id="disabled"
                    type="text" />
             <label htmlFor="disabled">
               {typeof imgFile.name !== 'undefined' ? imgFile.name : 'upload img file (.jpg, .jpeg, .png)'}
