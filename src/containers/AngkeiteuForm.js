@@ -111,6 +111,7 @@ class AngkeiteuFormContainer extends React.Component {
 
     if(this.state.finishUploads.length === this.state.options.length) {
       //finish uploads
+      this.initFormData()
       this.props.history.push(`/readAngkeiteu/${this.state.postedData._id}`)
     } else {
       nextState['finishUploads'] = this.state.finishUploads
