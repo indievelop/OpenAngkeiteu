@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 //route
-import { BrowserRouter as Router, Route, IndexRoute } from 'react-router-dom';
+import { BrowserRouter as Router, Route, IndexRoute } from 'react-router-dom'
 //components
-import { Header, Footer, Sidemenu, Search, Modals } from 'components';
+import { Header, Footer, Sidemenu, Search, Modals } from 'components'
 import { Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu } from 'components/pages'
 //containers
-import { SearchAngkeiteu, ShowWritingAngkeiteu, ShowParticipationAngkeiteu } from 'containers';
+import { SearchAngkeiteu, ShowWritingAngkeiteu, ShowParticipationAngkeiteu } from 'containers'
 
 class App extends React.Component {
   render(){
