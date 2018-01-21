@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Angkeiteu, List, LinkBtn } from 'components'
 
-class AngkeiteuList extends React.Component {
+class RecentAngkeiteuList extends React.Component {
   render() {
     const {list, handleExpand} = this.props
     const expandMoreBtn = (
@@ -26,9 +26,9 @@ class AngkeiteuList extends React.Component {
   }
 }
 
-AngkeiteuList.propTypes = {
+RecentAngkeiteuList.propTypes = {
   list: PropTypes.object.isRequired,
   handleExpand: PropTypes.func.isRequired
 }
 
-export default AngkeiteuList
+export default RecentAngkeiteuList

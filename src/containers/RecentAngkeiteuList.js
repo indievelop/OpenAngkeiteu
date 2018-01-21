@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { AngkeiteuList } from 'components'
+import { RecentAngkeiteuList } from 'components'
 import { angkeiteuListRequest } from 'actions/angkeiteu'
 
-class AngkeiteuListContainer extends React.Component {
+class RecentAngkeiteuListContainer extends React.Component {
   constructor(props) {
     super(props)
     this.handleExpand = this.handleExpand.bind(this)
@@ -20,10 +20,10 @@ class AngkeiteuListContainer extends React.Component {
   }
 
   render() {
-    let {list, ...props} = this.props
-    let {handleExpand} = this
+    const {list, ...props} = this.props
+    const {handleExpand} = this
     return (
-      <AngkeiteuList {...{ list, handleExpand, ...props}}/>
+      <RecentAngkeiteuList {...{ list, handleExpand, ...props}}/>
     )
   }
 }
@@ -42,4 +42,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AngkeiteuListContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(RecentAngkeiteuListContainer)
