@@ -9,7 +9,7 @@ import Angkeiteu from './Angkeiteu';
 import AngkeiteuForm from './AngkeiteuForm';
 import AngkeiteuFormModal from './AngkeiteuFormModal'
 import AngkeiteuDetail from './AngkeiteuDetail';
-import AngkeiteuList from './AngkeiteuList'
+import RecentAngkeiteuList from './RecentAngkeiteuList'
 import HotAngkeiteuList from './HotAngkeiteuList'
 import AngkeiteuChart from './AngkeiteuChart';
 import AngkeiteuChartFilter from'./AngkeiteuChartFilter';
@@ -35,11 +35,13 @@ import DropDownBtn from './DropDownBtn'
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
 import AngkeiteuParticipationForm from './AngkeiteuParticipationForm';
+import Card from './Card'
 
 export { App, Header, Footer, Sidemenu, List, LinkBtn,
          SelectBtn, Angkeiteu ,AngkeiteuForm, AngkeiteuFormModal, AngkeiteuDetail,
-         AngkeiteuList, HotAngkeiteuList,
+         RecentAngkeiteuList, HotAngkeiteuList,
          AngkeiteuChart, AngkeiteuChartFilter, FilterCondition, AngkeiteuHeader,
          AngkeiteuExplorer, AngkeiteuExplorerModal, Comment, CommentForm, CommentList,
          AngkeiteuComment, Search, SearchBar, ImageView, ImageViewer, ImageViewerModal, ImageUpload,
-         ShowImgBtn, Option, Modal, Modals, DropDownBtn ,LoginForm, RegisterForm, AngkeiteuParticipationForm };
+         ShowImgBtn, Option, Modal, Modals, DropDownBtn ,LoginForm, RegisterForm, AngkeiteuParticipationForm,
+         Card };
