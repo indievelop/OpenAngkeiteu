@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { angkeiteuSearchRequest } from 'actions/search';
-import { AngkeiteuList, SearchBar } from 'components';
+import { SearchBar, List, Angkeiteu, LinkBtn } from 'components';
 
 class SearchAngkeiteu extends React.Component {
   constructor(props) {
@@ -21,7 +21,11 @@ class SearchAngkeiteu extends React.Component {
           </div>
           <div className='col s12'>
             <h5>search result</h5>
-            <AngkeiteuList data={this.props.searchStatus.result.data}/>
+            <List data={this.props.searchStatus.result.data}>
+              <Angkeiteu>
+                <LinkBtn>open</LinkBtn>
+              </Angkeiteu>
+            </List>
           </div>
         </div>
       </div>
