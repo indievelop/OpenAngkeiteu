@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { SearchBar, SelectBtn, List, Option, Angkeiteu,
-         AngkeiteuDetail, AngkeiteuChart, AngkeiteuComment, ShowImgBtn} from 'components';
+         AngkeiteuDetail, AngkeiteuComment, ShowImgBtn, Card} from 'components';
+import { AngkeiteuChart } from 'containers'
 import { selectAngkeiteu, unselectAngkeiteu, selectOption, complete } from 'actions/angkeiteuExplorer';
 
 class AngkeiteuExplorer extends React.Component {
@@ -54,9 +55,9 @@ class AngkeiteuExplorer extends React.Component {
             {this.props.angkeiteuExplorerStatus.purpose}
           </SelectBtn>
         </AngkeiteuDetail>
-        <AngkeiteuChart data={this.props.angkeiteuExplorerStatus.selectedAngkeiteu}/>
-        {typeof this.props.angkeiteuExplorerStatus.selectedAngkeiteu._id !== 'undefined' ?
-          <AngkeiteuComment angkeiteuId={this.props.angkeiteuExplorerStatus.selectedAngkeiteu._id}/> : undefined}
+        <Card>
+          <AngkeiteuChart isOnFiltering={false} fixedData={this.props.angkeiteuExplorerStatus.selectedAngkeiteu}/>
+        </Card>
         {backBtn}
       </div>
     );
