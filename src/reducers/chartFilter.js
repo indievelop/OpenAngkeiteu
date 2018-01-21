@@ -91,17 +91,17 @@ export default function chartFilter(state, action) {
   }
 }
 
-Set.prototype.union = function(setB) {
+Set.prototype.union = function(set) {
     var union = new Set(this);
-    for (var elem of setB) {
+    for (var elem of set) {
         union.add(elem);
     }
     return union;
 }
 
-Set.prototype.intersection = function(setB) {
+Set.prototype.intersection = function(set) {
     var intersection = new Set();
-    for (var elem of setB) {
+    for (var elem of set) {
         if (this.has(elem)) {
             intersection.add(elem);
         }
