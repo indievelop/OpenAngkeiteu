@@ -1,5 +1,5 @@
 import React from 'react'
-import { AngkeiteuList, HotAngkeiteuList } from 'containers'
+import { RecentAngkeiteuList, HotAngkeiteuList } from 'containers'
 
 class Home extends React.Component {
   render() {
@@ -13,7 +13,7 @@ class Home extends React.Component {
         <div className='row'>
           <div className='col s12'>
             <div className='divider'></div>
-            <AngkeiteuList className='col s12 l3'/>
+            <RecentAngkeiteuList className='col s12 l3'/>
           </div>
         </div>
       </div>
