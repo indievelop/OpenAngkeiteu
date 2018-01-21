@@ -30,7 +30,7 @@ class HotAngkeiteuList extends React.Component {
 }
 
 HotAngkeiteuList.propTypes = {
-  list: PropTypes.object,
+  list: PropTypes.object.isRequired,
   handleExpand: PropTypes.func.isRequired,
   selectedPeriod: PropTypes.string.isRequired,
   periodItems: PropTypes.arrayOf(PropTypes.object).isRequired,

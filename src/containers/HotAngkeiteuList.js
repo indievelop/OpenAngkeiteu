@@ -24,14 +24,14 @@ class HotAngkeiteuListContainer extends React.Component {
   }
 
   handleExpand() {
-    let {list} = this.props
+    const {list} = this.props
     this.props.hotAngkeiteuListRequest(false, this.state.selectedPeriod, 'old', list.data[list.data.length-1]._id)
   }
 
   render() {
-    let {list, ...props} = this.props
-    let {selectedPeriod} = this.state
-    let {handleExpand, handleChangePeriod} = this
+    const {list, ...props} = this.props
+    const {selectedPeriod} = this.state
+    const {handleExpand, handleChangePeriod} = this
     return (
       <HotAngkeiteuList {...{ list, selectedPeriod, handleExpand, handleChangePeriod, ...props}}/>
     )
