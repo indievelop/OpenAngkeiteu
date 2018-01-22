@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, AngkeiteuComment } from 'components'
-import { AngkeiteuParticipationForm, AngkeiteuChart, AngkeiteuChartFilter } from 'containers'
+import { AngkeiteuParticipationForm, AngkeiteuChart,
+         AngkeiteuChartFilter, TriggerAngkeiteuList } from 'containers'
 
 class ReadAngkeiteu extends React.Component {
   render() {
@@ -10,13 +11,14 @@ class ReadAngkeiteu extends React.Component {
         <div className='row'>
           <div className='col s12 m8'>
             <AngkeiteuParticipationForm match={match}/>
-          </div>
-          <div className='col s12 m8'>
             <Card>
               <AngkeiteuChartFilter/>
               <AngkeiteuChart isOnFiltering={true} />
             </Card>
             <AngkeiteuComment angkeiteuId={match.params.id}/>
+          </div>
+          <div className='col s12 m4'>
+            <TriggerAngkeiteuList match={match}/>
           </div>
         </div>
       </div>
