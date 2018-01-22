@@ -13,8 +13,10 @@ import AngkeiteuParticipationForm from './AngkeiteuParticipationForm'
 import Modal from './Modal'
 import AngkeiteuChart from './AngkeiteuChart'
 import AngkeiteuChartFilter from './AngkeiteuChartFilter'
+import CommentForm from './CommentForm'
+import CommentList from './CommentList'
 export { App, LoginForm, RegisterForm, AngkeiteuForm, AngkeiteuFormModal,
          ReadAngkeiteu,
          SearchAngkeiteu, ShowWritingAngkeiteu, ShowParticipationAngkeiteu,
          RecentAngkeiteuList, HotAngkeiteuList, AngkeiteuParticipationForm ,
-         Modal, AngkeiteuChart, AngkeiteuChartFilter}
+         Modal, AngkeiteuChart, AngkeiteuChartFilter, CommentForm, CommentList}

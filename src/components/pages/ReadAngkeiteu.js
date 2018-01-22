@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card } from 'components'
+import { Card, AngkeiteuComment } from 'components'
 import { AngkeiteuParticipationForm, AngkeiteuChart, AngkeiteuChartFilter } from 'containers'
 
 class ReadAngkeiteu extends React.Component {
@@ -16,6 +16,7 @@ class ReadAngkeiteu extends React.Component {
               <AngkeiteuChartFilter/>
               <AngkeiteuChart isOnFiltering={true} />
             </Card>
+            <AngkeiteuComment angkeiteuId={match.params.id}/>
           </div>
         </div>
       </div>
