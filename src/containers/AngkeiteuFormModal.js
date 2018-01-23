@@ -19,11 +19,10 @@ class AngkeiteuFormModalContainer extends React.Component {
   }
 
   render() {
-    const name = 'angkeiteuFormModal'
     const {triggerOption} = this.props.angkeiteuCreatorStatus
     const {history} = this.props
     return (
-      <AngkeiteuFormModal {...{name, triggerOption, history}}/>
+      <AngkeiteuFormModal {...{triggerOption, history}}/>
     )
   }
 }

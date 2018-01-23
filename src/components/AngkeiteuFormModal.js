@@ -2,9 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { AngkeiteuForm, Modal } from 'containers'
 
+
 class AngkeiteuFormModal extends React.Component {
   render() {
-    const {name, triggerOption, history} = this.props
+    const name = 'angkeiteuFormModal'
+    const {triggerOption, history} = this.props
     return (
       <Modal {...{name}}>
         <AngkeiteuForm {...{triggerOption, history}}/>
@@ -14,7 +16,6 @@ class AngkeiteuFormModal extends React.Component {
 }
 
 AngkeiteuFormModal.propTypes = {
-  name: PropTypes.string.isRequired,
   triggerOption: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
 }
