@@ -1,16 +1,16 @@
-import React from 'react';
-import { AngkeiteuExplorer } from 'components';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { AngkeiteuExplorer, Modal } from 'containers'
 
 class AngkeiteuExplorerModal extends React.Component {
   render() {
+    const name = 'angkeiteuExplorerModal'
     return (
-      <div id='angkeiteuExplorerModal' className='modal'>
-        <div className='modal-content'>
-          <AngkeiteuExplorer/>
-        </div>
-      </div>
-    );
+      <Modal {...{name}}>
+        <AngkeiteuExplorer />
+      </Modal>
+    )
   }
 }
 
-export default AngkeiteuExplorerModal;
+export default AngkeiteuExplorerModal
