@@ -1,6 +1,6 @@
 import React from 'react'
-import { ImageViewerModal, AngkeiteuExplorerModal } from 'components'
-import { AngkeiteuFormModal } from 'containers'
+import { ImageViewerModal } from 'components'
+import { AngkeiteuFormModal, AngkeiteuExplorerModal } from 'containers'
 
 class Modals extends React.Component {
   componentDidMount() {
@@ -17,8 +17,8 @@ class Modals extends React.Component {
     return (
       <div>
         <AngkeiteuFormModal {...{history}} />
-        <AngkeiteuExplorerModal/>
-        <ImageViewerModal/>
+        <AngkeiteuExplorerModal />
+        <ImageViewerModal />
       </div>
     )
   }

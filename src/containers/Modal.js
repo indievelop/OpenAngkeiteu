@@ -12,6 +12,7 @@ class ModalContainer extends React.Component {
       }
     }
   }
+  
   render() {
     const {name, children} = this.props
     return (
