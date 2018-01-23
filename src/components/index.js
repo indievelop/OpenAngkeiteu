@@ -37,6 +37,7 @@ import RegisterForm from './RegisterForm'
 import AngkeiteuParticipationForm from './AngkeiteuParticipationForm';
 import Card from './Card'
 import TriggerAngkeiteuList from './TriggerAngkeiteuList'
+import TargetAngkeiteuList from './TargetAngkeiteuList'
 
 export { App, Header, Footer, Sidemenu, List, LinkBtn,
          SelectBtn, Angkeiteu ,AngkeiteuForm, AngkeiteuFormModal, AngkeiteuDetail,
@@ -45,4 +46,4 @@ export { App, Header, Footer, Sidemenu, List, LinkBtn,
          AngkeiteuExplorer, AngkeiteuExplorerModal, Comment, CommentForm, CommentList,
          AngkeiteuComment, Search, SearchBar, ImageView, ImageViewer, ImageViewerModal, ImageUpload,
          ShowImgBtn, Option, Modal, Modals, DropDownBtn ,LoginForm, RegisterForm, AngkeiteuParticipationForm,
-         Card, TriggerAngkeiteuList };
+         Card, TriggerAngkeiteuList, TargetAngkeiteuList };
