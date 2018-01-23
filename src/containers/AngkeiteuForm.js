@@ -79,6 +79,7 @@ class AngkeiteuFormContainer extends React.Component {
     nextState['option_desc'] = ''
     nextState['options'] = []
     nextState['finishUploads'] = []
+    nextState['postedData'] = {}
     this.setState(nextState)
   }
 

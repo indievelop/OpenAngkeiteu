@@ -16,8 +16,10 @@ import AngkeiteuChartFilter from './AngkeiteuChartFilter'
 import CommentForm from './CommentForm'
 import CommentList from './CommentList'
 import TriggerAngkeiteuList from './TriggerAngkeiteuList'
+import TargetAngkeiteuList from './TargetAngkeiteuList'
+
 export { App, LoginForm, RegisterForm, AngkeiteuForm, AngkeiteuFormModal,
          ReadAngkeiteu, SearchAngkeiteu, ShowWritingAngkeiteu,
          ShowParticipationAngkeiteu, RecentAngkeiteuList, HotAngkeiteuList,
          AngkeiteuParticipationForm , Modal, AngkeiteuChart, AngkeiteuChartFilter,
-         CommentForm, CommentList, TriggerAngkeiteuList}
+         CommentForm, CommentList, TriggerAngkeiteuList, TargetAngkeiteuList}
