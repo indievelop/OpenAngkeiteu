@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { TriggerAngkeiteuList } from 'components'
 import { triggerAngkeiteuListRequest } from 'actions/angkeiteu'
@@ -31,7 +32,6 @@ class TriggerAngkeiteuListContainer extends React.Component {
   }
 
   render() {
-    const {getStatus, listStatus} = this.props
     const {data, title} = this.state
     return (
       data.length != 0 ? <TriggerAngkeiteuList {...{title, data}}/> : null
