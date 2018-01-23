@@ -26,7 +26,6 @@ class AngkeiteuChartFilterContainer extends React.Component {
   handleOnAngkeiteuExplorer() {
     //find modal on
     this.props.initExplorer('Add FilterCondtion')
-    $('#angkeiteuExplorerModal').modal('open')
   }
 
   render() {
