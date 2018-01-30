@@ -20,15 +20,16 @@ class AngkeiteuFormModalContainer extends React.Component {
 
   render() {
     const {triggerOption} = this.props.angkeiteuCreatorStatus
-    const {history} = this.props
+    const {history, match} = this.props
     return (
-      <AngkeiteuFormModal {...{triggerOption, history}}/>
+      <AngkeiteuFormModal {...{triggerOption, history, match}}/>
     )
   }
 }
 
 AngkeiteuFormModal.propTypes = {
   history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => {
