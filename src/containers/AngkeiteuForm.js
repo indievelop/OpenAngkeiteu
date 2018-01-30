@@ -25,8 +25,9 @@ class AngkeiteuFormContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.triggerOption._id !== this.props.triggerOption._id) {
-      this.initFormData()
+    if(nextProps.match.params.id !== this.props.match.params.id ||
+        nextProps.triggerOption._id !== this.props.triggerOption._id) {
+          this.initFormData()
     }
   }
 
@@ -112,7 +113,6 @@ class AngkeiteuFormContainer extends React.Component {
 
     if(this.state.finishUploads.length === this.state.options.length) {
       //finish uploads
-      this.initFormData()
       this.props.history.push(`/readAngkeiteu/${this.state.postedData._id}`)
     } else {
       nextState['finishUploads'] = this.state.finishUploads
@@ -138,7 +138,8 @@ class AngkeiteuFormContainer extends React.Component {
 
 AngkeiteuFormContainer.propTpes = {
   triggerOption: PropTypes.object,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 }
 
 AngkeiteuFormContainer.defaultProps = {
