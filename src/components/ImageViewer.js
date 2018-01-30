@@ -1,23 +1,21 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { ImageView } from 'components';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { ImageView } from 'components'
 
 class ImageViewer extends React.Component {
   render() {
-    let {imageViewerStatus} = this.props;
+    const {imageViewerStatus} = this.props
     return (
       <div>
         { imageViewerStatus.selectedObjId !== '' ?
           <ImageView objId={imageViewerStatus.selectedObjId} height={500} width={500}/> : undefined }
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    imageViewerStatus: state.imageViewer
-  };
+ImageViewer.propTypes = {
+  imageViewerStatus: PropTypes.object.isRequired
 }
 
-export default connect (mapStateToProps)(ImageViewer);
+export default ImageViewer

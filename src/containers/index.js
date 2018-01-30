@@ -18,10 +18,13 @@ import TriggerAngkeiteuList from './TriggerAngkeiteuList'
 import TargetAngkeiteuList from './TargetAngkeiteuList'
 import AngkeiteuExplorer from './AngkeiteuExplorer'
 import AngkeiteuExplorerModal from './AngkeiteuExplorerModal'
+import ImageViewer from './ImageViewer'
+import ImageViewerModal from './ImageViewerModal'
 
 export { App, LoginForm, RegisterForm, AngkeiteuForm, AngkeiteuFormModal,
          SearchAngkeiteu, ShowWritingAngkeiteu, ShowParticipationAngkeiteu,
          RecentAngkeiteuList, HotAngkeiteuList, AngkeiteuParticipationForm ,
          Modal, AngkeiteuChart, AngkeiteuChartFilter,
          CommentForm, CommentList, TriggerAngkeiteuList, TargetAngkeiteuList,
-         AngkeiteuExplorer, AngkeiteuExplorerModal}
+         AngkeiteuExplorer, AngkeiteuExplorerModal,
+         ImageViewer, ImageViewerModal}

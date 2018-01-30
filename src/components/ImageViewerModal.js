@@ -1,16 +1,15 @@
-import React from 'react';
-import { ImageViewer } from 'components';
+import React from 'react'
+import { ImageViewer, Modal } from 'containers'
 
 class ImageViewerModal extends React.Component {
   render() {
+    const name = 'imageViewerModal'
     return (
-      <div id='imageViewerModal' className='modal'>
-        <div className='modal-content'>
-          <ImageViewer/>
-        </div>
-      </div>
-    );
+      <Modal {...{name}}>
+        <ImageViewer/>
+      </Modal>
+    )
   }
 }
 
-export default ImageViewerModal;
+export default ImageViewerModal
