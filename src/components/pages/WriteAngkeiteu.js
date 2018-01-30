@@ -4,12 +4,12 @@ import { AngkeiteuForm } from 'containers'
 
 class WriteAngkeiteu extends React.Component {
   render() {
-    const {history} = this.props
+    const {history, match} = this.props
     return (
       <div className='container writeAngkeiteu'>
         <div className='row'>
           <div className='col s12 m8 offset-m2 '>
-            <AngkeiteuForm history={history}/>
+            <AngkeiteuForm {...{history, match}}/>
           </div>
         </div>
       </div>
@@ -18,7 +18,8 @@ class WriteAngkeiteu extends React.Component {
 }
 
 WriteAngkeiteu.propTpes = {
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 }
 
 export default WriteAngkeiteu
