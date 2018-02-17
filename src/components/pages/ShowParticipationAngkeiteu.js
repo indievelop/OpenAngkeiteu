@@ -1,6 +1,5 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { ParticipationList } from 'containers';
+import React from 'react'
+import { ParticipationList } from 'containers'
 
 class ShowParticipationAngkeiteu extends React.Component {
   render() {
@@ -13,8 +12,8 @@ class ShowParticipationAngkeiteu extends React.Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default ShowParticipationAngkeiteu;
+export default ShowParticipationAngkeiteu
