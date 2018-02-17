@@ -31,7 +31,6 @@ class ShowImgBtn extends React.Component {
 
   handleOnShowImgModal() {
     this.props.selectObjId(this.props.data._id);
-    $('#imageViewerModal').modal('open');
   }
 
   render() {

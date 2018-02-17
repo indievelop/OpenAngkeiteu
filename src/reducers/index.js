@@ -7,9 +7,10 @@ import chartFilter from './chartFilter';
 import angkeiteuExplorer from './angkeiteuExplorer';
 import angkeiteuCreator from './angkeiteuCreator';
 import imageViewer from './imageViewer';
+import modal from './modal'
 import { combineReducers } from 'redux';
 
 export default combineReducers({
   authentication, angkeiteu, comment, search, file, chartFilter,
-  angkeiteuExplorer, angkeiteuCreator, imageViewer
+  angkeiteuExplorer, angkeiteuCreator, imageViewer, modal
 });

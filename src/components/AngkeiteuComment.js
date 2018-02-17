@@ -1,23 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { CommentForm, CommentList } from 'components';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Card } from 'components'
+import { CommentForm, CommentList} from 'containers'
 
 class AngkeiteuComment extends React.Component {
   render() {
-    let {angkeiteuId} = this.props;
-    
+    const {angkeiteuId} = this.props
     return (
-      <div className='card'>
-        <div className='card-content'>
-          <CommentForm angkeiteuId={angkeiteuId}/>
-        </div>
-        <div className='card-content'>
-          <div className='divider'></div>
-          <CommentList angkeiteuId={angkeiteuId}/>
-        </div>
-      </div>
-    );
+      <Card>
+        <CommentForm angkeiteuId={angkeiteuId}/>
+        <CommentList angkeiteuId={angkeiteuId}/>
+      </Card>
+    )
   }
 }
 
-export default AngkeiteuComment;
+export default AngkeiteuComment

@@ -3,7 +3,7 @@ var path = require('path');
 module.exports = {
     entry: [
         './src/index.js',
-        './src/style.css'    
+        './src/style.css'
     ],
 
     output: {
@@ -21,7 +21,10 @@ module.exports = {
                 test: /\.js$/,
                 loaders: ['babel?' + JSON.stringify({
                     cacheDirectory: true,
-                    presets: ['es2015', 'react']
+                    presets: ['es2015', 'react'],
+                    plugins: [
+                      ['transform-object-rest-spread']
+                    ]
                 })],
                 exclude: /node_modules/,
             },
