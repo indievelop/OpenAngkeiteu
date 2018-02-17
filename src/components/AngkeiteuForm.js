@@ -1,108 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import update from 'react-addons-update';
-import { angkeiteuPostRequest } from 'actions/angkeiteu';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { ImageUpload, AngkeiteuHeader } from 'components'
 
 class AngkeiteuForm extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: '',
-      description: '',
-      option_desc: '',
-      options: []
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleAddOption = this.handleAddOption.bind(this);
-    this.handleRemoveOption = this.handleRemoveOption.bind(this);
-    this.handlePost = this.handlePost.bind(this);
-    this.initFormData = this.initFormData.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.triggerOption._id !== this.props.triggerOption._id)
-      this.initFormData();
-  }
-
-  handleChange(e) {
-    let nextState = {};
-    nextState[e.target.name] = e.target.value;
-    this.setState(nextState);
-  }
-
-  handleAddOption() {
-    let nextState = {};
-    let optionId = this.state.option_desc;
-    let optionDesc = this.state.option_desc;
-    let duplicatedOption = this.state.options.find((option)=>{
-      return option.description === optionDesc;
-    });
-
-    if(optionDesc === '')
-      return;
-    if(typeof duplicatedOption !== 'undefined')
-      return;
-
-    nextState = update(this.state, {
-        option_desc: { $set: '' },
-        options: {
-            $push: [{id: optionId, description: optionDesc}]
-        }
-    });
-    this.setState(nextState);
-  }
-
-  handleRemoveOption(optionId) {
-    let nextState = {};
-    let optionIdx = this.state.options.findIndex((option)=>{
-      return option.id === optionId;
-    });
-
-    nextState = update(this.state, {
-        options: {
-          $splice: [[optionIdx, 1]]
-        }
-    });
-    this.setState(nextState);
-  }
-
-  initFormData() {
-    let nextState = {};
-    nextState['title'] = '';
-    nextState['description'] = '';
-    nextState['option_desc'] = '';
-    nextState['options'] = [];
-    this.setState(nextState);
-  }
-
-  handlePost() {
-    let title = this.state.title;
-    let description = this.state.description;
-    let options = this.state.options;
-    let triggerOptionId = this.props.triggerOption._id;
-    //let parentId = '';
-    this.props.angkeiteuPostRequest(title, description, options, triggerOptionId).then(() => {
-      if(this.props.postStatus.status === 'SUCCESS') {
-        this.initFormData();
-        this.props.onCompleteCreate(this.props.postStatus.id);
-      } else {
-        let errorMessage = [
-          'You are not logged in.',
-          'Please write title.',
-          'Please write description.',
-          'Please add option.',
-          'Wrong triggerOption id.'
-        ];
-        let $toastContent = $('<span style="color: #FFB4BA">' + errorMessage[this.props.postStatus.error-1] + '</span>');
-        Materialize.toast($toastContent, 2000);
-      }
-    });
-  }
-
   render() {
-    const mapToOptions = options => {
+    const {triggerOption, title, description, option_desc, options,
+           handleChange, handleAddOption, handleRemoveOption,
+           handlePost, handleUpload, postedData} = this.props
+    const mapToOptions = (options) => {
       return options.map((option, i) => {
         return (
           <div className='row'
@@ -115,9 +20,14 @@ class AngkeiteuForm extends React.Component {
             </div>
             <div className='col s2'>
               <a className="waves-effect waves-light btn"
-                 onClick={() => this.handleRemoveOption(option.id)}>
+                 onClick={() => handleRemoveOption(option.id)}>
                 <i className="material-icons center">close</i>
               </a>
+            </div>
+            <div className='input-field col s12'>
+              <ImageUpload objId={typeof postedData.options == 'undefined' ? '' : postedData.options[i]._id}
+                           objKind='option'
+                           onUpload={handleUpload}/>
             </div>
           </div>
         );
@@ -128,12 +38,9 @@ class AngkeiteuForm extends React.Component {
       <div className='row'>
         <div className='col s12'>
           <div className='card'>
-            <div className='header blue white-text center'>
-              <div className='card-content'>
-                {this.props.mode === 'RootAngkeiteu' ?
-                  this.props.mode : this.props.triggerOption.description +" of "+ this.props.mode}
-              </div>
-            </div>
+            <AngkeiteuHeader type='CREATING'
+                             mode={triggerOption._id === '' ? 'RootAngkeiteu' : 'TargetAngkeiteu'}
+                             description={triggerOption.description}/>
             <div className='card-content'>
               <div className='row'>
                 <div className='input-field col s6'>
@@ -141,8 +48,8 @@ class AngkeiteuForm extends React.Component {
                   <input name='title'
                          type='text'
                          className='validate'
-                         onChange={this.handleChange}
-                         value={this.state.title}>
+                         onChange={handleChange}
+                         value={title}>
                   </input>
                 </div>
                 <div className='input-field col s12'>
@@ -150,9 +57,14 @@ class AngkeiteuForm extends React.Component {
                   <textarea id="textarea1"
                             name='description'
                             className="materialize-textarea validate"
-                            onChange={this.handleChange}
-                            value={this.state.description}>
+                            onChange={handleChange}
+                            value={description}>
                   </textarea>
+                </div>
+                <div className='input-field col s12'>
+                  <ImageUpload objId={postedData._id || ''}
+                               objKind='angkeiteu'
+                               onUpload={handleUpload}/>
                 </div>
               </div>
             </div>
@@ -160,7 +72,7 @@ class AngkeiteuForm extends React.Component {
               options
             </div>
             <div className='card-content'>
-              {mapToOptions(this.state.options)}
+              {mapToOptions(options)}
             </div>
             <div className='card-content'>
                <div className="row">
@@ -169,13 +81,13 @@ class AngkeiteuForm extends React.Component {
                        <input name="option_desc"
                               type="text"
                               className="validate"
-                              onChange={this.handleChange}
-                              value={this.state.option_desc}>
+                              onChange={handleChange}
+                              value={option_desc}>
                        </input>
                    </div>
                    <div className="input-field col s6">
                        <a className="btn waves-effect waves-light"
-                          onClick={this.handleAddOption}>
+                          onClick={handleAddOption}>
                           <i className="material-icons center">add</i>
                        </a>
                    </div>
@@ -184,7 +96,7 @@ class AngkeiteuForm extends React.Component {
             <div className='card-content'>
               <div className='row'>
                 <a className='btn-large waves-effect waves-light col s6 offset-s3'
-                    onClick={this.handlePost}>
+                    onClick={handlePost}>
                   <i className="material-icons center">create</i>
                 </a>
               </div>
@@ -197,29 +109,17 @@ class AngkeiteuForm extends React.Component {
 }
 
 AngkeiteuForm.propTpes = {
-  mode: PropTypes.string,
-  triggerOption: PropTypes.object
+  triggerOption: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  option_desc: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleAddOption: PropTypes.func.isRequired,
+  handleRemoveOption: PropTypes.func.isRequired,
+  handlePost: PropTypes.func.isRequired,
+  handleUpload: PropTypes.func.isRequired,
+  postedData: PropTypes.object.isRequired
 }
 
-AngkeiteuForm.defaultProps = {
-  mode: '',
-  triggerOption: {
-    _id: ''
-  }
-}
-const mapStateToProps = (state) => {
-  return {
-    isLoggedIn: state.authentication.status.isLoggedIn,
-    postStatus: state.angkeiteu.post
-  }
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    angkeiteuPostRequest: (title, description, options, triggerOptionId) => {
-      return dispatch(angkeiteuPostRequest(title, description, options, triggerOptionId));
-    }
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AngkeiteuForm);
+export default AngkeiteuForm

@@ -9,8 +9,7 @@ const Angkeiteu = new Schema({
   title: String,
   description: String,
   options: [{
-    description: String,
-    selectCount: {type: Number, default: 0}
+    description: String
   }],
   participants: [{
     accountId: {type: Schema.Types.ObjectId, ref: 'account'},

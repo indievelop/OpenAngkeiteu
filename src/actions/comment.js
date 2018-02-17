@@ -7,7 +7,10 @@ import {
     COMMENT_LIST_FAILURE,
     COMMENT_RECOMMEND,
     COMMENT_RECOMMEND_SUCCESS,
-    COMMENT_RECOMMEND_FAILURE
+    COMMENT_RECOMMEND_FAILURE,
+    COMMENT_COUNT,
+    COMMENT_COUNT_SUCCESS,
+    COMMENT_COUNT_FAILURE
 } from './ActionTypes';
 import axios from 'axios';
 
@@ -53,6 +56,7 @@ export function commentListRequest(isInitial, angkeiteuId, listType, id, email) 
       let query = `angkeiteuId=${angkeiteuId}`;
 
       dispatch(commentList());
+      dispatch(countCommentRequest(angkeiteuId));
       if(typeof email === 'undefined') {
           url = isInitial ? `${url}?${query}` : `${url}/${listType}/${id}?${query}`;
       } else {
@@ -122,6 +126,43 @@ export function recommendCommentSuccess(data) {
 export function recommendCommentFailure(error) {
     return {
         type: COMMENT_RECOMMEND_FAILURE,
+        error
+    };
+}
+
+/* COUNT COMMENT */
+export function countCommentRequest(angkeiteuId) {
+  return (dispatch) => {
+    let url = '/api/comment/count';
+    let query = `angkeiteuId=${angkeiteuId}`;
+
+    dispatch(countComment());
+    url = `${url}?${query}`;
+    return axios.get(url)
+    .then((response) => {
+      dispatch(countCommentSuccess(response.data));
+    }).catch((error) => {
+      dispatch(countCommentFailure(error.response.data.code));
+    });
+  }
+}
+
+export function countComment() {
+  return {
+    type: COMMENT_COUNT,
+  };
+}
+
+export function countCommentSuccess(data) {
+    return {
+        type: COMMENT_COUNT_SUCCESS,
+        data
+    };
+}
+
+export function countCommentFailure(error) {
+    return {
+        type: COMMENT_COUNT_FAILURE,
         error
     };
 }

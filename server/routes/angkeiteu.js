@@ -58,10 +58,11 @@ router.post('/', (req, res)=>{
     }
     angkeiteu.triggerOptionId = req.body.triggerOptionId;
   }
+
   // SAVE IN DATABASE
   angkeiteu.save((err, newAngkeiteu) => {
     if(err) throw err;
-    return res.json({ success: true, id: newAngkeiteu._id});
+    return res.json(newAngkeiteu);
   });
 });
 
@@ -77,6 +78,7 @@ router.get('/', (req, res) => {
 });
 
 //test tree insert
+/*
 router.post('/tree', (req, res) => {
   let data = req.body.angkeiteus;
   let angkeiteus = [];
@@ -112,6 +114,7 @@ router.post('/tree', (req, res) => {
   saveTree();
   return res.json({ success: true});
 });
+*/
 
 // GET ANGKEITEU
 router.get('/:id', (req, res) => {
@@ -379,7 +382,6 @@ router.put('/:id/selectOption/:optionId', (req, res) => {
       '_id': id, 'options._id': optionId
     };
     update = {
-      '$inc': {'options.$.selectCount': 1},
       '$push': {'participants': {'accountId': loginInfo._id, 'selectedOptionId': optionId} }
     };
     option = {

@@ -1,40 +1,32 @@
 import React from 'react';
-//route
-import { BrowserRouter as Router, Route, IndexRoute } from 'react-router-dom';
-//components
-import { Header, Footer, Sidemenu, Search } from 'components';
-//containers
-import { Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu,
-        SearchAngkeiteu, ShowWritingAngkeiteu, ShowParticipationAngkeiteu } from 'containers';
+import { App } from 'components';
 import { connect } from 'react-redux';
 import { getStatusRequest } from 'actions/authentication';
 
-class App extends React.Component {
-
+class AppContainer extends React.Component {
   componentDidMount() {
     // get cookie by name
     function getCookie(name) {
-        var value = "; " + document.cookie;
-        var parts = value.split("; " + name + "=");
-        if (parts.length == 2) return parts.pop().split(";").shift();
+        var value = "; " + document.cookie
+        var parts = value.split("; " + name + "=")
+        if (parts.length == 2) return parts.pop().split(";").shift()
     }
 
     // get loginData from cookie
-    let loginData = getCookie('key');
+    let loginData = getCookie('key')
     // if loginData is undefined, do nothing
-    if(typeof loginData === "undefined") return;
+    if(typeof loginData === "undefined") return
 
     // decode base64 & parse json
-    loginData = JSON.parse(atob(loginData));
+    loginData = JSON.parse(atob(loginData))
 
     // if not logged in, do nothing
-    if(!loginData.isLoggedIn) return;
+    if(!loginData.isLoggedIn) return
 
     // page refreshed & has a session in cookie,
     // check whether this cookie is valid or not
     this.props.getStatusRequest().then(
         () => {
-            console.log(this.props.status);
             // if session is not valid
             if(!this.props.status.valid) {
                 // logout the session
@@ -51,34 +43,14 @@ class App extends React.Component {
 
             }
         }
-    );
+    )
   }
 
   render(){
-      return (
-          <Router>
-            <div id='app'>
-              <header>
-                <Header/>
-              </header>
-              <main>
-                {this.props.searchStatus.view.isOpen ? <Route component = {Search}/> : undefined}
-                <Sidemenu/>
-                <Route exact path = '/' component = {Home}/>
-                <Route path = '/login' component = {Login}/>
-                <Route path = '/register' component = {Register}/>
-                <Route path = '/writeAngkeiteu' component = {WriteAngkeiteu}/>
-                <Route path = '/readAngkeiteu/:id' component = {ReadAngkeiteu}/>
-                <Route path = '/searchAngkeiteu/:keyword' component = {SearchAngkeiteu}/>
-                <Route path = '/showWritingAngkeiteu/:accountId' component = {ShowWritingAngkeiteu}/>
-                <Route path = '/showParticipationAngkeiteu/:accountId' component = {ShowParticipationAngkeiteu}/>
-              </main>
-              <footer className='page-footer'>
-                <Footer/>
-              </footer>
-            </div>
-          </Router>
-      );
+    const {searchStatus} = this.props
+    return (
+      <App {...{searchStatus}}/>
+    )
   }
 }
 
@@ -86,15 +58,15 @@ const mapStateToProps = (state) => {
     return {
         status: state.authentication.status,
         searchStatus: state.search
-    };
-};
+    }
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getStatusRequest: () => {
             return dispatch(getStatusRequest());
         }
-    };
-};
+    }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

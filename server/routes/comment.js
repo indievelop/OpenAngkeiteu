@@ -150,4 +150,21 @@ router.put('/:id/recommend', (req, res) => {
     });
   });
 });
+
+//GET COMMENT COUNT
+router.get('/count', (req, res) => {
+  // CHECK ANGKEITEU ID VALIDITY
+  if(!mongoose.Types.ObjectId.isValid(req.query.angkeiteuId)) {
+      return res.status(400).json({
+          error: "INVALID ANGKEITEU ID",
+          code: 1
+      });
+  }
+  Comment.count({angkeiteuId: req.query.angkeiteuId})
+    .exec((err, count) => {
+      if(err) throw err;
+      return res.json({'count': count});
+    });
+});
+
 export default router;

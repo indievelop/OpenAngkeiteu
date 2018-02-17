@@ -1,68 +1,38 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Comment } from 'components';
-import { commentListRequest } from 'actions/comment';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Comment, List } from 'components'
 
 class CommentList extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.handleExpandMoreCommentList = this.handleExpandMoreCommentList.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(typeof this.props.angkeiteuId === 'undefined' && typeof nextProps.angkeiteuId !== 'undefined')
-        this.props.commentListRequest(true, nextProps.angkeiteuId);
-  }
-
-  handleExpandMoreCommentList() {
-    let commentList = this.props.commentListStatus.data;
-    this.props.commentListRequest(false, this.props.angkeiteuId, 'old', commentList[commentList.length-1]._id);
-  }
-
   render() {
-    const mapToComponets = commentList => {
-      return commentList.map((comment, i) => {
-        return(
-          <div key={comment._id}>
-            <Comment data={comment}/>
-            <div className='divider'></div>
-          </div>
-        )
-      })
-    }
-
+    const {commentListStatus, countCommentStatus,
+           handleExpandMoreCommentList} = this.props
     const expandMoreBtn = (
       <div className='center-align'>
         <a className='waves-effect waves-light btn'
-           onClick={this.handleExpandMoreCommentList}>
+           onClick={handleExpandMoreCommentList}>
           <i className='material-icons'>expand_more</i>
         </a>
       </div>
-    );
-
+    )
     return (
-      <div>
-        {mapToComponets(this.props.commentListStatus.data)}
-        {this.props.commentListStatus.isLast ? undefined : expandMoreBtn}
+      <div className='row'>
+        <div className='col s12'>
+          <h5>{`${countCommentStatus.data.count} comments`}</h5>
+          <List data={commentListStatus.data}>
+            <Comment/>
+            <div className='divider'></div>
+          </List>
+          {commentListStatus.isLast ? undefined : expandMoreBtn}
+        </div>
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    commentListStatus: state.comment.list
-  }
+CommentList.propTypes = {
+  commentListStatus: PropTypes.object.isRequired,
+  countCommentStatus: PropTypes.object.isRequired,
+  handleExpandMoreCommentList: PropTypes.func.isRequired
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    commentListRequest: (isInitial, angkeiteuId, listType, id, email) => {
-      return dispatch(commentListRequest(isInitial, angkeiteuId, listType, id, email));
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CommentList);
+export default CommentList
