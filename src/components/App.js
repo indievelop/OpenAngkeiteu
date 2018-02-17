@@ -4,9 +4,7 @@ import { BrowserRouter as Router, Route, IndexRoute } from 'react-router-dom'
 //components
 import { Header, Footer, Sidemenu, Search, Modals } from 'components'
 import { Home, Login, Register, WriteAngkeiteu, ReadAngkeiteu,
-         ShowWritingAngkeiteu, ShowParticipationAngkeiteu } from 'components/pages'
-//containers
-import { SearchAngkeiteu } from 'containers'
+         SearchAngkeiteu, ShowWritingAngkeiteu, ShowParticipationAngkeiteu } from 'components/pages'
 
 class App extends React.Component {
   render(){

@@ -11,6 +11,7 @@ import AngkeiteuFormModal from './AngkeiteuFormModal'
 import AngkeiteuDetail from './AngkeiteuDetail';
 import RecentAngkeiteuList from './RecentAngkeiteuList'
 import HotAngkeiteuList from './HotAngkeiteuList'
+import SearchList from './SearchList'
 import ParticipationList from './ParticipationList'
 import WritingList from './WritingList'
 import AngkeiteuChart from './AngkeiteuChart';
@@ -43,7 +44,8 @@ import TargetAngkeiteuList from './TargetAngkeiteuList'
 
 export { App, Header, Footer, Sidemenu, List, LinkBtn,
          SelectBtn, Angkeiteu ,AngkeiteuForm, AngkeiteuFormModal, AngkeiteuDetail,
-         RecentAngkeiteuList, HotAngkeiteuList, ParticipationList, WritingList,
+         RecentAngkeiteuList, HotAngkeiteuList,
+         SearchList, ParticipationList, WritingList,
          AngkeiteuChart, AngkeiteuChartFilter, FilterCondition, AngkeiteuHeader,
          AngkeiteuExplorer, AngkeiteuExplorerModal, Comment, CommentForm, CommentList,
          AngkeiteuComment, Search, SearchBar, ImageView, ImageViewer, ImageViewerModal, ImageUpload,
